@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\OrganizerAuth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Organizer;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -14,7 +14,7 @@ use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class RegisteredUserController extends Controller
+class RegisteredOrganizerController extends Controller
 {
     /**
      * Display the registration view.
@@ -33,19 +33,19 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:'.User::class,
+            'email' => 'required|string|email|max:255|unique:'.Organizer::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
+        $organizer = Organizer::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($user));
+        event(new Registered($organizer));
 
-        Auth::login($user);
+        Auth::login($organizer);
 
         return redirect(RouteServiceProvider::HOME);
     }
