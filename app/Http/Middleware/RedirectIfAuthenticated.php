@@ -21,6 +21,9 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
+                if ($guard == "organizer") {
+                    return redirect(RouteServiceProvider::ORGANIZER);
+                }
                 return redirect(RouteServiceProvider::HOME);
             }
         }
