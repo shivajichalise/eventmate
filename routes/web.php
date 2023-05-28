@@ -38,7 +38,7 @@ Route::middleware('auth')->group(function () {
 // Organizer Routes
 Route::prefix('/organizers')->name('organizers.')->group(function () {
     Route::get('/login', function () {
-        return 'lll';
+        return view('auth.login');
     });
 });
 Route::middleware('auth')->prefix('/organizers')->name('organizers.')->group(function () {
