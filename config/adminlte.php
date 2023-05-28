@@ -253,12 +253,12 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
-    'logout_url' => 'logout',
-    'login_url' => 'login',
-    'register_url' => 'register',
-    'password_reset_url' => 'password/reset',
-    'password_email_url' => 'password/email',
+    'dashboard_url' => 'dashboard',
+    'logout_url' => 'organizers/logout',
+    'login_url' => 'organizers/login',
+    'register_url' => 'organizers/register',
+    'password_reset_url' => 'organizers/password/reset',
+    'password_email_url' => 'organizers/password/email',
     'profile_url' => false,
 
     /*
