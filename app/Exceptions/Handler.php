@@ -39,5 +39,7 @@ class Handler extends ExceptionHandler
         if ($request->is('organizers') || $request->is('organizers/*')) {
             return redirect()->guest('/organizers/login');
         }
+
+        return redirect()->guest('/login');
     }
 }
