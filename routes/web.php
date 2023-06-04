@@ -26,9 +26,9 @@ Route::get('/', function () {
     ]);
 });
 
-// Route::get('/dashboard', function () {
-//     return Inertia::render('Dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -42,12 +42,14 @@ Route::prefix('/organizers')->name('organizers.')->group(function () {
     Route::get('/login', [OrganizerController::class, 'login']);
     Route::post('/register', [OrganizerController::class, 'signup']);
     Route::post('/login', [OrganizerController::class, 'authenticate']);
-});
+    Route::get('/logout', [OrganizerController::class, 'logout']);
 
-Route::middleware('auth')->prefix('/organizers')->name('organizers.')->group(function () {
-    Route::get('/dashboard', function () {
-        return 'jaja';
+    Route::middleware('organizer')->group(function () {
+        Route::get('/', function () {
+            return 'jaja';
+        });
     });
 });
+
 
 require __DIR__.'/auth.php';
