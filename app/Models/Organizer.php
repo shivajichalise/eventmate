@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -13,6 +12,15 @@ class Organizer extends Authenticatable
     use Notifiable;
 
     protected $guard = 'organizer';
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'organizers';
+
+
     /**
      * The attributes that are mass assignable.
      *

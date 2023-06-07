@@ -14,6 +14,11 @@ use Illuminate\View\View;
 
 class OrganizerController extends Controller
 {
+    public function index()
+    {
+        return view('dashboard');
+    }
+
     public function login(): View
     {
         return view('auth.login');

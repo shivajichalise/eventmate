@@ -42,12 +42,10 @@ Route::prefix('/organizers')->name('organizers.')->group(function () {
     Route::get('/login', [OrganizerController::class, 'login']);
     Route::post('/register', [OrganizerController::class, 'signup']);
     Route::post('/login', [OrganizerController::class, 'authenticate']);
-    Route::get('/logout', [OrganizerController::class, 'logout']);
+    Route::post('/logout', [OrganizerController::class, 'logout']);
 
     Route::middleware('organizer')->group(function () {
-        Route::get('/', function () {
-            return 'jaja';
-        });
+        Route::get('/', [OrganizerController::class, 'index']);
     });
 });
 
