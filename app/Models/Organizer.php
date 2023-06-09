@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Notifications\VerifyOrganizerEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Laravel\Sanctum\HasApiTokens;
 
-class Organizer extends Authenticatable
+class Organizer extends Authenticatable implements MustVerifyEmail
 {
+    use HasApiTokens;
     use HasFactory;
     use Notifiable;
 
@@ -31,6 +35,7 @@ class Organizer extends Authenticatable
         'email',
         'password',
         'is_super',
+        'email_verified_at',
     ];
 
     /**
@@ -52,4 +57,36 @@ class Organizer extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Determine if the user has verified their email address.
+     *
+     * @return bool
+     */
+    public function hasVerifiedEmail()
+    {
+        return $this->email_verified_at != null;
+    }
+
+    /**
+     * Mark the given user's email as verified.
+     *
+     * @return bool
+     */
+    public function markEmailAsVerified(): void
+    {
+        $this->update([
+            'email_verified_at' => now(),
+        ]);
+    }
+
+    /**
+     * Send email verification mail
+     *
+     * @return bool
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyOrganizerEmail());
+    }
 }
