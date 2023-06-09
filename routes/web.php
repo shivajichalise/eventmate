@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\OrganizerController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +56,12 @@ Route::prefix('/organizers')->name('organizers.')->group(function () {
         Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verifyEmailRequest'])->middleware(['signed'])->name('verification.verify');
         Route::post('/email/verification-notification', [EmailVerificationController::class, 'verifyEmailResend'])->middleware(['throttle:2,1'])->name('verification.resend');
     });
+});
+
+// Event Routes
+Route::prefix('/events')->name('events.')->group(function () {
+    Route::get('/', [EventController::class, 'index']);
+    Route::get('/create', [EventController::class, 'create']);
 });
 
 require __DIR__.'/auth.php';
