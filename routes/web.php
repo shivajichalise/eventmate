@@ -40,10 +40,12 @@ Route::middleware('auth')->group(function () {
 
 // Organizer Routes
 Route::prefix('/organizers')->name('organizers.')->group(function () {
-    Route::get('/register', [OrganizerController::class, 'register']);
-    Route::get('/login', [OrganizerController::class, 'login'])->name('login');
-    Route::post('/register', [OrganizerController::class, 'signup']);
-    Route::post('/login', [OrganizerController::class, 'authenticate']);
+    Route::middleware('guest:organizer')->group(function () {
+        Route::get('/register', [OrganizerController::class, 'register']);
+        Route::get('/login', [OrganizerController::class, 'login'])->name('login');
+        Route::post('/register', [OrganizerController::class, 'signup']);
+        Route::post('/login', [OrganizerController::class, 'authenticate']);
+    });
 
     Route::middleware('auth:organizer')->group(function () {
         Route::post('/logout', [OrganizerController::class, 'logout']);
