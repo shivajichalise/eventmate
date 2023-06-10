@@ -20,6 +20,9 @@
 
 @section('content')
 <div class="container">
+
+    @include('utils.flash_message')
+
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
