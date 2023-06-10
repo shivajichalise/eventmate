@@ -29,51 +29,30 @@
                         <div class="stepwizard">
                             <div class="stepwizard-row setup-panel">
 
-                                <div class="stepwizard-step">
+                                <div class="stepwizard-step {{ $step >= 1 ? 'active' : '' }}">
                                     <a href="" type="button" class="btn btn-primary btn-circle">
-                                        <span class="fas fa-fw fa-home"></span>
+                                        <i class="fa-solid fa-house"></i>
                                     </a>
                                     <p>General</p>
                                 </div>
 
-                                <div class="stepwizard-step">
+                                <div class="stepwizard-step {{ $step >= 2 ? 'active' : '' }}">
                                     <a href="" type="button" class="btn btn-primary btn-circle">
-                                        <span class="fas fa-fw fa-book"></span>
+                                        <i class="fa-regular fa-calendar-plus"></i>
                                     </a>
-                                    <p>Course</p>
+                                    <p>Sub-event</p>
                                 </div>
 
-                                <div class="stepwizard-step">
+                                <div class="stepwizard-step {{ $step >= 3 ? 'active' : '' }}">
                                     <a href="" type="button" class="btn btn-primary btn-circle">
-                                        <span class="fa fa-puzzle-piece"></span>
-                                    </a>
-                                    <p>Inclusion</p>
-                                </div>
-
-                                <div class="stepwizard-step">
-                                    <a href="" type="button" class="btn btn-primary btn-circle">
-                                        <span class="fa fa-trophy"></span>
-                                    </a>
-                                    <p>Races</p>
-                                </div>
-
-                                <div class="stepwizard-step">
-                                    <a href="" type="button" class="btn btn-primary btn-circle">
-                                        <span class="fa fa-registered"></span>
-                                    </a>
-                                    <p>BIB</p>
-                                </div>
-
-                                <div class="stepwizard-step">
-                                    <a href="" type="button" class="btn btn-primary btn-circle">
-                                        <span class="fa fa-ticket-alt"></span>
+                                        <i class="fa-solid fa-ticket"></i>
                                     </a>
                                     <p>Tickets</p>
                                 </div>
 
-                                <div class="stepwizard-step">
+                                <div class="stepwizard-step {{ $step >= 4 ? 'active' : '' }}">
                                     <a href="" type="button" class="btn btn-primary btn-circle">
-                                        <i class="fas fa-info"></i>
+                                        <i class="fa-solid fa-info"></i>
                                     </a>
                                     <p>Support</p>
                                 </div>
@@ -116,7 +95,7 @@
 }
 
 .stepwizard-row:before {
-    top: 40px;
+    top: 37px;
     bottom: 0;
     position: absolute;
     content: " ";

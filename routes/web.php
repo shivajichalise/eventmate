@@ -63,4 +63,13 @@ Route::prefix('/organizers')->name('organizers.')->group(function () {
 // Event Routes
 Route::resource('events', EventController::class);
 
+Route::prefix('/events/create')->name('events.')->group(function () {
+    Route::get('/{step}', [EventController::class, 'form'])->name('form');
+    Route::post('/general', [EventController::class, 'saveGeneral'])->name('general.save');
+    Route::post('/sub-events', [EventController::class, 'saveSubEvent'])->name('sub_events.save');
+    Route::post('/tickets', [EventController::class, 'saveTicket'])->name('tickets.save');
+    Route::post('/support', [EventController::class, 'saveSupport'])->name('support.save');
+});
+
+
 require __DIR__.'/auth.php';

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\EventsDataTable;
+use App\Http\Requests\EventRequests\SaveGeneralRequest;
 use App\Models\Event;
 use Illuminate\Http\Request;
 
@@ -21,12 +22,44 @@ class EventController extends Controller
      */
     public function create()
     {
-        return view('events.listings.general')->with('step', 1);
+        return $this->form('general');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Show event create multi step form
      */
+    public function form($step)
+    {
+        switch($step) {
+            case 'general':
+                $general = null;
+                return view('events.listings.general')->with([
+                    'step' => 1,
+                    'general' => $general
+                ]);
+                break;
+            case 'sub-events':
+                break;
+            case 'tickets':
+                break;
+            case 'support':
+                break;
+        }
+    }
+
+    /**
+     * Save event general details in session.
+     */
+    public function saveGeneral(SaveGeneralRequest $request)
+    {
+        $fields = $request->all();
+        Event::create($fields);
+        return redirect()->route('events.form', ['step' => 'sub-events'])->with('success', 'Event\'s general information is saved.');
+    }
+
+    /**
+         * Store a newly created resource in storage.
+         */
     public function store(Request $request)
     {
         //
