@@ -19,11 +19,27 @@
 @stop
 
 @section('content')
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                Manage Events
+            </h3>
+            <div class="card-tools">
+                <a class="btn btn-primary btn-xs m-0" id="new-user" href="{{route('events.create')}}">
+                    <i class="fa-solid fa-plus"></i> Add
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            {{ $dataTable->table() }}
+        </div>
+    </div>
+</div>
 @stop
 
-@section('css')
-@stop
+@push('scripts')
+{{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+@endpush
 
-
-@section('js')
-@stop
+@section('plugins.Datatables', true)

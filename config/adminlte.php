@@ -296,10 +296,10 @@ return [
         //     'text'         => 'search',
         //     'topnav_right' => true,
         // ],
-       //  [
-       //      'type'         => 'fullscreen-widget',
-       //      'topnav_right' => true,
-       // ],
+        //  [
+        //      'type'         => 'fullscreen-widget',
+        //      'topnav_right' => true,
+        // ],
 
         // Sidebar items:
         [
@@ -312,11 +312,12 @@ return [
             'can'  => 'manage-blog',
         ],
         [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
+            'text'        => 'Events',
+            'url'         => 'events',
+            'active'      => ['events/*'],
+            'icon'        => 'fa-solid fa-calendar',
+            // 'label'       => 4,
+            // 'label_color' => 'success',
         ],
         ['header' => 'account_settings'],
         [
@@ -426,17 +427,22 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js',
                 ],
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.13.4/b-2.3.6/b-html5-2.3.6/b-print-2.3.6/r-2.4.1/datatables.min.js',
                 ],
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
+                    'location' => '//cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.13.4/b-2.3.6/b-html5-2.3.6/b-print-2.3.6/r-2.4.1/datatables.min.css',
                 ],
             ],
         ],

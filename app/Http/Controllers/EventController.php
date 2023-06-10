@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\EventsDataTable;
 use App\Models\Event;
 use Illuminate\Http\Request;
 
@@ -10,9 +11,9 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(EventsDataTable $dataTable)
     {
-        return view('events.index');
+        return $dataTable->render('events.index');
     }
 
     /**

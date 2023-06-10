@@ -61,9 +61,6 @@ Route::prefix('/organizers')->name('organizers.')->group(function () {
 });
 
 // Event Routes
-Route::prefix('/events')->name('events.')->group(function () {
-    Route::get('/', [EventController::class, 'index']);
-    Route::get('/create', [EventController::class, 'create']);
-});
+Route::resource('events', EventController::class);
 
 require __DIR__.'/auth.php';
