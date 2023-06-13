@@ -7,12 +7,14 @@ use App\DataTables\SubEventsDataTable;
 use App\DataTables\TicketsDataTable;
 use App\Http\Requests\EventRequests\SaveGeneralRequest;
 use App\Http\Requests\EventRequests\SaveSubEventRequest;
+use App\Http\Requests\EventRequests\SaveTicketRequest;
 use App\Models\Event;
 use App\Models\SubEvent;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use PragmaRX\Countries\Package\Countries;
+use Vinkla\Hashids\Facades\Hashids;
 
 class EventController extends Controller
 {
@@ -139,7 +141,8 @@ class EventController extends Controller
         $sessionData['tickets'] = $fields;
         Session::put('event', $sessionData);
 
-        $fields['event_id'] = $sessionData['general']->id;
+        $code = Hashids::encode(time());
+        $fields['code'] = $code;
 
         Ticket::create($fields);
         return redirect()->back()->with('info', 'Ticket is saved temporarily. Please complete all the steps to make it permanent.');
