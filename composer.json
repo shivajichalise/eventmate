@@ -14,6 +14,7 @@
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.2",
         "pragmarx/countries": "^0.8.2",
+        "propaganistas/laravel-phone": "^5.0",
         "tightenco/ziggy": "^1.0",
         "vinkla/hashids": "^11.0",
         "yajra/laravel-datatables": "^10.0"

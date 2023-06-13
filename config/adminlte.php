@@ -521,6 +521,32 @@ return [
                 ],
             ],
         ],
+        'IntlTelInput' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '//cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '/js/mobileInputWithCode.js',
+                ],
+
+            ],
+        ],
     ],
 
     /*

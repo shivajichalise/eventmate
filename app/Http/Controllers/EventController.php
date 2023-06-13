@@ -83,6 +83,11 @@ class EventController extends Controller
                 return $this->tickets();
                 break;
             case 'support':
+                $support = Session::get('event.support', null);
+                return view('events.listings.support')->with([
+                    'step' => 4,
+                    'support' => $support
+                ]);
                 break;
         }
     }
@@ -149,7 +154,7 @@ class EventController extends Controller
     }
 
     /**
-     * Destroy a sub-event details.
+     * Destroy a ticket.
      */
     public function destroyTicket(Ticket $ticket)
     {
