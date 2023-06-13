@@ -18,7 +18,7 @@
             <div class="form-group">
                 <label for="name"> Name <span class="text-danger">*</span></label>
                 <div>
-                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" placeholder="Event Name" value="{{ old('name') ?? ($general?->name ?? '') }}" />
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" placeholder="Event Name" value="{{ old('name') ?? ($general['name'] ?? '') }}" />
                     @error('name')
                     <small class="text-danger">{{ $message }}</small>
                     @enderror
@@ -28,7 +28,7 @@
             <div class="form-group">
                 <label for="description"> Event Description </label>
                 <div>
-                    <textarea class="form-control @error('description') is-invalid @enderror" name="description" placeholder="Description" id="description">{{old('description')}}</textarea>
+                    <textarea class="form-control @error('description') is-invalid @enderror" name="description" placeholder="Description" id="description">{{ old('description') ?? ($general['description'] ?? '') }}</textarea>
                     @error('description')
                     <small class="text-danger">{{ $message }}</small>
                     @enderror
@@ -44,7 +44,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                             </div>
-                            <input type="text" name="event_start" id="" class="form-control @error('event_start') is-invalid @enderror inputDateTime" placeholder="Event Start Date & Time" value="{{ old('event_end') ?? ($general?->event_end ?? '') }}" autocomplete="off" />
+                            <input type="text" name="event_start" id="" class="form-control @error('event_start') is-invalid @enderror inputDateTime" placeholder="Event Start Date & Time" value="{{ old('event_start') ?? ( $general ? \Carbon\Carbon::parse($general['event_start'])->format('m/d/Y H:i A') : '') }}" autocomplete="off" />
                         </div>
                         @error('event_start')
                         <small class="text-danger">{{ $message }}</small>
@@ -59,7 +59,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                             </div>
-                            <input type="text" name="event_end" id="" class="form-control @error('event_end') is-invalid @enderror inputDateTime" placeholder="Event End Date & Time" value="{{ old('event_end') ?? ($general?->event_end ?? '') }}" autocomplete="off" />
+                            <input type="text" name="event_end" id="" class="form-control @error('event_end') is-invalid @enderror inputDateTime" placeholder="Event End Date & Time" value="{{ old('event_end') ?? ( $general ? \Carbon\Carbon::parse($general['event_end'])->format('m/d/Y H:i A') : '') }}" autocomplete="off" />
                         </div>
                         @error('event_end')
                         <small class="text-danger">{{ $message }}</small>
@@ -78,7 +78,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                             </div>
-                            <input type="text" name="registration_start" id="" class="form-control @error('registration_start') is-invalid @enderror inputDateTime" placeholder="Registration Start Date & Time" value="{{ old('registration_start') ?? ($general?->registration_start ?? '') }}" autocomplete="off" />
+                            <input type="text" name="registration_start" id="" class="form-control @error('registration_start') is-invalid @enderror inputDateTime" placeholder="Registration Start Date & Time" value="{{ old('registration_start') ?? ( $general ?  \Carbon\Carbon::parse($general['registration_start'])->format('m/d/Y H:i A') : '') }}" autocomplete="off" />
                         </div>
                         @error('registration_start')
                         <small class="text-danger">{{ $message }}</small>
@@ -93,7 +93,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                             </div>
-                            <input type="text" name="registration_end" id="" class="form-control @error('registration_end') is-invalid @enderror inputDateTime" placeholder="Registration End Date & Time" value="{{ old('registration_end') ?? ($general?->registration_end ?? '') }}" autocomplete="off" />
+                            <input type="text" name="registration_end" id="" class="form-control @error('registration_end') is-invalid @enderror inputDateTime" placeholder="Registration End Date & Time" value="{{ old('registration_end') ?? ( $general ? \Carbon\Carbon::parse($general['registration_end'])->format('m/d/Y H:i A') : '') }}" autocomplete="off" />
                         </div>
                         @error('registration_end')
                         <small class="text-danger">{{ $message }}</small>

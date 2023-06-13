@@ -7,9 +7,11 @@ use App\DataTables\SubEventsDataTable;
 use App\DataTables\TicketsDataTable;
 use App\Http\Requests\EventRequests\SaveGeneralRequest;
 use App\Http\Requests\EventRequests\SaveSubEventRequest;
+use App\Http\Requests\EventRequests\SaveSupportRequest;
 use App\Http\Requests\EventRequests\SaveTicketRequest;
 use App\Models\Event;
 use App\Models\SubEvent;
+use App\Models\Support;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -68,6 +70,14 @@ class EventController extends Controller
      */
     public function form($step)
     {
+        $isEventInSession = Session::get('event') ? true : false;
+
+        if($step != 'general') {
+            if(!$isEventInSession) {
+                return redirect()->route('events.form', ['step' => 'general'])->with('error', 'You can\'t proceed without saving event\'s general information first');
+            }
+        }
+
         switch($step) {
             case 'general':
                 $general = Session::get('event.general', null);
@@ -101,7 +111,11 @@ class EventController extends Controller
 
         $sessionData = Session::get('event', []);
 
-        $event = Event::create($fields);
+        if(empty($sessionData)) {
+            $event = Event::create($fields);
+        } else {
+            $event = Event::find($sessionData['general']->id)->update($fields);
+        }
 
         $sessionData['general'] = $event;
         Session::put('event', $sessionData);
@@ -163,6 +177,25 @@ class EventController extends Controller
     }
 
     /**
+     * Save ticket details in session.
+     */
+    public function saveSupport(SaveSupportRequest $request)
+    {
+        $fields = $request->all();
+
+        $sessionData = Session::get('event', []);
+        $sessionData['support'] = $fields;
+        Session::put('event', $sessionData);
+
+        $fields['event_id'] = $sessionData['general']->id;
+
+        Support::create($fields);
+
+        Session::forget('event');
+        return redirect()->route('events.index')->with('success', 'Event is created successfully. Please do check if you have properly created sub-events and tickets for those sub-events.');
+    }
+
+    /**
          * Store a newly created resource in storage.
          */
     public function store(Request $request)
@@ -199,6 +232,7 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
-        //
+        $event->delete();
+        return redirect()->back()->with('success', 'Event is deleted successfully.');
     }
 }

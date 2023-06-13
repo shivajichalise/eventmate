@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\Ticket;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -39,7 +40,13 @@ class TicketsDataTable extends DataTable
      */
     public function query(Ticket $model): QueryBuilder
     {
-        return $model->newQuery()->with(['subEvent']);
+        $event = Session::get('event.general');
+
+        return $model->newQuery()
+            ->whereHas('subEvent', function ($query) use ($event) {
+                $query->where('event_id', $event->id);
+            })
+            ->with(['subEvent']);
     }
 
     /**
@@ -48,20 +55,20 @@ class TicketsDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('tickets-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    //->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->selectStyleSingle()
-                    ->buttons([
-                        Button::make('excel'),
-                        Button::make('csv'),
-                        Button::make('pdf'),
-                        Button::make('print'),
-                        // Button::make('reset'),
-                        // Button::make('reload')
-                    ]);
+            ->setTableId('tickets-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            //->dom('Bfrtip')
+            ->orderBy(1)
+            ->selectStyleSingle()
+            ->buttons([
+                Button::make('excel'),
+                Button::make('csv'),
+                Button::make('pdf'),
+                Button::make('print'),
+                // Button::make('reset'),
+                // Button::make('reload')
+            ]);
     }
 
     /**
@@ -73,17 +80,17 @@ class TicketsDataTable extends DataTable
             Column::make('id'),
             Column::make('code'),
             Column::make('sub_event.name')
-                    ->title('Sub-event')
-                    ->data('sub_event.name'),
+            ->title('Sub-event')
+            ->data('sub_event.name'),
             Column::make('currency'),
             Column::make('price'),
             Column::make('tax'),
             Column::make('limit'),
             Column::computed('action')
-                    ->exportable(false)
-                    ->printable(false)
-                    ->width(60)
-                    ->addClass('text-center'),
+            ->exportable(false)
+            ->printable(false)
+            ->width(60)
+            ->addClass('text-center'),
         ];
     }
 

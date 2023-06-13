@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\SubEvent;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -39,7 +40,10 @@ class SubEventsDataTable extends DataTable
      */
     public function query(SubEvent $model): QueryBuilder
     {
-        return $model->newQuery();
+        $event = Session::get('event.general');
+
+        return $model->newQuery()
+            ->where('event_id', $event->id);
     }
 
     /**

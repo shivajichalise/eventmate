@@ -18,7 +18,7 @@
             <div class="form-group">
                 <label for="name"> Email <span class="text-danger">*</span></label>
                 <div>
-                    <input type="text" class="form-control @error('email') is-invalid @enderror" email="email" id="email" placeholder="Support email" value="{{ old('email') ?? ($support?->email ?? '') }}" />
+                    <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" id="email" placeholder="Support email" value="{{ old('email') ?? ($support['email'] ?? '') }}" />
                     @error('email')
                     <small class="text-danger">{{ $message }}</small>
                     @enderror
@@ -34,7 +34,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fa-sharp fa-solid fa-phone"></i></div>
                             </div>
-                            <input type="text" name="phone" id="" class="form-control @error('phone') is-invalid @enderror" placeholder="Landline" value="{{ old('phone') ?? ($support?->phone ?? '') }}" autocomplete="off" />
+                            <input type="text" name="phone" id="" class="form-control @error('phone') is-invalid @enderror" placeholder="Landline" value="{{ old('phone') ?? ($support['phone'] ?? '') }}" autocomplete="off" />
                         </div>
                         @error('phone')
                         <small class="text-danger">{{ $message }}</small>
@@ -49,7 +49,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fa-sharp fa-solid fa-mobile"></i></div>
                             </div>
-                            <input type="text" name="mobile" id="" class="form-control @error('mobile') is-invalid @enderror" placeholder="Mobile number" value="{{ old('mobile') ?? ($support?->mobile ?? '') }}" autocomplete="off" />
+                            <input type="text" name="mobile" id="" class="form-control @error('mobile') is-invalid @enderror" placeholder="Mobile number" value="{{ old('mobile') ?? ($support['mobile'] ?? '') }}" autocomplete="off" />
                         </div>
                         @error('mobile')
                         <small class="text-danger">{{ $message }}</small>
@@ -64,7 +64,7 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text"><i class="fa-sharp fa-solid fa-mobile"></i></div>
                     </div>
-                    <input type="text" name="address" id="" class="form-control @error('address') is-invalid @enderror" placeholder="Address" value="{{ old('address') ?? ($support?->address ?? '') }}" autocomplete="off" />
+                    <input type="text" name="address" id="" class="form-control @error('address') is-invalid @enderror" placeholder="Address" value="{{ old('address') ?? ($support['address'] ?? '') }}" autocomplete="off" />
                 </div>
                 @error('address')
                 <small class="text-danger">{{ $message }}</small>

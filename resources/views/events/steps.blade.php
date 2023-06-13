@@ -30,28 +30,28 @@
                             <div class="stepwizard-row setup-panel">
 
                                 <div class="stepwizard-step {{ $step >= 1 ? 'active' : '' }}">
-                                    <a href="" type="button" class="btn btn-primary btn-circle">
+                                    <a href="{{ route('events.form', ['step' => 'general']) }}" type="button" class="btn btn-primary btn-circle">
                                         <i class="fa-solid fa-house"></i>
                                     </a>
                                     <p>General</p>
                                 </div>
 
                                 <div class="stepwizard-step {{ $step >= 2 ? 'active' : '' }}">
-                                    <a href="" type="button" class="btn btn-primary btn-circle">
+                                    <a href="{{ route('events.form', ['step' => 'sub-events']) }}" type="button" class="btn btn-primary btn-circle">
                                         <i class="fa-regular fa-calendar-plus"></i>
                                     </a>
                                     <p>Sub-event</p>
                                 </div>
 
                                 <div class="stepwizard-step {{ $step >= 3 ? 'active' : '' }}">
-                                    <a href="" type="button" class="btn btn-primary btn-circle">
+                                    <a href="{{ route('events.form', ['step' => 'tickets']) }}" type="button" class="btn btn-primary btn-circle">
                                         <i class="fa-solid fa-ticket"></i>
                                     </a>
                                     <p>Tickets</p>
                                 </div>
 
                                 <div class="stepwizard-step {{ $step >= 4 ? 'active' : '' }}">
-                                    <a href="" type="button" class="btn btn-primary btn-circle">
+                                    <a href="{{ route('events.form', ['step' => 'support']) }}" type="button" class="btn btn-primary btn-circle">
                                         <i class="fa-solid fa-info"></i>
                                     </a>
                                     <p>Support</p>
