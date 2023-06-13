@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\DataTables\EventsDataTable;
 use App\DataTables\SubEventsDataTable;
+use App\DataTables\TicketsDataTable;
 use App\Http\Requests\EventRequests\SaveGeneralRequest;
 use App\Http\Requests\EventRequests\SaveSubEventRequest;
 use App\Models\Event;
 use App\Models\SubEvent;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use PragmaRX\Countries\Package\Countries;
 
 class EventController extends Controller
 {
@@ -24,9 +27,30 @@ class EventController extends Controller
     /**
      * Display a listing of the sub-events resource.
      */
-    public function subEvents($dataTable)
+    public function subEvents()
     {
-        return $dataTable->render('events.listings.sub_events', ['step' => 2]);
+        $dataTable = new SubEventsDataTable();
+
+        return $dataTable->render('events.listings.sub_events', [
+            'step' => 2
+        ]);
+    }
+
+    /**
+     * Display a listing of the ticketss resource.
+     */
+    public function tickets()
+    {
+        $dataTable = new TicketsDataTable();
+        $sub_events = SubEvent::doesntHave('ticket')->get();
+
+        $currencies = (new Countries())->currencies()->sortBy('name');
+
+        return $dataTable->render('events.listings.tickets', [
+            'step' => 3,
+            'sub_events' => $sub_events,
+            'currencies' => $currencies
+        ]);
     }
 
     /**
@@ -51,11 +75,10 @@ class EventController extends Controller
                 ]);
                 break;
             case 'sub-events':
-                $d = new SubEventsDataTable();
-                return $this->subEvents($d);
+                return $this->subEvents();
                 break;
             case 'tickets':
-                return 'tickets';
+                return $this->tickets();
                 break;
             case 'support':
                 break;
@@ -102,7 +125,33 @@ class EventController extends Controller
     public function destroySubEvent(SubEvent $subEvent)
     {
         $subEvent->delete();
-        return redirect()->back()->with('warning', 'Sub-event is deleted successfully.');
+        return redirect()->back()->with('success', 'Sub-event is deleted successfully.');
+    }
+
+    /**
+     * Save ticket details in session.
+     */
+    public function saveTicket(SaveTicketRequest $request)
+    {
+        $fields = $request->all();
+
+        $sessionData = Session::get('event', []);
+        $sessionData['tickets'] = $fields;
+        Session::put('event', $sessionData);
+
+        $fields['event_id'] = $sessionData['general']->id;
+
+        Ticket::create($fields);
+        return redirect()->back()->with('info', 'Ticket is saved temporarily. Please complete all the steps to make it permanent.');
+    }
+
+    /**
+     * Destroy a sub-event details.
+     */
+    public function destroyTicket(Ticket $ticket)
+    {
+        $ticket->delete();
+        return redirect()->back()->with('success', 'Ticket is deleted successfully.');
     }
 
     /**
