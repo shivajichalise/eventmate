@@ -66,7 +66,10 @@ Route::resource('events', EventController::class);
 Route::prefix('/events/create')->name('events.')->group(function () {
     Route::get('/{step}', [EventController::class, 'form'])->name('form');
     Route::post('/general', [EventController::class, 'saveGeneral'])->name('general.save');
+
     Route::post('/sub-events', [EventController::class, 'saveSubEvent'])->name('sub_events.save');
+    Route::delete('/sub-events/{subEvent}', [EventController::class, 'destroySubEvent'])->name('sub_events.destroy');
+
     Route::post('/tickets', [EventController::class, 'saveTicket'])->name('tickets.save');
     Route::post('/support', [EventController::class, 'saveSupport'])->name('support.save');
 });
