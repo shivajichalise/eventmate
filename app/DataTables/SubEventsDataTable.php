@@ -43,7 +43,7 @@ class SubEventsDataTable extends DataTable
         $event = Session::get('event.general');
 
         return $model->newQuery()
-            ->where('event_id', $event->id);
+            ->where('event_id', $event['id']);
     }
 
     /**

@@ -61,7 +61,7 @@ Route::prefix('/organizers')->name('organizers.')->group(function () {
 });
 
 // Event Routes
-Route::resource('events', EventController::class);
+Route::get('/events/discard', [EventController::class, 'discard'])->name('events.discard');
 
 Route::prefix('/events/create')->name('events.')->group(function () {
     Route::get('/{step}', [EventController::class, 'form'])->name('form');
@@ -79,6 +79,15 @@ Route::prefix('/events/create')->name('events.')->group(function () {
 
     Route::post('/support', [EventController::class, 'saveSupport'])->name('support.save');
 });
+
+Route::prefix('/events/{event}/edit')->name('events.edit.')->group(function () {
+    Route::get('/{step}', [EventController::class, 'editForm'])->name('form');
+    Route::put('/general', [EventController::class, 'saveGeneral'])->name('general');
+
+    Route::put('/support', [EventController::class, 'saveSupport'])->name('support');
+});
+
+Route::resource('events', EventController::class);
 
 
 require __DIR__.'/auth.php';

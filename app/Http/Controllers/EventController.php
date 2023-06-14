@@ -58,10 +58,44 @@ class EventController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Create event session
      */
+    public function createEventSession($key, $data = [], $flag = 'create')
+    {
+        $event = Session::get('event', []);
+
+        if (isset($event[$key]) && is_array($data)) {
+            $event[$key] = array_replace($event[$key], $data);
+        } else {
+            $event[$key] = $data;
+        }
+
+        $event['flag'] = $flag;
+
+        Session::put('event', $event);
+    }
+
+    public function removeFromSession($key)
+    {
+        if (Session::has($key)) {
+            Session::forget($key);
+        }
+    }
+
+    /**
+             * Show the form for creating a new resource.
+             */
     public function create()
     {
+        $isEventInSession = Session::get('event', []);
+
+        if(!empty($isEventInSession) && $isEventInSession['flag'] == 'edit') {
+            return redirect()->route('events.edit.form', ['event' => $isEventInSession['general'], 'step' => 'general'])
+                ->with([
+                    'info' => 'You have unfinished event edit process. Please either complete it or discard it to continue.',
+                ]);
+        }
+
         return $this->form('general');
     }
 
@@ -114,11 +148,11 @@ class EventController extends Controller
         if(empty($sessionData)) {
             $event = Event::create($fields);
         } else {
-            $event = Event::find($sessionData['general']->id)->update($fields);
+            $event = Event::find(12);
+            $event->update($fields);
         }
 
-        $sessionData['general'] = $event;
-        Session::put('event', $sessionData);
+        $this->createEventSession('general', $event);
 
         return redirect()->route('events.form', ['step' => 'sub-events'])->with('info', 'Event\'s general information is saved temporarily. Please complete all the steps to make it permanent.');
     }
@@ -131,9 +165,6 @@ class EventController extends Controller
         $fields = $request->all();
 
         $sessionData = Session::get('event', []);
-        $sessionData['sub-events'] = $fields;
-        Session::put('event', $sessionData);
-
         $fields['event_id'] = $sessionData['general']->id;
 
         SubEvent::create($fields);
@@ -155,10 +186,6 @@ class EventController extends Controller
     public function saveTicket(SaveTicketRequest $request)
     {
         $fields = $request->all();
-
-        $sessionData = Session::get('event', []);
-        $sessionData['tickets'] = $fields;
-        Session::put('event', $sessionData);
 
         $code = Hashids::encode(time());
         $fields['code'] = $code;
@@ -184,12 +211,8 @@ class EventController extends Controller
         $fields = $request->all();
 
         $sessionData = Session::get('event', []);
-        $sessionData['support'] = $fields;
-        Session::put('event', $sessionData);
 
-        $fields['event_id'] = $sessionData['general']->id;
-
-        Support::create($fields);
+        Support::updateOrCreate(['event_id' => $sessionData['general']->id], $fields);
 
         Session::forget('event');
         return redirect()->route('events.index')->with('success', 'Event is created successfully. Please do check if you have properly created sub-events and tickets for those sub-events.');
@@ -216,7 +239,82 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
-        //
+        $isEventInSession = Session::get('event', []);
+
+        if(!empty($isEventInSession) && $isEventInSession['flag'] == 'create') {
+            $discardLink = '<a href="{{ route(\'events.discard\') }}"> Discard </a>';
+            return redirect()->route('events.form', ['step' => 'general'])
+                ->with('info', 'You have unfinished event creation process. Please either complete it or discard it to continue. '. $discardLink);
+        }
+
+        $this->createEventSession('general', $event, 'edit');
+        $this->createEventSession('support', $event->support, 'edit');
+
+        return $this->editForm($event, 'general');
+    }
+
+    /**
+     * Show event edit multi step form
+     */
+    public function editForm(Event $event, $step)
+    {
+        switch($step) {
+            case 'general':
+                $general = Session::get('event.general', null);
+                return view('events.edit_listings.general')->with([
+                    'step' => 1,
+                    'general' => $general
+                ]);
+                break;
+            case 'sub-events':
+                return $this->editSubEvents();
+                break;
+            case 'tickets':
+                return $this->editTickets();
+                break;
+            case 'support':
+                $general = Session::get('event.general', null);
+                $support = Session::get('event.support', null);
+                return view('events.edit_listings.support')->with([
+                    'step' => 4,
+                    'support' => $support,
+                    'general' => $general
+                ]);
+                break;
+        }
+    }
+
+    /**
+     * Display a edit listing of the sub-events resource.
+     */
+    public function editSubEvents()
+    {
+        $general = Session::get('event.general', null);
+        $dataTable = new SubEventsDataTable();
+
+        return $dataTable->render('events.edit_listings.sub_events', [
+            'step' => 2,
+            'general' => $general
+        ]);
+    }
+
+    /**
+     * Display a edit listing of the tickets resource.
+     */
+    public function editTickets()
+    {
+        $general = Session::get('event.general', null);
+        $dataTable = new TicketsDataTable();
+        $sub_events = SubEvent::doesntHave('ticket')->get();
+
+        $currencies = (new Countries())->currencies()->sortBy('name');
+
+        return $dataTable->render('events.edit_listings.tickets', [
+            'step' => 3,
+            'sub_events' => $sub_events,
+            'currencies' => $currencies,
+            'general' => $general
+        ]);
     }
 
     /**
@@ -225,6 +323,15 @@ class EventController extends Controller
     public function update(Request $request, Event $event)
     {
         //
+    }
+
+    /**
+     * Remove the event resource from session.
+     */
+    public function discard()
+    {
+        $this->removeFromSession('event');
+        return redirect()->route('events.index')->with('success', 'Event discarded successfully.');
     }
 
     /**
