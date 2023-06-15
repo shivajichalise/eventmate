@@ -78,6 +78,8 @@ Route::prefix('/events/create')->name('events.')->group(function () {
     });
 
     Route::post('/support', [EventController::class, 'saveSupport'])->name('support.save');
+
+    Route::post('/toggle', [EventController::class, 'toggleStatus'])->name('toggle');
 });
 
 Route::prefix('/events/{event}/edit')->name('events.edit.')->group(function () {
@@ -86,6 +88,7 @@ Route::prefix('/events/{event}/edit')->name('events.edit.')->group(function () {
 
     Route::put('/support', [EventController::class, 'saveSupport'])->name('support');
 });
+
 
 Route::resource('events', EventController::class);
 

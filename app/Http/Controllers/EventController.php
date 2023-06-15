@@ -13,6 +13,7 @@ use App\Models\Event;
 use App\Models\SubEvent;
 use App\Models\Support;
 use App\Models\Ticket;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use PragmaRX\Countries\Package\Countries;
@@ -83,8 +84,8 @@ class EventController extends Controller
     }
 
     /**
-             * Show the form for creating a new resource.
-             */
+         * Show the form for creating a new resource.
+         */
     public function create()
     {
         $isEventInSession = Session::get('event', []);
@@ -231,7 +232,16 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        //
+        $subEvents = $event->subEvents;
+        $tickets =  $event->tickets;
+        $support =  $event->support;
+
+        return view('events.view')->with([
+            'general' => $event,
+            'sub_events' => $subEvents,
+            'tickets' => $tickets,
+            'support' => $support
+        ]);
     }
 
     /**
@@ -315,6 +325,21 @@ class EventController extends Controller
             'currencies' => $currencies,
             'general' => $general
         ]);
+    }
+
+    public function toggleStatus(Request $request)
+    {
+        if ($request->ajax()) {
+            try {
+                $id = $request->eventId;
+                $event = Event::find($id);
+                $event->status = !$event->status;
+                $event->save();
+                return response()->json(["code" => 200, 'message' => 'Successfull']);
+            } catch (Exception $e) {
+                return response()->json(["code" => $e->getCode(), 'message' => 'Failed with exception ' . $e->getMessage()]);
+            }
+        }
     }
 
     /**
