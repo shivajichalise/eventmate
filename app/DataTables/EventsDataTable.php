@@ -27,6 +27,14 @@ class EventsDataTable extends DataTable
         $destroyRoute = 'events.destroy';
 
         return (new EloquentDataTable($query))
+            ->addColumn('status', function ($row) {
+                if ($row->status) {
+                    $status = '<span class="badge badge-success"><i class="fas fa-fw fa-check-circle"></i> Verified </span>';
+                } else {
+                    $status = '<span class="badge badge-info"><i class="fas fa-fw fas fa-ellipsis-h"></i> Pending </span>';
+                }
+                return $status;
+            })
             ->addColumn('action', function ($row) use ($showRoute, $editRoute, $destroyRoute) {
                 return View::make('utils.datatable_action_buttons', [
                     'id' => $row['id'],
@@ -35,6 +43,7 @@ class EventsDataTable extends DataTable
                     'destroyRoute' => $destroyRoute,
                 ])->render();
             })
+            ->rawColumns(['status', 'action'])
             ->setRowId('id');
     }
 
@@ -76,7 +85,12 @@ class EventsDataTable extends DataTable
         return [
             Column::make('id'),
             Column::make('name'),
-            Column::make('status'),
+            Column::make('event_start'),
+            Column::make('event_end'),
+            Column::make('registration_start'),
+            Column::make('registration_end'),
+            Column::computed('status')
+            ->width(60),
             Column::computed('action')
             ->exportable(false)
             ->printable(false)
