@@ -19,7 +19,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('Home', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
     ]);
@@ -38,7 +38,7 @@ Route::middleware('auth')->group(function () {
 // Organizer Routes
 Route::prefix('/organizers')->name('organizers.')->group(function () {
     Route::middleware('guest:organizer')->group(function () {
-        Route::get('/register', [OrganizerController::class, 'register']);
+        Route::get('/register', [OrganizerController::class, 'register'])->name('register');
         Route::get('/login', [OrganizerController::class, 'login'])->name('login');
         Route::post('/register', [OrganizerController::class, 'signup']);
         Route::post('/login', [OrganizerController::class, 'authenticate']);
@@ -48,7 +48,7 @@ Route::prefix('/organizers')->name('organizers.')->group(function () {
         Route::post('/logout', [OrganizerController::class, 'logout']);
 
         Route::middleware('verified')->group(function () {
-            Route::get('/', [OrganizerController::class, 'index']);
+            Route::get('/', [OrganizerController::class, 'index'])->name('dashboard');
         });
 
         Route::get('/email/verify', [EmailVerificationController::class, 'verifyEmail'])->name('verification.notice');
