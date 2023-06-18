@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -51,5 +53,13 @@ class Event extends Model
     public function tickets(): HasManyThrough
     {
         return $this->hasManyThrough(Ticket::class, SubEvent::class);
+    }
+
+    public function scopeOngoing(): Builder
+    {
+        $currentDate = Carbon::now();
+
+        return $this->whereDate('event_start', '<=', $currentDate)
+            ->whereDate('event_end', '>=', $currentDate);
     }
 }

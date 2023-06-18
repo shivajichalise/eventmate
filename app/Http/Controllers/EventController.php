@@ -367,4 +367,10 @@ class EventController extends Controller
         $event->delete();
         return redirect()->back()->with('success', 'Event is deleted successfully.');
     }
+
+    // Event methods for user
+    public function view(Event $event)
+    {
+        return $event;
+    }
 }
