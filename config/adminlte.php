@@ -547,6 +547,16 @@ return [
 
             ],
         ],
+        'PlaceToAddress' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '/js/placeToAddress.js',
+                ],
+            ],
+        ],
     ],
 
     /*

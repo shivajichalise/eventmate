@@ -55,6 +55,11 @@ class Event extends Model
         return $this->hasManyThrough(Ticket::class, SubEvent::class);
     }
 
+    public function venue(): HasOne
+    {
+        return $this->hasOne(Venue::class);
+    }
+
     public function scopeOngoing(): Builder
     {
         $currentDate = Carbon::now();

@@ -13,6 +13,7 @@ use App\Models\Event;
 use App\Models\SubEvent;
 use App\Models\Support;
 use App\Models\Ticket;
+use App\Models\Venue;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -144,13 +145,27 @@ class EventController extends Controller
     {
         $fields = $request->all();
 
+        $venueFields = $request->only([
+            'address',
+            'country',
+            'state',
+            'city',
+            'lat',
+            'lng',
+        ]);
+
         $sessionData = Session::get('event', []);
 
         if(empty($sessionData)) {
             $event = Event::create($fields);
+            $venueFields['event_id'] = $event->id;
+            Venue::create($venueFields);
         } else {
-            $event = Event::find(12);
+            $event = Event::find($sessionData['general']->id);
             $event->update($fields);
+
+            $venue = Venue::where(['event_id' => $sessionData['general']->id])->first();
+            $venue->update($venueFields);
         }
 
         $this->createEventSession('general', $event);
@@ -252,9 +267,8 @@ class EventController extends Controller
         $isEventInSession = Session::get('event', []);
 
         if(!empty($isEventInSession) && $isEventInSession['flag'] == 'create') {
-            $discardLink = '<a href="{{ route(\'events.discard\') }}"> Discard </a>';
             return redirect()->route('events.form', ['step' => 'general'])
-                ->with('info', 'You have unfinished event creation process. Please either complete it or discard it to continue. '. $discardLink);
+                ->with('info', 'You have unfinished event creation process. Please either complete it or discard it to continue.');
         }
 
         $this->createEventSession('general', $event, 'edit');
@@ -355,6 +369,10 @@ class EventController extends Controller
      */
     public function discard()
     {
+        $sessionData = Session::get('event', []);
+
+        $event = Event::find($sessionData['general']->id);
+        $event->delete();
         $this->removeFromSession('event');
         return redirect()->route('events.index')->with('success', 'Event discarded successfully.');
     }

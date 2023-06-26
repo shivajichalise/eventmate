@@ -35,6 +35,25 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label for="address">Venue: <span class="text-danger">*</span></label>
+                <input type="text" class="form-control @error('venue') is-invalid @enderror" name="venue" placeholder="Venue" id="searchTextField" value="{{ old('venue') ?? ($general['venue']->address ?? '') }}" />
+                <input type="hidden" id="country" name="country" value="{{ old('country') ?? ($general['venue']->country ?? '') }}" />
+                <input type="hidden" id="city" name="city" value="{{ old('city') ?? ($general['venue']->city ?? '') }}" />
+                <input type="hidden" id="state" name="state" value="{{ old('state') ?? ($general['venue']->state ?? '') }}" />
+                <input type="hidden" id="lat" name="lat" value="{{ old('lat') ?? ($general['venue']->lat ?? '') }}" />
+                <input type="hidden" id="lng" name="lng" value="{{ old('lng') ?? ($general['venue']->lng ?? '') }}" />
+                @error('venue')
+                <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <div id="map-canvas" class="col-lg-12">
+                </div>
+            </div>
+
+
             <div class="row">
 
                 <div class="col-6">
@@ -107,8 +126,17 @@
     </div>
 
     <div class="card">
-        <div class="card-body" align="right">
-            <input type="submit" class="btn btn-primary btn-md " id="submit" value="Save & Continue" />
+        <div class="row">
+            <div class="col-6">
+                <div class="card-body" align="left">
+                    <a href="{{ route('events.discard') }}" class="btn btn-secondary btn-md"> Discard </a>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card-body" align="right">
+                    <input type="submit" class="btn btn-primary btn-md" id="submit" value="Save & Continue" />
+                </div>
+            </div>
         </div>
     </div>
 
@@ -116,4 +144,53 @@
 
 @stop
 
+@section('js')
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhq4J5no2hsLTmXC7L_JBnoHDp0l_rrbE&libraries=places&callback=initAutocomplete" async defer></script>
+<script>
+let autocomplete;
+
+function initAutocomplete() {
+    autocomplete = new google.maps.places.Autocomplete(document.getElementById('searchTextField'))
+    autocomplete.addListener('place_changed', onPlaceChanged, {
+        passive: true
+    })
+}
+
+function onPlaceChanged() {
+    var place = autocomplete.getPlace()
+    if (!place.geometry || !place.geometry.location) {
+        document.getElementById('searchTextField').addClass('is-invalid')
+        return; // user did not select a prediction; reset input field
+    } else {
+        $('#map-canvas').show();
+        $('#map-canvas').css("height", "200px");
+
+        var address = placeToAddress(place);
+        document.getElementById('city').value = address.City.long_name;
+        document.getElementById('country').value = address.Country.long_name;
+        document.getElementById('state').value = address.State.long_name;
+        document.getElementById('lat').value = place.geometry.location.lat();
+        document.getElementById('lng').value = place.geometry.location.lng();
+        document.getElementById('map-canvas').style.display = "block";
+
+        var latlng = new google.maps.LatLng(place.geometry.location.lat(), place.geometry.location.lng());
+
+        var map = new google.maps.Map(document.getElementById('map-canvas'), {
+            center: latlng,
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+        var marker = new google.maps.Marker({
+            position: latlng,
+            map: map,
+            title: 'Set lat/lon values for this property',
+            draggable: true
+        });
+    }
+}
+</script>
+@endsection
+
 @section('plugins.TempusDominusBs4', true)
+@section('plugins.PlaceToAddress', true)
