@@ -75,7 +75,7 @@ export default function Home({ auth, events }) {
             </div>
 
             <div className="hero min-h-fit flex items-center justify-center">
-                <div className="bg-cover bg-center w-4/5 h-3/5 rounded-lg shadow-xl">
+                <div className="bg-cover bg-center w-11/12 rounded-lg shadow-xl">
                     <img
                         src="/images/banner.jpg"
                         alt="Banner"
@@ -86,55 +86,59 @@ export default function Home({ auth, events }) {
             </div>
 
             <div className="flex flex-col items-center justify-center">
-                <div className="w-4/5">
+                <div className="w-11/12">
                     <h1 className="text-4xl font-bold my-5">Events Calendar</h1>
 
                     {events.map((event) => (
                         <div key={event.id}>
-                            <h1 className="text-2xl font-bold my-5">
-                                {event.name}
+                            <h1 className="flex items-center justify-between mb-3">
+                                <span className="border-b-2 border-gray-300 w-full"></span>
+                                <span className="mx-4 text-xl font-bold w-max whitespace-nowrap">
+                                    {event.name}
+                                </span>
+                                <span className="border-b-2 border-gray-300 w-full"></span>
                             </h1>
+
                             {event.sub_events.map((sub_event) => (
                                 <div
-                                    className="card w-full card-side bg-base-200 shadow-xl mb-3"
+                                    className="card lg:card-side bg-gray-100 mb-3 max-h-96"
                                     key={sub_event.id}
                                 >
-                                    <div className="card-body">
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <div>
-                                                <h2 className="text-xl font-bold">
-                                                    {sub_event.name}
-                                                </h2>
-                                                <p>
-                                                    Event start date/time:{" "}
-                                                    {sub_event.event_start}
-                                                </p>
-                                                <p>
-                                                    Event end date/time:{" "}
-                                                    {sub_event.event_end}
-                                                </p>
-                                                <p>
-                                                    Address: {event.description}
-                                                </p>
-                                            </div>
-                                            <div className="flex flex-col items-end justify-between">
-                                                <div>
-                                                    <a
-                                                        href={route(
-                                                            "event.view",
-                                                            { id: event.id }
-                                                        )}
-                                                        className="btn btn-primary"
-                                                    >
-                                                        More Info
-                                                    </a>
-                                                </div>
-                                                <div>
-                                                    <button className="btn btn-primary">
-                                                        Buy Ticket
-                                                    </button>
-                                                </div>
-                                            </div>
+                                    <figure>
+                                        <img
+                                            src="/images/banner.jpg"
+                                            alt="Album"
+                                        />
+                                    </figure>
+                                    <div className="card-body min-w-max">
+                                        <h1 className="card-title text-3xl whitespace-nowrap">
+                                            {sub_event.name}
+                                        </h1>
+                                        <p className="font-bold text-md">
+                                            {sub_event.formatted_event_date}
+                                        </p>
+                                        <div>
+                                            <p>
+                                                Click the button to listen on
+                                                Spotiwhy app.
+                                            </p>
+                                        </div>
+                                        <p>
+                                            Click the button to listen on
+                                            Spotiwhy app.
+                                        </p>
+                                        <div className="card-actions justify-end">
+                                            <button className="btn btn-primary">
+                                                Listen
+                                            </button>
+                                            <a
+                                                href={route("event.view", {
+                                                    id: event.id,
+                                                })}
+                                                className="btn btn-primary"
+                                            >
+                                                More Info
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
