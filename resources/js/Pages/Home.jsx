@@ -1,4 +1,5 @@
 import { Link, Head } from "@inertiajs/react";
+import Footer from "../Components/Footer.jsx";
 
 export default function Home({ auth, events }) {
     return (
@@ -125,18 +126,22 @@ export default function Home({ auth, events }) {
                                             {event.venue.state},{" "}
                                             {event.venue.country}{" "}
                                         </p>
+                                        <p className="text-2xl font-bold">
+                                            {sub_event.ticket.currency}{" "}
+                                            {sub_event.ticket.price}
+                                        </p>
                                         <div className="card-actions justify-end">
-                                            <button className="btn btn-primary">
-                                                Listen
-                                            </button>
                                             <a
                                                 href={route("event.view", {
                                                     id: event.id,
                                                 })}
-                                                className="btn btn-primary"
+                                                className="btn btn-outline"
                                             >
                                                 More Info
                                             </a>
+                                            <button className="btn btn-primary">
+                                                Buy Ticket
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -145,6 +150,7 @@ export default function Home({ auth, events }) {
                     ))}
                 </div>
             </div>
+            <Footer />
         </>
     );
 }
