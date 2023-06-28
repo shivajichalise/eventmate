@@ -118,14 +118,12 @@ export default function Home({ auth, events }) {
                                             {sub_event.formatted_event_date}
                                         </p>
                                         <div>
-                                            <p>
-                                                Click the button to listen on
-                                                Spotiwhy app.
-                                            </p>
+                                            <p>{event.venue.address}</p>
                                         </div>
                                         <p>
-                                            Click the button to listen on
-                                            Spotiwhy app.
+                                            {event.venue.city},{" "}
+                                            {event.venue.state},{" "}
+                                            {event.venue.country}{" "}
                                         </p>
                                         <div className="card-actions justify-end">
                                             <button className="btn btn-primary">

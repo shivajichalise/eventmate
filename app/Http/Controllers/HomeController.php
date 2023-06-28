@@ -12,7 +12,7 @@ class HomeController extends Controller
 {
     public function index(): Response
     {
-        $events = Event::ongoing()->with('subEvents.ticket')->get();
+        $events = Event::ongoing()->with(['subEvents.ticket', 'venue'])->get();
         return Inertia::render('Home', [
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
