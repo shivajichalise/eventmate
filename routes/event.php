@@ -40,5 +40,5 @@ Route::middleware('auth:organizer')->group(function () {
 
 // Used by users
 Route::prefix('/event')->name('event.')->group(function () {
-    Route::get('/{event}', [EventController::class, 'view'])->name('view');
+    Route::get('/{subevent}', [EventController::class, 'view'])->name('view');
 });

@@ -16,7 +16,9 @@ use App\Models\Ticket;
 use App\Models\Venue;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+use Inertia\Inertia;
 use PragmaRX\Countries\Package\Countries;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -387,8 +389,19 @@ class EventController extends Controller
     }
 
     // Event methods for user
-    public function view(Event $event)
+    public function view(SubEvent $subevent)
     {
-        return $event;
+        $event = $subevent->event;
+        $venue = $event->venue;
+        $ticket = $subevent->ticket;
+        $support = $event->support;
+
+        return Inertia::render('Event/View', [
+            'event' => $event,
+            'sub_event' => $subevent,
+            'venue' => $venue,
+            'ticket' => $ticket,
+            'support' => $support
+        ]);
     }
 }
