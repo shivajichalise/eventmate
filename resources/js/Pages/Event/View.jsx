@@ -40,7 +40,12 @@ export default function View({
                         {ticket.currency} {ticket.price}
                     </p>
                     <div className="card-actions justify-end">
-                        <button className="btn btn-primary">Buy Ticket</button>
+                        <a
+                            href={route("tickets.buy", { id: ticket.id })}
+                            className="btn btn-primary"
+                        >
+                            Buy Ticket
+                        </a>
                     </div>
                 </div>
             </div>

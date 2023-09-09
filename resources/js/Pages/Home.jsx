@@ -65,9 +65,14 @@ export default function Home({ auth, events }) {
                                             >
                                                 More Info
                                             </a>
-                                            <button className="btn btn-primary">
+                                            <a
+                                                href={route("tickets.buy", {
+                                                    id: sub_event.ticket.id,
+                                                })}
+                                                className="btn btn-primary"
+                                            >
                                                 Buy Ticket
-                                            </button>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

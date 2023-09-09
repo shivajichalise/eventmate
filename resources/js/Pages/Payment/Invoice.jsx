@@ -2,7 +2,14 @@ import { Link, Head } from "@inertiajs/react";
 import Footer from "../../Components/Footer.jsx";
 import NavBar from "../../Components/NavBar.jsx";
 
-export default function Invoice({ auth }) {
+export default function Invoice({
+    auth,
+    user,
+    event,
+    sub_event,
+    ticket,
+    amounts,
+}) {
     return (
         <>
             <Head title="Invoice" />
@@ -11,8 +18,8 @@ export default function Invoice({ auth }) {
 
             <div className="max-w-5xl mx-auto py-16 bg-white">
                 <article className="overflow-hidden">
-                    <div className="bg-gray-100 rounded-b-md">
-                        <div className="p-9">
+                    <div className="bg-gray-100 rounded-t-md">
+                        <div className="flex justify-between p-9">
                             <div className="space-y-6 text-slate-700">
                                 <svg
                                     className="object-cover h-12"
@@ -21,13 +28,31 @@ export default function Invoice({ auth }) {
                                 >
                                     <path
                                         d="M3.938 6.497a6.958 6.958 0 0 0-.702 1.694L0 9v2l3.236.809c.16.6.398 1.169.702 1.694l-1.716 2.861 1.414 1.414 2.86-1.716a6.958 6.958 0 0 0 1.695.702L9 20h2l.809-3.236a6.96 6.96 0 0 0 1.694-.702l2.861 1.716 1.414-1.414-1.716-2.86a6.958 6.958 0 0 0 .702-1.695L20 11V9l-3.236-.809a6.958 6.958 0 0 0-.702-1.694l1.716-2.861-1.414-1.414-2.86 1.716a6.958 6.958 0 0 0-1.695-.702L11 0H9l-.809 3.236a6.96 6.96 0 0 0-1.694.702L3.636 2.222 2.222 3.636l1.716 2.86zM10 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
-                                        fill-rule="evenodd"
+                                        fillRule="evenodd"
                                     ></path>
                                 </svg>
 
                                 <p className="text-xl font-extrabold tracking-tight uppercase font-body">
                                     EventMate
                                 </p>
+                            </div>
+                            <div>
+                                <button className="btn btn-square btn-xs btn-primary">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth={3}
+                                        stroke="currentColor"
+                                        className="w-4 h-4"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                                        />
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                         <div className="p-9">
@@ -46,22 +71,29 @@ export default function Invoice({ auth }) {
                                         <p className="text-sm font-normal text-slate-700">
                                             Billed To
                                         </p>
-                                        <p>The Boring Company</p>
-                                        <p>Tesla Street 007</p>
-                                        <p>Frisco</p>
-                                        <p>CA 0000</p>
+                                        <p>{user.name}</p>
+                                        <p>Bhayerthan, Chorepatan</p>
+                                        <p>Pokhara</p>
+                                        <p>33700</p>
                                     </div>
                                     <div className="text-sm font-light text-slate-500">
                                         <p className="text-sm font-normal text-slate-700">
                                             Invoice Number
                                         </p>
-                                        <p>000000</p>
+                                        <p>{user.id}-20230713-0001</p>
 
                                         <p className="mt-2 text-sm font-normal text-slate-700">
                                             Date of Issue
                                         </p>
-                                        <p>00.00.00</p>
+                                        <p>
+                                            {
+                                                new Date()
+                                                    .toISOString()
+                                                    .split("T")[0]
+                                            }
+                                        </p>
                                     </div>
+                                    {/*
                                     <div className="text-sm font-light text-slate-500">
                                         <p className="text-sm font-normal text-slate-700">
                                             Terms
@@ -73,6 +105,7 @@ export default function Invoice({ auth }) {
                                         </p>
                                         <p>00.00.00</p>
                                     </div>
+                                    */}
                                 </div>
                             </div>
                         </div>
@@ -112,39 +145,21 @@ export default function Invoice({ auth }) {
                                         <tr className="border-b border-slate-200">
                                             <td className="py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0">
                                                 <div className="font-medium text-slate-700">
-                                                    Tesla Truck
+                                                    {sub_event.name}
                                                 </div>
                                                 <div className="mt-0.5 text-slate-500 sm:hidden">
-                                                    1 unit at $0.00
+                                                    1 unit at {ticket.currency}
+                                                    {ticket.price}
                                                 </div>
                                             </td>
                                             <td className="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
-                                                48
+                                                1
                                             </td>
                                             <td className="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
-                                                $0.00
+                                                {ticket.currency} {ticket.price}
                                             </td>
                                             <td className="py-4 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
-                                                $0.00
-                                            </td>
-                                        </tr>
-                                        <tr className="border-b border-slate-200">
-                                            <td className="py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0">
-                                                <div className="font-medium text-slate-700">
-                                                    Tesla Charging Station
-                                                </div>
-                                                <div className="mt-0.5 text-slate-500 sm:hidden">
-                                                    1 unit at $75.00
-                                                </div>
-                                            </td>
-                                            <td className="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
-                                                4
-                                            </td>
-                                            <td className="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
-                                                $0.00
-                                            </td>
-                                            <td className="py-4 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
-                                                $0.00
+                                                {ticket.currency} {ticket.price}
                                             </td>
                                         </tr>
                                     </tbody>
@@ -152,7 +167,7 @@ export default function Invoice({ auth }) {
                                         <tr>
                                             <th
                                                 scope="row"
-                                                colspan="3"
+                                                colSpan="3"
                                                 className="hidden pt-6 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0"
                                             >
                                                 Subtotal
@@ -164,13 +179,14 @@ export default function Invoice({ auth }) {
                                                 Subtotal
                                             </th>
                                             <td className="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
-                                                $0.00
+                                                {ticket.currency}{" "}
+                                                {amounts["subTotal"]}
                                             </td>
                                         </tr>
                                         <tr>
                                             <th
                                                 scope="row"
-                                                colspan="3"
+                                                colSpan="3"
                                                 className="hidden pt-6 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0"
                                             >
                                                 Discount
@@ -182,13 +198,13 @@ export default function Invoice({ auth }) {
                                                 Discount
                                             </th>
                                             <td className="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
-                                                $0.00
+                                                {ticket.currency} 0.00
                                             </td>
                                         </tr>
                                         <tr>
                                             <th
                                                 scope="row"
-                                                colspan="3"
+                                                colSpan="3"
                                                 className="hidden pt-4 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0"
                                             >
                                                 Tax
@@ -200,13 +216,14 @@ export default function Invoice({ auth }) {
                                                 Tax
                                             </th>
                                             <td className="pt-4 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
-                                                $0.00
+                                                {ticket.currency}{" "}
+                                                {amounts["tax"]}
                                             </td>
                                         </tr>
                                         <tr>
                                             <th
                                                 scope="row"
-                                                colspan="3"
+                                                colSpan="3"
                                                 className="hidden pt-4 pl-6 pr-3 text-sm font-normal text-right text-slate-700 sm:table-cell md:pl-0"
                                             >
                                                 Total
@@ -218,7 +235,8 @@ export default function Invoice({ auth }) {
                                                 Total
                                             </th>
                                             <td className="pt-4 pl-3 pr-4 text-sm font-normal text-right text-slate-700 sm:pr-6 md:pr-0">
-                                                $0.00
+                                                {ticket.currency}{" "}
+                                                {amounts["total"]}
                                             </td>
                                         </tr>
                                     </tfoot>
@@ -251,6 +269,19 @@ export default function Invoice({ auth }) {
                         </div>
                     </div>
                 </article>
+
+                <div class="bg-gray-200 p-4">
+                    <h2 class="text-lg font-semibold">Payment Methods</h2>
+                    <div class="flex mt-2">
+                        <div class="mr-4">
+                            <img
+                                src="/images/khalti_logo.jpg"
+                                alt="Khalti"
+                                class="w-12 h-12"
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <Footer />
