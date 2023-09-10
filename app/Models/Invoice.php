@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Invoice extends Model
 {
@@ -11,6 +12,7 @@ class Invoice extends Model
 
     protected $fillable = [
         'user_id',
+        'ticket_id',
         'number',
         'number',
         'issued_date',
@@ -40,7 +42,12 @@ class Invoice extends Model
         $increment = static::query()->count() + 1;
         $number = str_pad($increment, 5, '0', STR_PAD_LEFT);
 
-        return $prefix . $date . $number;
+        return $prefix . '-' . $date . '-' . $number;
+    }
+
+    public function payment(): HasOne
+    {
+        return $this->hasOne(Payment::class);
     }
 
 }

@@ -11,8 +11,7 @@ class Payment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'ticket_id',
+        'invoice_id',
         'amount',
         'paid',
         'status',

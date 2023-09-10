@@ -11,7 +11,6 @@
 
 <form action="{{route('events.general.save')}}" method="post" name="">
     @csrf
-    @method('PUT')
 
     <div class="card">
         <div class="card-body">

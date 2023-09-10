@@ -2,6 +2,7 @@ import { Link, Head } from "@inertiajs/react";
 import Footer from "../../Components/Footer.jsx";
 import NavBar from "../../Components/NavBar.jsx";
 import Hero from "../../Components/Hero.jsx";
+import FlashMessage from "../../Components/FlashMessage";
 
 export default function View({
     auth,
@@ -10,12 +11,17 @@ export default function View({
     venue,
     ticket,
     support,
+    message,
 }) {
     return (
         <>
             <Head title="Welcome" />
 
             <NavBar auth={auth} />
+
+            {message && (
+                <FlashMessage message={message.message} type={message.type} />
+            )}
 
             <Hero img="/images/banner.jpg" />
 

@@ -166,8 +166,7 @@ class EventController extends Controller
             $event = Event::find($sessionData['general']->id);
             $event->update($fields);
 
-            $venue = Venue::where(['event_id' => $sessionData['general']->id])->first();
-            $venue->update($venueFields);
+            $venue = Venue::updateOrCreate(['event_id' => $sessionData['general']->id], $venueFields);
         }
 
         $this->createEventSession('general', $event);

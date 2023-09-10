@@ -13,14 +13,17 @@ return new class () extends Migration {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('ticket_id')->constrained('tickets')->onDelete('cascade');
             $table->string('number')->unique()->nullable();
-            $table->date('issued_date');
+            $table->timestamp('issued_date')->useCurrent();
             $table->date('due_date')->nullable();
             $table->decimal('amount', 10, 2);
-            $table->decimal('discount', 10, 2)->nullable();
             $table->decimal('tax', 10, 2)->nullable();
+            $table->decimal('service_charge', 10, 2)->nullable()->default(0.00);
+            $table->decimal('delivery_charge', 10, 2)->nullable()->default(0.00);
+            $table->decimal('discount', 10, 2)->nullable()->default(0.00);
             $table->decimal('total_amount', 10, 2);
-            $table->string('status');
+            $table->string('status')->default('unpaid');
             $table->timestamps();
         });
     }

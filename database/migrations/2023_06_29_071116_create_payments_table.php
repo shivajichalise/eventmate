@@ -12,11 +12,10 @@ return new class () extends Migration {
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('ticket_id')->constrained('tickets')->onDelete('cascade');
+            $table->foreignId('invoice_id')->constrained('invoices')->onDelete('cascade');
             $table->integer('amount');
-            $table->boolean('paid');
-            $table->string('status');
+            $table->boolean('paid')->default(false);
+            $table->string('status')->default('unverified');
             $table->timestamps();
         });
     }

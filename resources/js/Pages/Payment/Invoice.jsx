@@ -2,6 +2,15 @@ import { Link, Head } from "@inertiajs/react";
 import Footer from "../../Components/Footer.jsx";
 import NavBar from "../../Components/NavBar.jsx";
 
+const todayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const day = String(today.getDate()).padStart(2, "0");
+
+    return `${year}${month}${day}`;
+};
+
 export default function Invoice({
     auth,
     user,
@@ -9,6 +18,10 @@ export default function Invoice({
     sub_event,
     ticket,
     amounts,
+    invoice,
+    pay_url,
+    success_url,
+    failure_url,
 }) {
     return (
         <>
@@ -80,7 +93,10 @@ export default function Invoice({
                                         <p className="text-sm font-normal text-slate-700">
                                             Invoice Number
                                         </p>
-                                        <p>{user.id}-20230713-0001</p>
+                                        <p>
+                                            INV-
+                                            {todayDate()}- 0001
+                                        </p>
 
                                         <p className="mt-2 text-sm font-normal text-slate-700">
                                             Date of Issue
@@ -187,24 +203,6 @@ export default function Invoice({
                                             <th
                                                 scope="row"
                                                 colSpan="3"
-                                                className="hidden pt-6 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0"
-                                            >
-                                                Discount
-                                            </th>
-                                            <th
-                                                scope="row"
-                                                className="pt-6 pl-4 pr-3 text-sm font-light text-left text-slate-500 sm:hidden"
-                                            >
-                                                Discount
-                                            </th>
-                                            <td className="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
-                                                {ticket.currency} 0.00
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th
-                                                scope="row"
-                                                colSpan="3"
                                                 className="hidden pt-4 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0"
                                             >
                                                 Tax
@@ -218,6 +216,62 @@ export default function Invoice({
                                             <td className="pt-4 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
                                                 {ticket.currency}{" "}
                                                 {amounts["tax"]}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th
+                                                scope="row"
+                                                colSpan="3"
+                                                className="hidden pt-6 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0"
+                                            >
+                                                Service charge
+                                            </th>
+                                            <th
+                                                scope="row"
+                                                className="pt-6 pl-4 pr-3 text-sm font-light text-left text-slate-500 sm:hidden"
+                                            >
+                                                Service charge
+                                            </th>
+                                            <td className="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
+                                                {ticket.currency}{" "}
+                                                {amounts["service_charge"]}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th
+                                                scope="row"
+                                                colSpan="3"
+                                                className="hidden pt-6 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0"
+                                            >
+                                                Delivery charge
+                                            </th>
+                                            <th
+                                                scope="row"
+                                                className="pt-6 pl-4 pr-3 text-sm font-light text-left text-slate-500 sm:hidden"
+                                            >
+                                                Delivery charge
+                                            </th>
+                                            <td className="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
+                                                {ticket.currency}{" "}
+                                                {amounts["delivery_charge"]}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th
+                                                scope="row"
+                                                colSpan="3"
+                                                className="hidden pt-6 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0"
+                                            >
+                                                Discount
+                                            </th>
+                                            <th
+                                                scope="row"
+                                                className="pt-6 pl-4 pr-3 text-sm font-light text-left text-slate-500 sm:hidden"
+                                            >
+                                                Discount
+                                            </th>
+                                            <td className="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
+                                                {ticket.currency} 0.00
                                             </td>
                                         </tr>
                                         <tr>
@@ -270,15 +324,64 @@ export default function Invoice({
                     </div>
                 </article>
 
-                <div class="bg-gray-200 p-4">
-                    <h2 class="text-lg font-semibold">Payment Methods</h2>
-                    <div class="flex mt-2">
-                        <div class="mr-4">
-                            <img
-                                src="/images/khalti_logo.jpg"
-                                alt="Khalti"
-                                class="w-12 h-12"
-                            />
+                <div className="bg-gray-200 p-4">
+                    <h2 className="text-lg font-semibold">Payment Methods</h2>
+                    <div className="flex mt-2">
+                        <div className="mr-4">
+                            <form action={pay_url} method="POST">
+                                <input
+                                    value={amounts["total"]}
+                                    name="tAmt"
+                                    type="hidden"
+                                />
+                                <input
+                                    value={amounts["subTotal"]}
+                                    name="amt"
+                                    type="hidden"
+                                />
+                                <input
+                                    value={amounts["tax"]}
+                                    name="txAmt"
+                                    type="hidden"
+                                />
+                                <input
+                                    value={amounts["service_charge"]}
+                                    name="psc"
+                                    type="hidden"
+                                />
+                                <input
+                                    value={amounts["delivery_charge"]}
+                                    name="pdc"
+                                    type="hidden"
+                                />
+                                <input
+                                    value="EPAYTEST"
+                                    name="scd"
+                                    type="hidden"
+                                />
+                                <input
+                                    value={ticket.uniqueId}
+                                    name="pid"
+                                    type="hidden"
+                                />
+                                <input
+                                    value={success_url}
+                                    type="hidden"
+                                    name="su"
+                                />
+                                <input
+                                    value={failure_url}
+                                    type="hidden"
+                                    name="fu"
+                                />
+                                <button type="submit" className="">
+                                    <img
+                                        src="/images/esewa_logo.png"
+                                        alt="Esewa"
+                                        className="w-12 h-12 mr-2 inline-block"
+                                    />
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
