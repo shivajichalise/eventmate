@@ -12,6 +12,7 @@ export default function View({
     ticket,
     support,
     message,
+    hasPaid,
 }) {
     const { flash } = usePage().props;
 
@@ -54,6 +55,7 @@ export default function View({
                         <a
                             href={route("tickets.buy", { id: ticket.id })}
                             className="btn btn-primary"
+                            disabled={hasPaid}
                         >
                             Buy Ticket
                         </a>

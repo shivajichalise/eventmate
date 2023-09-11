@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Ticket extends Model
 {
@@ -22,5 +23,10 @@ class Ticket extends Model
     public function subEvent(): BelongsTo
     {
         return $this->belongsTo(SubEvent::class);
+    }
+
+    public function payments(): HasManyThrough
+    {
+        return $this->hasManyThrough(Payment::class, Invoice::class);
     }
 }

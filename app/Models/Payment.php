@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Znck\Eloquent\Relations\BelongsToThrough;
 
 class Payment extends Model
 {
     use HasFactory;
+    use \Znck\Eloquent\Traits\BelongsToThrough;
 
     protected $fillable = [
         'invoice_id',
@@ -17,8 +19,18 @@ class Payment extends Model
         'status',
     ];
 
-    public function user(): BelongsTo
+    public function user(): BelongsToThrough
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToThrough(User::class, Invoice::class);
+    }
+
+    public function invoice(): BelongsTo
+    {
+        return $this->belongsTo(Invoice::class);
+    }
+
+    public function ticket(): BelongsToThrough
+    {
+        return $this->belongsToThrough(Ticket::class, Invoice::class);
     }
 }

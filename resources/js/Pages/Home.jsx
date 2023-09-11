@@ -3,7 +3,11 @@ import Footer from "../Components/Footer.jsx";
 import NavBar from "../Components/NavBar.jsx";
 import Hero from "../Components/Hero.jsx";
 
-export default function Home({ auth, events }) {
+export default function Home({ auth, events, payments }) {
+    const hasMadePayment = (ticket) => {
+        return payments.some((t) => t.id === ticket.id);
+    };
+
     return (
         <>
             <Head title="Welcome" />
@@ -70,6 +74,9 @@ export default function Home({ auth, events }) {
                                                     id: sub_event.ticket.id,
                                                 })}
                                                 className="btn btn-primary"
+                                                disabled={hasMadePayment(
+                                                    sub_event.ticket
+                                                )}
                                             >
                                                 Buy Ticket
                                             </a>

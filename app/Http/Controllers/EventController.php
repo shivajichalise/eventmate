@@ -16,6 +16,7 @@ use App\Models\Ticket;
 use App\Models\Venue;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
@@ -400,7 +401,8 @@ class EventController extends Controller
             'sub_event' => $subevent,
             'venue' => $venue,
             'ticket' => $ticket,
-            'support' => $support
+            'support' => $support,
+            'hasPaid' => Auth::user()->hasPaidForTicket($ticket)
         ]);
     }
 }
