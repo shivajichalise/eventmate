@@ -1,4 +1,4 @@
-import { Link, Head } from "@inertiajs/react";
+import { Link, Head, usePage } from "@inertiajs/react";
 import Footer from "../../Components/Footer.jsx";
 import NavBar from "../../Components/NavBar.jsx";
 import Hero from "../../Components/Hero.jsx";
@@ -13,14 +13,19 @@ export default function View({
     support,
     message,
 }) {
+    const { flash } = usePage().props;
+
     return (
         <>
             <Head title="Welcome" />
 
             <NavBar auth={auth} />
 
-            {message && (
-                <FlashMessage message={message.message} type={message.type} />
+            {flash.message && (
+                <FlashMessage
+                    message={flash.message.message}
+                    type={flash.message.type}
+                />
             )}
 
             <Hero img="/images/banner.jpg" />

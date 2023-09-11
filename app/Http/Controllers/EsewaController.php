@@ -106,12 +106,18 @@ class EsewaController extends Controller
 
             } else {
                 Session::regenerate();
-                return redirect(route('event.view', ['subevent' => $ticket['ticket']->subEvent->id]))->with('warn', 'Payment failed!');
+                return redirect(route('event.view', ['subevent' => $ticket['ticket']->subEvent->id]))->with(
+                    'message',
+                    ['type' => 'error', 'message' => 'Payment failed!'],
+                );
             }
 
         } else {
             Session::regenerate();
-            return redirect(route('event.view', ['subevent' => $ticket['ticket']->subEvent->id, 'warn' => 'Payment failed!']))->with('warn', 'Payment failed!');
+            return redirect()->route('event.view', ['subevent' => $ticket['ticket']->subEvent->id])->with(
+                'message',
+                ['type' => 'error', 'message' => 'Payment failed!'],
+            );
         }
 
     }

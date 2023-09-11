@@ -28,7 +28,7 @@ const FlashMessage = ({ message, type, onClose }) => {
 
     return (
         <div
-            className={`max-w-7xl mx-auto sm:px-6 lg:px-8 rounded-md p-4 border-l-4 ${alertClasses[type]} border-r-4`}
+            className={`max-w-7xl mx-auto my-3 sm:px-6 lg:px-8 rounded-md p-4 border-l-4 ${alertClasses[type]} border-r-4`}
         >
             <div className="flex">
                 <div className="py-1">
