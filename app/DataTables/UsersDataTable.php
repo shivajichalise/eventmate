@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Event;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\View;
 use Yajra\DataTables\EloquentDataTable;
@@ -13,7 +13,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class EventsDataTable extends DataTable
+class UsersDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -22,20 +22,12 @@ class EventsDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
-        $showRoute = 'events.show';
-        $editRoute = 'events.edit';
-        $destroyRoute = 'events.destroy';
-        $model = 'event';
+        $showRoute = 'users.show';
+        $editRoute = 'users.edit';
+        $destroyRoute = 'users.destroy';
+        $model = 'user';
 
         return (new EloquentDataTable($query))
-            ->addColumn('status', function ($row) {
-                if ($row->status) {
-                    $status = '<span class="badge badge-success"><i class="fas fa-fw fa-check-circle"></i> Verified </span>';
-                } else {
-                    $status = '<span class="badge badge-info"><i class="fas fa-fw fas fa-ellipsis-h"></i> Pending </span>';
-                }
-                return $status;
-            })
             ->addColumn('action', function ($row) use ($model, $showRoute, $editRoute, $destroyRoute) {
                 return View::make('utils.datatable_action_buttons', [
                     'id' => $row['id'],
@@ -47,12 +39,16 @@ class EventsDataTable extends DataTable
             })
             ->rawColumns(['status', 'action'])
             ->setRowId('id');
+        return (new EloquentDataTable($query))
+            // ->addColumn('action', 'users.action')
+            ->addColumn('action', 'action')
+            ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Event $model): QueryBuilder
+    public function query(User $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -63,20 +59,18 @@ class EventsDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('events-table')
-            ->columns($this->getColumns())
-            ->minifiedAjax()
-            // ->dom('Bfrtip')
-            ->orderBy(1)
-            ->selectStyleSingle()
-            ->buttons([
-                Button::make('excel'),
-                Button::make('csv'),
-                Button::make('pdf'),
-                Button::make('print'),
-                // Button::make('reset'),
-                // Button::make('reload')
-            ]);
+                    ->setTableId('users-table')
+                    ->columns($this->getColumns())
+                    ->minifiedAjax()
+                    // ->dom('Bfrtip')
+                    ->orderBy(1)
+                    ->selectStyleSingle()
+                    ->buttons([
+                        Button::make('excel'),
+                        Button::make('csv'),
+                        Button::make('pdf'),
+                        Button::make('print'),
+                    ]);
     }
 
     /**
@@ -87,17 +81,14 @@ class EventsDataTable extends DataTable
         return [
             Column::make('id'),
             Column::make('name'),
-            Column::make('event_start'),
-            Column::make('event_end'),
-            Column::make('registration_start'),
-            Column::make('registration_end'),
-            Column::computed('status')
-            ->width(60),
+            Column::make('email'),
+            // Column::make('created_at'),
+            // Column::make('updated_at'),
             Column::computed('action')
-            ->exportable(false)
-            ->printable(false)
-            ->width(60)
-            ->addClass('text-center')
+                  ->exportable(false)
+                  ->printable(false)
+                  ->width(60)
+                  ->addClass('text-center'),
         ];
     }
 
@@ -106,6 +97,6 @@ class EventsDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Events_' . date('YmdHis');
+        return 'Users_' . date('YmdHis');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\PaymentsDataTable;
 use App\Models\Invoice;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
@@ -12,6 +13,14 @@ use Inertia\Response;
 
 class PaymentController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(PaymentsDataTable $dataTable)
+    {
+        return $dataTable->render('payments.index');
+    }
+
     public function generateUniqueId(string $ticketId): string
     {
         // Get the current timestamp in microseconds (to ensure uniqueness)

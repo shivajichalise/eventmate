@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Esewa\EsewaPayRequest;
+use App\Models\Invoice;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -97,6 +98,8 @@ class EsewaController extends Controller
                         'status' => 'verified'
                     ]
                 );
+
+                Invoice::find($ticket['invoice']->id)->update(['status' => 'paid']);
 
                 Session::regenerate();
 

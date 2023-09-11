@@ -23,3 +23,4 @@ require __DIR__.'/event.php';
 require __DIR__.'/ticket.php';
 require __DIR__.'/esewa.php';
 require __DIR__.'/organizer.php';
+require __DIR__.'/payment.php';

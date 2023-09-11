@@ -9,7 +9,7 @@
             <form action="{{ route($destroyRoute, $id) }}" method="POST">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete this event?')"><i class="fa-sharp fa-solid fa-trash"></i></button>
+                <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete this {{$model}}?')"><i class="fa-sharp fa-solid fa-trash"></i></button>
             </form>
         </div>
 </div>

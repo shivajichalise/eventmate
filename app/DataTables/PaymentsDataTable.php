@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Event;
+use App\Models\Payment;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\View;
 use Yajra\DataTables\EloquentDataTable;
@@ -13,7 +13,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class EventsDataTable extends DataTable
+class PaymentsDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -22,20 +22,12 @@ class EventsDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
-        $showRoute = 'events.show';
-        $editRoute = 'events.edit';
-        $destroyRoute = 'events.destroy';
-        $model = 'event';
+        $showRoute = 'payments.show';
+        $editRoute = 'payments.edit';
+        $destroyRoute = 'payments.destroy';
+        $model = 'payment';
 
         return (new EloquentDataTable($query))
-            ->addColumn('status', function ($row) {
-                if ($row->status) {
-                    $status = '<span class="badge badge-success"><i class="fas fa-fw fa-check-circle"></i> Verified </span>';
-                } else {
-                    $status = '<span class="badge badge-info"><i class="fas fa-fw fas fa-ellipsis-h"></i> Pending </span>';
-                }
-                return $status;
-            })
             ->addColumn('action', function ($row) use ($model, $showRoute, $editRoute, $destroyRoute) {
                 return View::make('utils.datatable_action_buttons', [
                     'id' => $row['id'],
@@ -45,16 +37,35 @@ class EventsDataTable extends DataTable
                     'destroyRoute' => $destroyRoute,
                 ])->render();
             })
-            ->rawColumns(['status', 'action'])
+            ->addColumn('user_name', function ($payment) {
+                return $payment->invoice->user->name;
+            })
+            ->addColumn('invoice_status', function ($payment) {
+                return $payment->invoice->status;
+            })
+            ->addColumn('paid_amount', function ($payment) {
+                return $payment->amount;
+            })
+            ->addColumn('payment_date', function ($payment) {
+                return $payment->created_at;
+            })
+        ->rawColumns(['status', 'action'])
+        ->setRowId('id');
+        return (new EloquentDataTable($query))
+            ->addColumn('action', 'action')
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Event $model): QueryBuilder
+    public function query(Payment $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()
+            ->join('invoices', 'payments.invoice_id', '=', 'invoices.id')
+            ->join('users', 'invoices.user_id', '=', 'users.id')
+            ->select(['payments.*']) // Select the columns you need from the payments table
+            ->with(['invoice.user']); // Eager load relationships to optimize queries
     }
 
     /**
@@ -63,10 +74,10 @@ class EventsDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('events-table')
+            ->setTableId('payments-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            // ->dom('Bfrtip')
+            //->dom('Bfrtip')
             ->orderBy(1)
             ->selectStyleSingle()
             ->buttons([
@@ -74,8 +85,6 @@ class EventsDataTable extends DataTable
                 Button::make('csv'),
                 Button::make('pdf'),
                 Button::make('print'),
-                // Button::make('reset'),
-                // Button::make('reload')
             ]);
     }
 
@@ -86,18 +95,16 @@ class EventsDataTable extends DataTable
     {
         return [
             Column::make('id'),
-            Column::make('name'),
-            Column::make('event_start'),
-            Column::make('event_end'),
-            Column::make('registration_start'),
-            Column::make('registration_end'),
-            Column::computed('status')
-            ->width(60),
+            Column::make('user_name')->title('User'), // Custom title
+            Column::make('invoice_status')->title('Invoice Status'), // Custom title
+            Column::make('paid_amount')->title('Amount'), // Custom title
+            Column::make('payment_date')->title('Payment Date'), // Custom title
+            Column::make('created_at'),
             Column::computed('action')
             ->exportable(false)
             ->printable(false)
             ->width(60)
-            ->addClass('text-center')
+            ->addClass('text-center'),
         ];
     }
 
@@ -106,6 +113,6 @@ class EventsDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Events_' . date('YmdHis');
+        return 'Payments_' . date('YmdHis');
     }
 }
