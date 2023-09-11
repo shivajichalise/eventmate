@@ -34,10 +34,7 @@ export default function NavBar({ auth }) {
                         </li>
                     </ul>
                 </div>
-                <a
-                    href={route("dashboard")}
-                    className="ml-4 normal-case text-xl"
-                >
+                <a href={route("home")} className="ml-4 normal-case text-xl">
                     EventMate
                 </a>
             </div>

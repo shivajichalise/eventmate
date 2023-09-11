@@ -5,7 +5,7 @@ import Hero from "../Components/Hero.jsx";
 
 export default function Home({ auth, events, payments }) {
     const hasMadePayment = (ticket) => {
-        return payments.some((t) => t.id === ticket.id);
+        if (payments !== null) return payments.some((t) => t.id === ticket.id);
     };
 
     return (

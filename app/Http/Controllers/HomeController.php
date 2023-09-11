@@ -13,7 +13,11 @@ class HomeController extends Controller
 {
     public function index(): Response
     {
-        $payments =  Auth::user()->ticketsWithPayments();
+        $payments = null;
+        if(Auth::check()) {
+            $payments =  Auth::user()->ticketsWithPayments();
+        }
+
         $events = Event::ongoing()->with(['subEvents.ticket', 'venue'])->get();
 
         return Inertia::render('Home', [
