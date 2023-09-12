@@ -1,7 +1,9 @@
+import { useState } from "react";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
+import SelectInput from "@/Components/SelectInput";
 import { Link, useForm, usePage } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
 
@@ -16,12 +18,39 @@ export default function UpdateProfileInformation({
         useForm({
             name: user.name,
             email: user.email,
+            gender: user.gender,
+            is_disabled: user.is_disabled,
         });
 
     const submit = (e) => {
         e.preventDefault();
 
         patch(route("profile.update"));
+    };
+
+    const genderOptions = [
+        { label: "Male", value: "Male" },
+        { label: "Female", value: "Female" },
+        { label: "Other", value: "Other" },
+    ];
+
+    const isDisabledOptions = [
+        { label: "No", value: 0 },
+        { label: "Yes", value: 1 },
+    ];
+
+    const [selectedGenderOption, setSelectedGenderOption] = useState(
+        genderOptions[0].value
+    );
+
+    const handleGenderOptionChange = (e) => {
+        setSelectedGenderOption(e.target.value);
+    };
+
+    const [isDisabled, setIsDisabled] = useState(isDisabledOptions[0].value);
+
+    const handleisDisabledOptionChange = (e) => {
+        setIsDisabled(e.target.value);
     };
 
     return (
@@ -91,6 +120,39 @@ export default function UpdateProfileInformation({
                         )}
                     </div>
                 )}
+
+                <div>
+                    <InputLabel htmlFor="gender" value="Gender" />
+
+                    <SelectInput
+                        id="gender"
+                        className="mt-1 block w-full"
+                        value={data.gender}
+                        onChange={(e) => setData("gender", e.target.value)}
+                        required
+                        options={genderOptions}
+                    />
+
+                    <InputError className="mt-2" message={errors.gender} />
+                </div>
+
+                <div>
+                    <InputLabel
+                        htmlFor="isDisabled"
+                        value="Are you disabled?"
+                    />
+
+                    <SelectInput
+                        id="isDisabled"
+                        className="mt-1 block w-full"
+                        value={data.isDisabled}
+                        onChange={(e) => setData("is_disabled", e.target.value)}
+                        required
+                        options={isDisabledOptions}
+                    />
+
+                    <InputError className="mt-2" message={errors.isDisabled} />
+                </div>
 
                 <div className="flex items-center gap-4">
                     <PrimaryButton disabled={processing}>Save</PrimaryButton>
