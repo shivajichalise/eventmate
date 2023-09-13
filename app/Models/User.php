@@ -10,12 +10,14 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -34,6 +36,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'country',
         'mobile_number',
         'emergency_number',
+        'profile_status',
+        'is_active'
     ];
 
     /**
@@ -55,6 +59,44 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            // Set the default value for 'profile_status'
+            $user->profile_status = json_encode(['profileInfo', 'addressInfo', 'contactInfo']);
+        });
+    }
+
+    public function isProfileCompleted(): bool
+    {
+        // Check if profile_status array is empty
+        return empty($this->profile_status);
+    }
+
+    /**
+     * Assign a role to the user if they have completed their profile.
+     *
+     * @param string $roleName
+     * @return bool Whether the role was assigned or not.
+     */
+    public function assignRoleIfProfileCompleted($roleName): bool
+    {
+        // Check if the user has completed their profile
+        if ($this->isProfileCompleted()) {
+            // Check if the user already has the role
+            if (!$this->hasRole($roleName)) {
+                // Assign the role to the user
+                $this->assignRole($roleName);
+
+                return true; // Role assigned successfully
+            }
+        }
+
+        return false; // Role not assigned
+    }
 
     public function payments(): HasManyThrough
     {

@@ -18,7 +18,7 @@ return new class () extends Migration {
             $table->string('state')->nullable()->after('address_line_2');
             $table->string('city')->nullable()->after('state');
             $table->string('country')->nullable()->after('city');
-            $table->string('mobile_number', 15)->after('country');
+            $table->string('mobile_number', 15)->nullable()->after('country');
             $table->string('emergency_number', 15)->nullable()->after('mobile_number');
             $table->boolean('is_disabled')->default(false)->after('emergency_number');
         });

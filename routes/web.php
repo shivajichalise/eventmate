@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/dashboard', [HomeController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [HomeController::class, 'dashboard'])->middleware(['auth', 'verified', 'roleCheck'])->name('dashboard');
 
 require __DIR__.'/auth.php';
 require __DIR__.'/user.php';
@@ -24,3 +24,4 @@ require __DIR__.'/ticket.php';
 require __DIR__.'/esewa.php';
 require __DIR__.'/organizer.php';
 require __DIR__.'/payment.php';
+require __DIR__.'/roleandpermission.php';

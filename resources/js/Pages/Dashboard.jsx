@@ -1,8 +1,9 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
-import FlashMessage from "../Components/FlashMessage";
+import { Head, usePage } from "@inertiajs/react";
+import FlashMessage from "@/Components/FlashMessage";
 
 export default function Dashboard({ auth, message }) {
+    const { flash } = usePage().props;
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -14,8 +15,11 @@ export default function Dashboard({ auth, message }) {
         >
             <Head title="Dashboard" />
 
-            {message && (
-                <FlashMessage message={message.message} type={message.type} />
+            {flash.message && (
+                <FlashMessage
+                    message={flash.message.message}
+                    type={flash.message.type}
+                />
             )}
 
             <div className="py-12">

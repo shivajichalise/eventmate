@@ -6,9 +6,12 @@ import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationFor
 import UpdateAddressInformationForm from "./Partials/UpdateAddressInformationForm";
 import UpdateContactInformationForm from "./Partials/UpdateContactInformationForm";
 import Stepper from "@/Components/Stepper";
-import { Head } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
+import FlashMessage from "@/Components/FlashMessage";
 
-export default function Edit({ auth, mustVerifyEmail, status }) {
+export default function Edit({ auth, mustVerifyEmail, status, message }) {
+    const { flash } = usePage().props;
+
     const steps = [
         {
             title: "Personal Info",
@@ -75,6 +78,13 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
             <Head title="Profile" />
 
             <div className="py-12">
+                {flash.message && (
+                    <FlashMessage
+                        message={flash.message.message}
+                        type={flash.message.type}
+                    />
+                )}
+
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                         <Stepper
@@ -87,12 +97,12 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
                         />
                     </div>
 
-                    <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                        <UpdatePasswordForm className="max-w-xl" />
+                    <div className="flex justify-center p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                        <UpdatePasswordForm className="w-9/12" />
                     </div>
 
-                    <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                        <DeleteUserForm className="max-w-xl" />
+                    <div className="flex justify-center p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                        <DeleteUserForm className="w-9/12" />
                     </div>
                 </div>
             </div>

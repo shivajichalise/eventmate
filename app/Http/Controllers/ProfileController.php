@@ -26,7 +26,14 @@ class ProfileController extends Controller
         ]);
     }
 
-    private function updateProfile($request)
+    private function updateProfileStatus(Request $request, string $step): void
+    {
+        $profileStatus = json_decode($request->user()->profile_status, true) ?? [];
+        $profileStatus = array_diff($profileStatus, [$step]);
+        $request->user()->update(['profile_status' => $profileStatus]);
+    }
+
+    private function updateProfile($request): void
     {
         $request->user()->fill($request->validated());
 
@@ -35,32 +42,42 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
-
-        return Redirect::route('profile.edit');
     }
 
     /**
          * Update the user's profile information.
          */
-    public function update(ProfileUpdateRequest $request)
+    public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        return $this->updateProfile($request);
+        $this->updateProfile($request);
+        $this->updateProfileStatus($request, 'profileInfo');
+        $request->user()->assignRoleIfProfileCompleted('attendee');
+
+        return Redirect::route('profile.edit');
     }
 
     /**
      * Update the user's profile address information.
      */
-    public function updateAddress(ProfileUpdateAddressRequest $request)
+    public function updateAddress(ProfileUpdateAddressRequest $request): RedirectResponse
     {
-        return $this->updateProfile($request);
+        $this->updateProfile($request);
+        $this->updateProfileStatus($request, 'addressInfo');
+        $request->user()->assignRoleIfProfileCompleted('attendee');
+
+        return Redirect::route('profile.edit');
     }
 
     /**
      * Update the user's profile contact information.
      */
-    public function updateContact(ProfileUpdateContactRequest $request)
+    public function updateContact(ProfileUpdateContactRequest $request): RedirectResponse
     {
-        return $this->updateProfile($request);
+        $this->updateProfile($request);
+        $this->updateProfileStatus($request, 'contactInfo');
+        $request->user()->assignRoleIfProfileCompleted('attendee');
+
+        return Redirect::route('profile.edit');
     }
 
     /**
