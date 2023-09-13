@@ -15,7 +15,7 @@ function Stepper({ steps, totalSteps, step, form, onNext, onPrev }) {
                     ))}
                 </ul>
 
-                {form.form}
+                <div className="flex justify-center mt-5">{form.form}</div>
 
                 <div className="flex justify-between mt-10">
                     <button

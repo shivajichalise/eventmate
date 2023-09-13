@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
@@ -24,8 +24,7 @@ export default function UpdateProfileInformation({
 
     const submit = (e) => {
         e.preventDefault();
-
-        patch(route("profile.update"));
+        patch(route("profile.update"), { preserveScroll: true });
     };
 
     const genderOptions = [
@@ -39,19 +38,20 @@ export default function UpdateProfileInformation({
         { label: "Yes", value: 1 },
     ];
 
-    const [selectedGenderOption, setSelectedGenderOption] = useState(
-        genderOptions[0].value
-    );
-
-    const handleGenderOptionChange = (e) => {
-        setSelectedGenderOption(e.target.value);
-    };
-
-    const [isDisabled, setIsDisabled] = useState(isDisabledOptions[0].value);
-
-    const handleisDisabledOptionChange = (e) => {
-        setIsDisabled(e.target.value);
-    };
+    const [dob, setDob] = useState(new Date());
+    // const selectedGenderOption, setSelectedGenderOption] = useState(
+    //     genderOptions[0].value
+    // );
+    //
+    // const handleGenderOptionChange = (e) => {
+    //     setSelectedGenderOption(e.target.value);
+    // };
+    //
+    // const [isDisabled, setIsDisabled] = useState(isDisabledOptions[0].value);
+    //
+    // const handleisDisabledOptionChange = (e) => {
+    //     setIsDisabled(e.target.value);
+    // };
 
     return (
         <section className={className}>
@@ -143,9 +143,9 @@ export default function UpdateProfileInformation({
                     />
 
                     <SelectInput
-                        id="isDisabled"
+                        id="is_disabled"
                         className="mt-1 block w-full"
-                        value={data.isDisabled}
+                        value={data.is_disabled}
                         onChange={(e) => setData("is_disabled", e.target.value)}
                         required
                         options={isDisabledOptions}

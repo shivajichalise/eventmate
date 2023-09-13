@@ -3,6 +3,8 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import DeleteUserForm from "./Partials/DeleteUserForm";
 import UpdatePasswordForm from "./Partials/UpdatePasswordForm";
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm";
+import UpdateAddressInformationForm from "./Partials/UpdateAddressInformationForm";
+import UpdateContactInformationForm from "./Partials/UpdateContactInformationForm";
 import Stepper from "@/Components/Stepper";
 import { Head } from "@inertiajs/react";
 
@@ -14,12 +16,30 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
                 <UpdateProfileInformationForm
                     mustVerifyEmail={mustVerifyEmail}
                     status={status}
-                    className="max-w-full"
+                    className="w-9/12"
                 />
             ),
         },
-        { title: "Address Info", form: "Add" },
-        { title: "Contact Info", form: "Cont" },
+        {
+            title: "Address Info",
+            form: (
+                <UpdateAddressInformationForm
+                    mustVerifyEmail={mustVerifyEmail}
+                    status={status}
+                    className="w-9/12"
+                />
+            ),
+        },
+        {
+            title: "Contact Info",
+            form: (
+                <UpdateContactInformationForm
+                    mustVerifyEmail={mustVerifyEmail}
+                    status={status}
+                    className="w-9/12"
+                />
+            ),
+        },
     ];
 
     const totalSteps = steps.length;

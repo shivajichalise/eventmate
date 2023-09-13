@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\ProfileUpdateAddressRequest;
+use App\Http\Requests\ProfileUpdateContactRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,13 +26,9 @@ class ProfileController extends Controller
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request)
+    private function updateProfile($request)
     {
         $request->user()->fill($request->validated());
-        // return $request->user();
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
@@ -39,6 +37,30 @@ class ProfileController extends Controller
         $request->user()->save();
 
         return Redirect::route('profile.edit');
+    }
+
+    /**
+         * Update the user's profile information.
+         */
+    public function update(ProfileUpdateRequest $request)
+    {
+        return $this->updateProfile($request);
+    }
+
+    /**
+     * Update the user's profile address information.
+     */
+    public function updateAddress(ProfileUpdateAddressRequest $request)
+    {
+        return $this->updateProfile($request);
+    }
+
+    /**
+     * Update the user's profile contact information.
+     */
+    public function updateContact(ProfileUpdateContactRequest $request)
+    {
+        return $this->updateProfile($request);
     }
 
     /**
