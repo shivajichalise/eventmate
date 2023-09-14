@@ -16,6 +16,7 @@
         "pragmarx/countries": "^0.8.2",
         "propaganistas/laravel-phone": "^5.0",
         "spatie/laravel-permission": "^5.11",
+        "spipu/html2pdf": "^5.2",
         "staudenmeir/belongs-to-through": "^2.5",
         "tightenco/ziggy": "^1.0",
         "vinkla/hashids": "^11.0",

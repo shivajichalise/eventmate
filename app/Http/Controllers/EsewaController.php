@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Esewa\EsewaPayRequest;
 use App\Models\Invoice;
 use App\Models\Payment;
+use App\Models\User;
+use App\Notifications\SuccessfulPayment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
@@ -99,7 +102,11 @@ class EsewaController extends Controller
                     ]
                 );
 
-                Invoice::find($ticket['invoice']->id)->update(['status' => 'paid']);
+                $invoice =  Invoice::find($ticket['invoice']->id);
+                $invoice->update(['status' => 'paid']);
+
+                (new ReceiptController())->generate($invoice->id);
+                User::find($invoice->user_id)->notify(new SuccessfulPayment($invoice->id));
 
                 Session::regenerate();
 

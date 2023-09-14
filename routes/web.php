@@ -25,3 +25,4 @@ require __DIR__.'/esewa.php';
 require __DIR__.'/organizer.php';
 require __DIR__.'/payment.php';
 require __DIR__.'/roleandpermission.php';
+require __DIR__.'/receipt.php';

@@ -56,4 +56,9 @@ class Invoice extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function ticket(): BelongsTo
+    {
+        return $this->belongsTo(Ticket::class);
+    }
+
 }
