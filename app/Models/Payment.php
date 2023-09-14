@@ -19,6 +19,13 @@ class Payment extends Model
         'status',
     ];
 
+    public static function revenue(): int
+    {
+        return self::where('paid', true)
+                    ->where('status', 'verified')
+                    ->sum('amount');
+    }
+
     public function user(): BelongsToThrough
     {
         return $this->belongsToThrough(User::class, Invoice::class);

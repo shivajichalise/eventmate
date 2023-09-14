@@ -98,6 +98,24 @@ class User extends Authenticatable implements MustVerifyEmail
         return false; // Role not assigned
     }
 
+    /**
+     * Get user registration data by month using Eloquent.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getUserRegistrationDataByMonth()
+    {
+        return static::select(
+            \DB::raw('YEAR(created_at) as year'),
+            \DB::raw('MONTH(created_at) as month'),
+            \DB::raw('COUNT(*) as registrations')
+        )
+            ->groupBy(['year', 'month'])
+            ->orderByDesc('year')
+            ->orderByDesc('month')
+            ->get();
+    }
+
     public function payments(): HasManyThrough
     {
         return $this->hasManyThrough(Payment::class, Invoice::class);
