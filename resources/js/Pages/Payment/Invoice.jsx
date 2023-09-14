@@ -50,7 +50,10 @@ export default function Invoice({
                                 </p>
                             </div>
                             <div>
-                                <button className="btn btn-square btn-xs btn-primary">
+                                <a
+                                    href={`/invoices/download/` + invoice.id}
+                                    className="btn btn-square btn-xs btn-primary"
+                                >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
@@ -65,7 +68,7 @@ export default function Invoice({
                                             d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
                                         />
                                     </svg>
-                                </button>
+                                </a>
                             </div>
                         </div>
                         <div className="p-9">
