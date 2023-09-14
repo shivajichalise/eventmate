@@ -103,9 +103,10 @@ class EsewaController extends Controller
 
                 Session::regenerate();
 
-                return Inertia::render('Dashboard', [
-                    'message' => ['type' => 'success', 'message' => 'Payment successful!'],
-                ]);
+                return redirect(route('dashboard'))->with(
+                    'message',
+                    ['type' => 'success', 'message' => 'Payment successful!'],
+                );
 
             } else {
                 Session::regenerate();
