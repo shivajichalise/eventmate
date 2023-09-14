@@ -32,4 +32,13 @@ class HomeController extends Controller
     {
         return Inertia::render('Dashboard');
     }
+
+    public function listPurchasedTickets()
+    {
+        $purchasedTickets =  Auth::user()->ticketsWithPayments('subEvent');
+        // return $purchasedTickets;
+        return Inertia::render('MyTickets', [
+            'purchasedTickets' => $purchasedTickets
+        ]);
+    }
 }

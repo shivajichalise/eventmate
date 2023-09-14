@@ -134,7 +134,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function ticketsWithPayments(): EloquentCollection
+    public function ticketsWithPayments(?string $relationship = null): EloquentCollection
     {
         // Retrieve all the invoices associated with this user's payments
         $invoices = Invoice::whereHas('payment', function ($query) {
@@ -145,7 +145,13 @@ class User extends Authenticatable implements MustVerifyEmail
         $ticketIds = $invoices->pluck('ticket_id')->unique()->toArray();
 
         // Retrieve the tickets with those IDs
-        return Ticket::whereIn('id', $ticketIds)->get();
+        $query = Ticket::whereIn('id', $ticketIds)->orderBy('created_at', 'desc');
+
+        if($relationship) {
+            $query->with($relationship);
+        }
+
+        return $query->get();
     }
 
 }
