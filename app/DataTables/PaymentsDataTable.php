@@ -99,7 +99,6 @@ class PaymentsDataTable extends DataTable
             Column::make('invoice_status')->title('Invoice Status'), // Custom title
             Column::make('paid_amount')->title('Amount'), // Custom title
             Column::make('payment_date')->title('Payment Date'), // Custom title
-            Column::make('created_at'),
             Column::computed('action')
             ->exportable(false)
             ->printable(false)
