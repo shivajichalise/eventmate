@@ -46,6 +46,7 @@ class EventsDataTable extends DataTable
                 ])->render();
             })
             ->rawColumns(['status', 'action'])
+            ->addIndexColumn()
             ->setRowId('id');
     }
 
@@ -85,7 +86,7 @@ class EventsDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id'),
+            Column::make('DT_RowIndex')->title('#')->searchable(false)->orderable(false),
             Column::make('name'),
             Column::make('event_start'),
             Column::make('event_end'),

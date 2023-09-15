@@ -76,7 +76,7 @@ class UsersDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id'),
+            Column::make('DT_RowIndex')->title('#')->searchable(false)->orderable(false),
             Column::make('name'),
             Column::make('email'),
             // Column::make('created_at'),
