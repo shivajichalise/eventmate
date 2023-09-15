@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\UsersDataTable;
+use App\Http\Requests\ProfileUpdateAddressRequest;
+use App\Http\Requests\ProfileUpdateContactRequest;
+use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -31,14 +34,57 @@ class UserController extends Controller
         ]);
     }
 
+        public function editForm(User $user, $step)
+        {
+            $profile_status = $user->profile_status;
+            if (count($profile_status) != 0) {
+                $step = $profile_status[0];
+            }
+
+            switch ($step) {
+                case 'address':
+                    $columns = ['address_line_1', 'state', 'city', 'country'];
+                    $addressInfo = $user->getUsersWithColumns($columns, $user->id);
+
+                    return view('users.edit.address')->with(['step' => 2, 'user' => $user, 'addressInfo' => $addressInfo]);
+                case 'contact':
+                    $columns = ['mobile_number', 'emergency_number'];
+                    $contactInfo = $user->getUsersWithColumns($columns, $user->id);
+
+                    return view('users.edit.contact')->with(['step' => 3, 'user' => $user, 'contactInfo' => $contactInfo]);
+                case 'profile':
+                default:
+                    $columns = ['name', 'email', 'gender', 'is_disabled'];
+                    $profileInfo = $user->getUsersWithColumns($columns, $user->id);
+
+                    return view('users.edit.profile')->with(['step' => 1, 'user' => $user, 'profileInfo' => $profileInfo]);
+            }
+        }
+
     public function edit(User $user)
     {
-        return $user;
+        return $this->editForm($user, 'profile');
     }
 
-    public function update(Request $request, User $user)
+    public function updateUserProfileInfo(ProfileUpdateRequest $request, User $user)
     {
-        return $user;
+        $fields = $request->validated();
+        $user->update($fields);
+        return redirect()->back()->with('success', 'User profile info updated successfully.');
+    }
+
+    public function updateUserAddressInfo(ProfileUpdateAddressRequest $request, User $user)
+    {
+        $fields = $request->validated();
+        $user->update($fields);
+        return redirect()->back()->with('success', 'User address info updated successfully.');
+    }
+
+    public function updateUserContactInfo(ProfileUpdateContactRequest $request, User $user)
+    {
+        $fields = $request->validated();
+        $user->update($fields);
+        return redirect()->back()->with('success', 'User contact info updated successfully.');
     }
 
     /**

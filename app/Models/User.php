@@ -71,6 +71,17 @@ class User extends Authenticatable implements MustVerifyEmail
         });
     }
 
+    /**
+     * Fetch users with specific columns.
+     *
+     * @param array $columns
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public static function getUsersWithColumns(array $columns, $userId)
+    {
+        return self::where('id', $userId)->select($columns)->first();
+    }
+
     public function isProfileCompleted(): bool
     {
         // Check if profile_status array is empty
