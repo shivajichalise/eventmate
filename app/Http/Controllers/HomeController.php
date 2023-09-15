@@ -35,7 +35,7 @@ class HomeController extends Controller
 
     public function listPurchasedTickets()
     {
-        $purchasedTickets =  Auth::user()->ticketsWithPayments('subEvent');
+        $purchasedTickets =  Auth::user()->purchasedTickets();
         // return $purchasedTickets;
         return Inertia::render('MyTickets', [
             'purchasedTickets' => $purchasedTickets

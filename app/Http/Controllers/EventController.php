@@ -418,7 +418,7 @@ class EventController extends Controller
             'venue' => $venue,
             'ticket' => $ticket,
             'support' => $support,
-            'hasPaid' => Auth::user()->hasPaidForTicket($ticket)
+            'hasPaid' => (Auth::check() ? Auth::user()->hasPaidForTicket($ticket) : false)
         ]);
     }
 }

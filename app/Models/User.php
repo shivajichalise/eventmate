@@ -193,9 +193,49 @@ class User extends Authenticatable implements MustVerifyEmail
 
         if($relationship) {
             $query->with($relationship);
+
         }
 
         return $query->get();
+    }
+
+    /**
+     * Get all the tickets for which the user has made a payment by ordering on 3 different situation
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function purchasedTickets(): array
+    {
+        // Retrieve all the invoices associated with this user's payments
+        $invoices = Invoice::whereHas('payment', function ($query) {
+            $query->where('user_id', $this->id);
+        })->get();
+
+        // Extract the ticket IDs from the invoices
+        $ticketIds = $invoices->pluck('ticket_id')->unique()->toArray();
+
+        // Retrieve the tickets with those IDs
+        $tickets = Ticket::whereIn('id', $ticketIds)->orderBy('created_at', 'desc')->with('subEvent')->get();
+
+        $today = now();
+
+        $ongoingTickets = $tickets->filter(function ($ticket) use ($today) {
+            return $ticket->subEvent->event_start <= $today && $ticket->subEvent->event_end >= $today;
+        });
+
+        $upcomingTickets = $tickets->filter(function ($ticket) use ($today) {
+            return $ticket->subEvent->event_start > $today;
+        });
+
+        $finishedTickets = $tickets->filter(function ($ticket) use ($today) {
+            return $ticket->subEvent->event_end < $today;
+        });
+
+        return [
+            'ongoing' => $ongoingTickets,
+            'upcoming' => $upcomingTickets,
+            'finished' => $finishedTickets,
+        ];
     }
 
 }
