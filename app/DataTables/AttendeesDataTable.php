@@ -13,8 +13,15 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class UsersDataTable extends DataTable
+class AttendeesDataTable extends DataTable
 {
+    protected $eventId;
+
+    public function __construct($eventId)
+    {
+        $this->eventId = $eventId;
+    }
+
     /**
      * Build the DataTable class.
      *
@@ -38,7 +45,7 @@ class UsersDataTable extends DataTable
                 ])->render();
             })
             ->rawColumns(['status', 'action'])
-            ->setRowId('id');
+            ->addIndexColumn();
     }
 
     /**
@@ -46,7 +53,21 @@ class UsersDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->whereHas('payments', function (QueryBuilder $query) {
+            $query->whereIn('invoice_id', function ($subQuery) {
+                $subQuery->select('id')
+                ->from('invoices')
+                ->whereIn('ticket_id', function ($ticketSubQuery) {
+                    $ticketSubQuery->select('id')
+                    ->from('tickets')
+                    ->whereIn('sub_event_id', function ($subEventSubQuery) {
+                        $subEventSubQuery->select('id')
+                        ->from('sub_events')
+                        ->where('event_id', $this->eventId); // Use $this->id to reference the event's ID
+                    });
+                });
+            });
+        });
     }
 
     /**
@@ -55,18 +76,18 @@ class UsersDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('users-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    // ->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->selectStyleSingle()
-                    ->buttons([
-                        Button::make('excel'),
-                        Button::make('csv'),
-                        Button::make('pdf'),
-                        Button::make('print'),
-                    ]);
+            ->setTableId('users-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            //->dom('Bfrtip')
+            ->orderBy(1)
+            ->selectStyleSingle()
+            ->buttons([
+                Button::make('excel'),
+                Button::make('csv'),
+                Button::make('pdf'),
+                Button::make('print'),
+            ]);
     }
 
     /**
@@ -75,16 +96,15 @@ class UsersDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id'),
+            Column::make('DT_RowIndex')->title('#'),
             Column::make('name'),
             Column::make('email'),
-            // Column::make('created_at'),
-            // Column::make('updated_at'),
+            Column::make('mobile_number'),
             Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
+            ->exportable(false)
+            ->printable(false)
+            ->width(60)
+            ->addClass('text-center'),
         ];
     }
 
@@ -93,6 +113,6 @@ class UsersDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Users_' . date('YmdHis');
+        return 'Attendees_' . date('YmdHis');
     }
 }

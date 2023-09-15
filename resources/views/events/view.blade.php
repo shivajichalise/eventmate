@@ -180,6 +180,40 @@
 
     </div>
 </div>
+
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            Attendees
+        </h3>
+    </div>
+    <div class="card-body">
+        {{ $dataTable->table() }}
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Nationality Distribution Bar Chart</h3>
+    </div>
+    <div class="card-body">
+        <div class="chart"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+            <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 422px;" width="844" height="500" class="chartjs-render-monitor"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">User Growth</h3>
+    </div>
+    <div class="card-body">
+        <div class="chart"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+            <canvas id="lineChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 422px;" width="844" height="500" class="chartjs-render-monitor"></canvas>
+        </div>
+    </div>
+</div>
 @stop
 
 @section('js')
@@ -191,6 +225,40 @@ $(document).ready(function() {
         }
     });
 });
+
+var barChartData = @json($barChart);
+
+// Get the canvas element and render the chart
+var barCtx = document.getElementById("barChart").getContext("2d");
+var barChart = new Chart(barCtx, {
+    type: "bar", // Specify the chart type (bar, line, pie, etc.)
+    data: barChartData,
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+            },
+        },
+    },
+});
+
+// Line Chart
+
+var lineChartData = @json($lineChart);
+
+var lineCtx = document.getElementById("lineChart").getContext("2d");
+var lineChart = new Chart(lineCtx, {
+    type: "line", // Specify the chart type (bar, line, pie, etc.)
+    data: lineChartData,
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+            },
+        },
+    },
+});
+
 
 // Set event status Request.
 $('#setEventStatus').on('click', function() {
@@ -207,3 +275,10 @@ $('#setEventStatus').on('click', function() {
 });
 </script>
 @stop
+
+@push('scripts')
+{{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+@endpush
+
+@section('plugins.Datatables', true)
+@section('plugins.Chartjs', true)

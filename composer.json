@@ -19,6 +19,7 @@
         "spatie/laravel-permission": "^5.11",
         "spipu/html2pdf": "^5.2",
         "staudenmeir/belongs-to-through": "^2.5",
+        "staudenmeir/eloquent-has-many-deep": "^1.7",
         "tightenco/ziggy": "^1.0",
         "vinkla/hashids": "^11.0",
         "yajra/laravel-datatables": "^10.0"

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\AttendeesDataTable;
 use App\DataTables\EventsDataTable;
 use App\DataTables\SubEventsDataTable;
 use App\DataTables\TicketsDataTable;
@@ -17,7 +18,6 @@ use App\Models\Venue;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use PragmaRX\Countries\Package\Countries;
@@ -249,15 +249,31 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
+        $datatable = (new AttendeesDataTable($event->id));
+
         $subEvents = $event->subEvents;
         $tickets =  $event->tickets;
         $support =  $event->support;
+
+        $lineChart = ChartController::lineChart($event);
+        $barChart = ChartController::barChart($event);
+
+        return $datatable->render('events.view', [
+            'general' => $event,
+            'sub_events' => $subEvents,
+            'tickets' => $tickets,
+            'support' => $support,
+            'barChart' => $barChart,
+            'lineChart' => $lineChart,
+        ]);
 
         return view('events.view')->with([
             'general' => $event,
             'sub_events' => $subEvents,
             'tickets' => $tickets,
-            'support' => $support
+            'support' => $support,
+            'barChart' => $barChart,
+            'lineChart' => $lineChart,
         ]);
     }
 
