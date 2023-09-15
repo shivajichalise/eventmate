@@ -58,6 +58,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'profile_status' => 'array',
     ];
 
     protected static function boot()
@@ -96,6 +97,20 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         return false; // Role not assigned
+    }
+
+    /**
+     * Get the comma-separated string of role names assigned to the user.
+     *
+     * @return string
+     */
+    public function assignedRoles(): string
+    {
+        $roleNames = $this->roles->pluck('name')->toArray();
+        // Capitalize the first letter of each role name
+        $roleNames = array_map('ucfirst', $roleNames);
+
+        return implode(', ', $roleNames);
     }
 
     /**
