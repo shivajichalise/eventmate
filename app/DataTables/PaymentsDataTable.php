@@ -37,23 +37,26 @@ class PaymentsDataTable extends DataTable
                     'destroyRoute' => $destroyRoute,
                 ])->render();
             })
-            ->addColumn('user_name', function ($payment) {
+            ->addColumn('user', function ($payment) {
                 return $payment->invoice->user->name;
+            })
+            ->addColumn('event', function ($payment) {
+                return $payment->invoice->ticket->subEvent->event->name;
+            })
+            ->addColumn('sub_event', function ($payment) {
+                return $payment->invoice->ticket->subEvent->name;
             })
             ->addColumn('invoice_status', function ($payment) {
                 return $payment->invoice->status;
             })
             ->addColumn('paid_amount', function ($payment) {
-                return $payment->amount;
+                return $payment->invoice->ticket->currency . ' ' . $payment->amount;
             })
             ->addColumn('payment_date', function ($payment) {
-                return $payment->created_at;
+                return $payment->created_at->format('F j, Y');
             })
-        ->rawColumns(['status', 'action'])
-        ->setRowId('id');
-        return (new EloquentDataTable($query))
-            ->addColumn('action', 'action')
-            ->setRowId('id');
+            ->rawColumns(['action', 'user'])
+            ->addIndexColumn();
     }
 
     /**
@@ -79,6 +82,7 @@ class PaymentsDataTable extends DataTable
             ->minifiedAjax()
             //->dom('Bfrtip')
             ->orderBy(1)
+            ->parameters(['debug' => true])
             ->selectStyleSingle()
             ->buttons([
                 Button::make('excel'),
@@ -94,16 +98,18 @@ class PaymentsDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id'),
-            Column::make('user_name')->title('User'), // Custom title
-            Column::make('invoice_status')->title('Invoice Status'), // Custom title
-            Column::make('paid_amount')->title('Amount'), // Custom title
-            Column::make('payment_date')->title('Payment Date'), // Custom title
-            Column::computed('action')
-            ->exportable(false)
-            ->printable(false)
-            ->width(60)
-            ->addClass('text-center'),
+            Column::make('DT_RowIndex')->title('#')->orderable(false)->searchable(false),
+            Column::make('user')->searchable(true)->orderable(true),
+            Column::make('event')->title('Event'),
+            Column::make('sub_event')->title('Sub event'),
+            Column::make('invoice_status')->title('Invoice Status'),
+            Column::make('paid_amount')->title('Amount'),
+            Column::make('payment_date')->title('Payment Date'),
+            // Column::computed('action')
+            //     ->exportable(false)
+            //     ->printable(false)
+            //     ->width(60)
+            //     ->addClass('text-center'),
         ];
     }
 

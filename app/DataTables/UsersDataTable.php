@@ -38,6 +38,7 @@ class UsersDataTable extends DataTable
                 ])->render();
             })
             ->rawColumns(['status', 'action'])
+            ->addIndexColumn()
             ->setRowId('id');
     }
 

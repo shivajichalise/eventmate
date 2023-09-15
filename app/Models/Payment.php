@@ -19,6 +19,8 @@ class Payment extends Model
         'status',
     ];
 
+    protected $dates = ['created_at', 'updated_at'];
+
     public static function revenue(): int
     {
         return self::where('paid', true)
