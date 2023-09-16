@@ -6,7 +6,10 @@ use App\DataTables\ResultsDataTable;
 use App\Http\Requests\Result\StoreResultRequest;
 use App\Models\Event;
 use App\Models\Result;
+use App\Models\SubEvent;
+use App\Notifications\ResultPublished;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
 class ResultController extends Controller
@@ -16,8 +19,6 @@ class ResultController extends Controller
      */
     public function index(ResultsDataTable $dataTable)
     {
-        $result = Result::with('subEvent.event')->find(2);
-        // return $result;
         return $dataTable->render('results.index');
     }
 
@@ -48,7 +49,11 @@ class ResultController extends Controller
             $fields['file'] = $name;
         }
 
-        Result::create($fields);
+        $result = Result::create($fields);
+
+        $attendees = SubEvent::find($fields['sub_event_id'])->event->attendees()->get();
+
+        Notification::send($attendees, new ResultPublished($result));
 
         return redirect()->route('results.index')->with('success', 'Successfully published the result.');
 
