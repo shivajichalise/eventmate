@@ -27,7 +27,9 @@ class ResultController extends Controller
      */
     public function create()
     {
-        $events = Event::with('subEvents')->get();
+        $events = Event::with(['subEvents' => function ($query) {
+            $query->whereDoesntHave('result');
+        }])->get();
 
         return view('results.create')->with([
             'events' => $events
