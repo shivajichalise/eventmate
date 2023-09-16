@@ -20,6 +20,12 @@ Route::prefix('/organizers')->name('organizers.')->group(function () {
             Route::get('/', [OrganizerController::class, 'index'])->name('dashboard');
         });
 
+        Route::prefix('/profile')->name('profile.')->group(function () {
+            Route::get('/', [OrganizerController::class, 'profile'])->name('index');
+            Route::put('/update', [OrganizerController::class, 'update'])->name('update');
+            Route::put('/password', [OrganizerController::class, 'updatePassword'])->name('update.password');
+        });
+
         Route::get('/email/verify', [EmailVerificationController::class, 'verifyEmail'])->name('verification.notice');
         Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verifyEmailRequest'])->middleware(['signed'])->name('verification.verify');
         Route::post('/email/verification-notification', [EmailVerificationController::class, 'verifyEmailResend'])->middleware(['throttle:2,1'])->name('verification.resend');

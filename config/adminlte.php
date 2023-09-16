@@ -355,7 +355,8 @@ return [
 
         [
             'text' => 'profile',
-            'url'  => 'admin/settings',
+            'url'  => 'organizers/profile',
+            'active'      => ['organizers/profile/*'],
             'icon' => 'fas fa-fw fa-user',
         ],
     ],

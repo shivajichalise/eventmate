@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Organizer\OrganizerPasswordUpdateRequest;
+use App\Http\Requests\Organizer\OrganizerProfileUpdateRequest;
 use App\Models\Event;
 use App\Models\Organizer;
 use App\Models\Payment;
@@ -26,10 +28,8 @@ class OrganizerController extends Controller
         $totalTicketsSold = Payment::count();
         $totalRevenue = Payment::revenue();
 
-        $barChart = $this->barChart();
-        $lineChart = $this->lineChart();
-
-        // return $lineChart;
+        $lineChart = ChartController::lineChart();
+        $barChart = ChartController::barChart();
 
         return view('dashboard')->with([
             'totalEvents' => $totalEvents,
@@ -39,94 +39,6 @@ class OrganizerController extends Controller
             'barChart' => $barChart,
             'lineChart' => $lineChart,
         ]);
-    }
-
-    protected function lineChart(): array
-    {
-        $userData = User::select(
-            DB::raw('MONTH(created_at) as month'),
-            DB::raw('COUNT(*) as count')
-        )
-        ->groupBy('month')
-        ->orderBy('month', 'asc')
-        ->get();
-
-        // Initialize arrays for labels (months) and data (user counts)
-        $labels = [];
-        $data = [];
-
-        // Fill the arrays with month names and user counts
-        foreach ($userData as $entry) {
-            $month = DateTime::createFromFormat('!m', $entry->month)->format('F'); // Format the month
-            $labels[] = $month;
-            $data[] = $entry->count;
-        }
-
-        $chartData = [
-            'labels' => $labels,
-            'datasets' => [
-                [
-                    'label' => 'User Growth',
-                    'data' => $data,
-                    'fill' => false,
-                    'borderColor' => 'rgb(75, 192, 192)',
-                    'tension' => 0.1
-                ],
-            ],
-        ];
-
-        return $chartData;
-    }
-
-    protected function barChart(): array
-    {
-        $userData = User::select('country')
-        ->selectRaw('COUNT(*) as count')
-        ->groupBy('country')
-        ->get();
-        // Initialize arrays for labels, data, and backgroundColor
-        $labels = [];
-        $data = [];
-        $backgroundColor = [];
-
-        // Generate random colors for each bar
-        $colors = [
-            'rgba(255, 87, 51, 0.7)',   // Red with opacity
-            'rgba(255, 195, 0, 0.7)',   // Yellow with opacity
-            'rgba(51, 255, 87, 0.7)',   // Green with opacity
-            'rgba(51, 153, 255, 0.7)',  // Blue with opacity
-            'rgba(255, 51, 255, 0.7)',  // Purple with opacity
-            'rgba(255, 87, 51, 0.7)',   // Red with opacity
-            'rgba(255, 195, 0, 0.7)',   // Yellow with opacity
-            'rgba(51, 255, 87, 0.7)',   // Green with opacity
-            'rgba(51, 153, 255, 0.7)',  // Blue with opacity
-            'rgba(255, 51, 255, 0.7)',  // Purple with opacity
-            'rgba(102, 102, 102, 0.7)', // Gray with opacity
-            'rgba(255, 153, 0, 0.7)',   // Orange with opacity
-            'rgba(255, 153, 204, 0.7)', // Pink with opacity
-            'rgba(102, 204, 102, 0.7)', // Light Green with opacity
-            'rgba(51, 102, 153, 0.7)',  // Dark Blue with opacity
-        ];
-
-        foreach ($userData as $user) {
-            $labels[] = $user->country;
-            $data[] = $user->count;
-            $backgroundColor[] = array_shift($colors);
-        }
-
-        // Prepare the chart data array
-        $chartData = [
-            'labels' => $labels,
-            'datasets' => [
-                [
-                    'label' => 'User Count by Country',
-                    'data' => $data,
-                    'backgroundColor' => $backgroundColor,
-                ],
-            ],
-        ];
-
-        return $chartData;
     }
 
     public function login(): View
@@ -176,6 +88,35 @@ class OrganizerController extends Controller
         Auth::guard('organizer')->login($organizer);
 
         return redirect(RouteServiceProvider::ORGANIZER);
+    }
+
+    public function profile()
+    {
+        $organizer = Auth::guard('organizer')->user();
+
+        return view('organizers.profile')->with([
+            'organizer' => $organizer
+        ]);
+    }
+
+    public function update(OrganizerProfileUpdateRequest $request)
+    {
+        $fields = $request->validated();
+        Auth::guard('organizer')->user()->update($fields);
+        return redirect()->back()->with(['success' => 'Profile information successfully updated.']);
+    }
+
+    public function updatePassword(OrganizerPasswordUpdateRequest $request)
+    {
+        $fields = $request->validated();
+        $organizer = Auth::guard('organizer')->user();
+
+        $organizer->update([
+            'password' => Hash::make($fields['password']),
+        ]);
+
+        return redirect()->back()->with('success', 'Password changed successfully.');
+
     }
 
     public function logout(Request $request): RedirectResponse
