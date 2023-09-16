@@ -12,6 +12,7 @@ class Result extends Model
 
     protected $fillable = [
         'sub_event_id',
+        'title',
         'description',
         'file',
     ];

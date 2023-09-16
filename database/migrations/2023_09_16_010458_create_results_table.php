@@ -13,7 +13,8 @@ return new class () extends Migration {
         Schema::create('results', function (Blueprint $table) {
             $table->id();
             $table->foreignId('sub_event_id')->constrained('sub_events')->onDelete('cascade');
-            $table->text('description');
+            $table->text('title');
+            $table->text('description')->nullable();
             $table->string('file')->nullable();
             $table->timestamps();
         });

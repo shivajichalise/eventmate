@@ -67,6 +67,16 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="title"> Title <span class="text-danger">*</span></label>
+                            <div>
+                                <input type="text" class="form-control @error('title') is-invalid @enderror" name="title" placeholder="Title" id="title" />
+                                @error('title')
+                                <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label for="description"> Description </label>
                             <div>
                                 <textarea class="form-control @error('description') is-invalid @enderror" name="description" placeholder="Description" id="description"></textarea>

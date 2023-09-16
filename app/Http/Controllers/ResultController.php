@@ -15,6 +15,8 @@ class ResultController extends Controller
      */
     public function index(ResultsDataTable $dataTable)
     {
+        $result = Result::with('subEvent.event')->find(2);
+        // return $result;
         return $dataTable->render('results.index');
     }
 

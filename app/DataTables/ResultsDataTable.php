@@ -22,22 +22,28 @@ class ResultsDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
-        $showRoute = 'results.show';
         $editRoute = 'results.edit';
         $destroyRoute = 'results.destroy';
         $model = 'result';
 
         return (new EloquentDataTable($query))
-            ->addColumn('action', function ($row) use ($model, $showRoute, $editRoute, $destroyRoute) {
-                return View::make('utils.datatable_action_buttons', [
+            ->addColumn('file', function ($row) {
+                $file = 'No uploaded file.';
+                $button = '<a href="/results/download/' . $row->id . '" class="btn btn-primary btn-xs"><i class="fa-solid fa-download"></i></a>';
+                if($row->file) {
+                    $file = $button;
+                }
+                return $file;
+            })
+            ->addColumn('action', function ($row) use ($model, $editRoute, $destroyRoute) {
+                return View::make('utils.datatable_no_show_action_buttons', [
                     'id' => $row['id'],
                     'model' => $model,
-                    'showRoute' => $showRoute,
                     'editRoute' => $editRoute,
                     'destroyRoute' => $destroyRoute,
                 ])->render();
             })
-            ->rawColumns(['status', 'action'])
+            ->rawColumns(['file', 'action'])
             ->addIndexColumn()
             ->setRowId('id');
     }
@@ -47,7 +53,7 @@ class ResultsDataTable extends DataTable
      */
     public function query(Result $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->with('subEvent.event');
     }
 
     /**
@@ -56,18 +62,18 @@ class ResultsDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('result-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    //->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->selectStyleSingle()
-                    ->buttons([
-                        Button::make('excel'),
-                        Button::make('csv'),
-                        Button::make('pdf'),
-                        Button::make('print'),
-                    ]);
+            ->setTableId('result-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            //->dom('Bfrtip')
+            ->orderBy(1)
+            ->selectStyleSingle()
+            ->buttons([
+                Button::make('excel'),
+                Button::make('csv'),
+                Button::make('pdf'),
+                Button::make('print'),
+            ]);
     }
 
     /**
@@ -77,13 +83,30 @@ class ResultsDataTable extends DataTable
     {
         return [
             Column::make('DT_RowIndex')->title('#')->searchable(false)->orderable(false),
-            Column::make('description'),
-            Column::make('created_at'),
+
+            // Computed column for Event Name
+            Column::computed('event_name')
+            ->title('Event')
+            ->data('sub_event.event.name')
+            ->orderable(false)
+            ->searchable(false),
+
+            // Computed column for Subevent Name
+            Column::computed('subevent_name')
+            ->title('Sub-event')
+            ->data('sub_event.name')
+            ->orderable(false)
+            ->searchable(false),
+
+            Column::make('title'),
+
+            Column::make('file'),
+
             Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
+            ->exportable(false)
+            ->printable(false)
+            ->width(60)
+            ->addClass('text-center'),
         ];
     }
 

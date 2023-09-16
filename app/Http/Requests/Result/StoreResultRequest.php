@@ -24,7 +24,8 @@ class StoreResultRequest extends FormRequest
         return [
             'event' => 'required|exists:events,id',
             'sub_event' => 'required|exists:sub_events,id',
-            'description' => 'required|string',
+            'title' => 'required|string',
+            'description' => 'nullable|string',
             'file' => [
                 'nullable',
                 'file',
