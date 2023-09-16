@@ -74,7 +74,15 @@ class ResultController extends Controller
      */
     public function edit(Result $result)
     {
-        //
+
+        $subEvent = $result->subEvent;
+        $event = $subEvent->event;
+
+        return view('results.edit')->with([
+            'result' => $result,
+            'event' => $event,
+            'sub_event' => $subEvent,
+        ]);
     }
 
     /**
@@ -82,7 +90,24 @@ class ResultController extends Controller
      */
     public function update(Request $request, Result $result)
     {
-        //
+        $fields = $request->all();
+
+        $file = $request->hasFile('file');
+
+        if ($file) {
+
+            $file = $request->file('file');
+            $name = $file->store('results', 'public');
+            $fields['file'] = $name;
+
+            if($result->file) {
+                Storage::disk('public')->delete($result->file);
+            }
+        }
+
+        $result->update($fields);
+
+        return redirect()->route('results.index')->with('success', 'Result is updated successfully.');
     }
 
     /**

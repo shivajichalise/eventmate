@@ -6,13 +6,14 @@
 <div class="container-fluid">
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1 class="m-0">Publish Results</h1>
+            <h1 class="m-0">Edit Results</h1>
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                 <li class="breadcrumb-item">Results</li>
-                <li class="breadcrumb-item active">Create</li>
+                <li class="breadcrumb-item">Edit</li>
+                <li class="breadcrumb-item active">{{ $result->title }}</li>
             </ol>
         </div>
     </div>
@@ -31,8 +32,9 @@
 
             @include('utils.flash_message')
 
-            <form action="{{route('results.store')}}" method="post" enctype="multipart/form-data" name="">
+            <form action="{{route('results.update', ['result' => $result])}}" method="post" enctype="multipart/form-data" name="">
                 @csrf
+                @method('PUT')
 
                 <div class="card">
                     <div class="card-body">
@@ -41,10 +43,7 @@
                             <label for="event"> Event <span class="text-danger">*</span></label>
                             <div>
                                 <select class="form-control @error('event') is-invalid @enderror" name="event" id="event">
-                                    <option selected disabled>Select event</option>
-                                    @foreach ($events as $event)
-                                    <option value="{{ $event->id }}">{{ $event->name }}</option>
-                                    @endforeach
+                                    <option value="{{ $event->id }}" selected>{{ $event->name }}</option>
                                 </select>
 
                                 @error('event')
@@ -57,7 +56,7 @@
                             <label for="sub_event"> Sub-event <span class="text-danger">*</span></label>
                             <div>
                                 <select class="form-control @error('sub_event_id') is-invalid @enderror" name="sub_event" id="sub_event">
-                                    <option selected disabled>Select sub-event</option>
+                                    <option value="{{ $sub_event->id }}" selected>{{ $sub_event->name }}</option>
                                 </select>
 
                                 @error('sub_event')
@@ -69,7 +68,7 @@
                         <div class="form-group">
                             <label for="title"> Title <span class="text-danger">*</span></label>
                             <div>
-                                <input type="text" class="form-control @error('title') is-invalid @enderror" name="title" placeholder="Title" id="title" />
+                                <input type="text" class="form-control @error('title') is-invalid @enderror" name="title" placeholder="Title" id="title" value="{{ $result->title }}" />
                                 @error('title')
                                 <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -79,7 +78,7 @@
                         <div class="form-group">
                             <label for="description"> Description </label>
                             <div>
-                                <textarea class="form-control @error('description') is-invalid @enderror" name="description" placeholder="Description" id="description"></textarea>
+                                <textarea class="form-control @error('description') is-invalid @enderror" name="description" placeholder="Description" id="description">{{ $result->description }}</textarea>
                                 @error('description')
                                 <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -131,47 +130,6 @@
 <script>
 $(document).ready(function () {
     bsCustomFileInput.init()
-
-    let eventsData = @json($events);
-
-    let eventDropdown = $('#event');
-    let subeventDropdown = $('#sub_event');
-
-    // Function to populate subevent dropdown
-    function populateSubeventDropdown(selectedEventId) {
-        subeventDropdown.empty().append('<option selected disabled>Select a sub-event</option>');
-
-        if (selectedEventId) {
-            // Find the selected event from the JSON data
-            let selectedEvent = eventsData.find(function (event) {
-                return event.id == selectedEventId;
-            });
-
-            // Populate the subevent dropdown with subevents of the selected event
-            $.each(selectedEvent.sub_events, function (index, subevent) {
-                subeventDropdown.append($('<option>', {
-                    value: subevent.id,
-                    text: subevent.name
-                }));
-            });
-
-            // Enable the subevent dropdown
-            subeventDropdown.prop('disabled', false);
-        } else {
-            // Disable the subevent dropdown if no event is selected
-            subeventDropdown.prop('disabled', true);
-        }
-    }
-
-    // Event listener for when an event is selected
-    eventDropdown.on('change', function () {
-        let selectedEventId = eventDropdown.val();
-        populateSubeventDropdown(selectedEventId);
-    });
-
-    // Initial population when the page loads
-    let initialSelectedEventId = eventDropdown.val();
-    populateSubeventDropdown(initialSelectedEventId);
 });
 </script>
 @endsection
