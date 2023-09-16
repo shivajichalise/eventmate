@@ -1,3 +1,5 @@
+import ApplicationLogo from "@/Components/ApplicationLogo";
+
 export default function NavBar({ auth }) {
     return (
         <div className="navbar bg-base-100">
@@ -35,7 +37,10 @@ export default function NavBar({ auth }) {
                     </ul>
                 </div>
                 <a href={route("home")} className="ml-4 normal-case text-xl">
-                    EventMate
+                    <ApplicationLogo
+                        className="block h-8 w-auto fill-current text-gray-800 dark:text-gray-200"
+                        primary={true}
+                    />
                 </a>
             </div>
             <div className="navbar-center hidden lg:flex">
