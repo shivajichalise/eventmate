@@ -16,6 +16,7 @@ export default function Dashboard({
         id: "",
         title: "",
         description: "",
+        hasFile: false,
     });
 
     const handleViewResult = (obj) => {
@@ -24,18 +25,9 @@ export default function Dashboard({
             id: obj.id,
             title: obj.title,
             description: obj.description,
+            hasFile: obj.hasFile,
         });
-        console.log(obj);
-        // setResult({...result, obj.id, obj.title, obj.description})
-
-        // setPopupId(e.target.getAttribute("id"));
-        // setPopupTitle(e.target.getAttribute("title"));
-        // setPopupDescription(e.target.getAttribute("description"));
     };
-
-    const [popupId, setPopupId] = useState(0);
-    const [popupTitle, setPopupTitle] = useState("");
-    const [popupDescription, setPopupDescription] = useState("");
 
     return (
         <AuthenticatedLayout
@@ -52,7 +44,7 @@ export default function Dashboard({
                 id={result.id}
                 title={result.title}
                 description={result.description}
-                downloadLink={`/results/download` + result.id}
+                hasFile={result.hasFile}
             />
 
             {flash.message && (
@@ -106,6 +98,11 @@ export default function Dashboard({
                                                                         .sub_event
                                                                         .result
                                                                         .description,
+                                                                hasFile: ticket
+                                                                    .sub_event
+                                                                    .result.file
+                                                                    ? true
+                                                                    : false,
                                                             }
                                                         )}
                                                     >
@@ -181,6 +178,11 @@ export default function Dashboard({
                                                                         .sub_event
                                                                         .result
                                                                         .description,
+                                                                hasFile: ticket
+                                                                    .sub_event
+                                                                    .result.file
+                                                                    ? true
+                                                                    : false,
                                                             })
                                                         }
                                                     >
@@ -256,6 +258,11 @@ export default function Dashboard({
                                                                         .sub_event
                                                                         .result
                                                                         .description,
+                                                                hasFile: ticket
+                                                                    .sub_event
+                                                                    .result.file
+                                                                    ? true
+                                                                    : false,
                                                             })
                                                         }
                                                     >

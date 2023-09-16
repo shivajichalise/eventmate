@@ -29,7 +29,7 @@ class ResultsDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('file', function ($row) {
                 $file = 'No uploaded file.';
-                $button = '<a href="/results/download/' . $row->id . '" class="btn btn-primary btn-xs"><i class="fa-solid fa-download"></i></a>';
+                $button = '<a href="/results/' . $row->id . '/download" class="btn btn-primary btn-xs"><i class="fa-solid fa-download"></i></a>';
                 if($row->file) {
                     $file = $button;
                 }
