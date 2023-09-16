@@ -344,6 +344,13 @@ return [
             // 'label_color' => 'success',
         ],
 
+        [
+            'text'        => 'Results',
+            'url'         => 'results',
+            'active'      => ['results/*'],
+            'icon'        => 'fa-solid fa-square-poll-vertical',
+        ],
+
         ['header' => 'account_settings'],
 
         [
@@ -435,6 +442,16 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js',
+                ],
+            ],
+        ],
+        'BsCustomFileInput' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js',
                 ],
             ],
         ],
