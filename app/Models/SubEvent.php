@@ -72,4 +72,9 @@ class SubEvent extends Model
     {
         return $this->hasOne(Ticket::class);
     }
+
+    public function result(): HasOne
+    {
+        return $this->hasOne(Result::class);
+    }
 }

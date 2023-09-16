@@ -215,21 +215,21 @@ class User extends Authenticatable implements MustVerifyEmail
         $ticketIds = $invoices->pluck('ticket_id')->unique()->toArray();
 
         // Retrieve the tickets with those IDs
-        $tickets = Ticket::whereIn('id', $ticketIds)->orderBy('created_at', 'desc')->with('subEvent')->get();
+        $tickets = Ticket::whereIn('id', $ticketIds)->orderBy('created_at', 'desc')->with('subEvent.result')->get();
 
         $today = now();
 
         $ongoingTickets = $tickets->filter(function ($ticket) use ($today) {
             return $ticket->subEvent->event_start <= $today && $ticket->subEvent->event_end >= $today;
-        });
+        })->values();
 
         $upcomingTickets = $tickets->filter(function ($ticket) use ($today) {
             return $ticket->subEvent->event_start > $today;
-        });
+        })->values();
 
         $finishedTickets = $tickets->filter(function ($ticket) use ($today) {
             return $ticket->subEvent->event_end < $today;
-        });
+        })->values();
 
         return [
             'ongoing' => $ongoingTickets,

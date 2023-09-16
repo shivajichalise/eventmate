@@ -1,6 +1,9 @@
+import { useState } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, usePage } from "@inertiajs/react";
 import FlashMessage from "@/Components/FlashMessage";
+import ResultModal from "@/Components/ResultModal";
+import PopupModal from "@/Components/PopupModal";
 
 export default function Dashboard({
     auth,
@@ -8,7 +11,32 @@ export default function Dashboard({
     purchasedTickets: { ongoing, upcoming, finished },
 }) {
     const { flash } = usePage().props;
-    console.log(upcoming);
+
+    const [result, setResult] = useState({
+        id: "",
+        title: "",
+        description: "",
+    });
+
+    const handleViewResult = (obj) => {
+        setResult({
+            ...result,
+            id: obj.id,
+            title: obj.title,
+            description: obj.description,
+        });
+        console.log(obj);
+        // setResult({...result, obj.id, obj.title, obj.description})
+
+        // setPopupId(e.target.getAttribute("id"));
+        // setPopupTitle(e.target.getAttribute("title"));
+        // setPopupDescription(e.target.getAttribute("description"));
+    };
+
+    const [popupId, setPopupId] = useState(0);
+    const [popupTitle, setPopupTitle] = useState("");
+    const [popupDescription, setPopupDescription] = useState("");
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -19,6 +47,13 @@ export default function Dashboard({
             }
         >
             <Head title="My Tickets" />
+
+            <PopupModal
+                id={result.id}
+                title={result.title}
+                description={result.description}
+                downloadLink={`/results/download` + result.id}
+            />
 
             {flash.message && (
                 <FlashMessage
@@ -50,6 +85,33 @@ export default function Dashboard({
                                                 }
                                             </p>
                                             <div className="card-actions justify-end">
+                                                {ticket.sub_event.result && (
+                                                    <label
+                                                        className="text-sm"
+                                                        htmlFor={
+                                                            ticket.sub_event
+                                                                .result.id
+                                                        }
+                                                        onClick={handleViewResult(
+                                                            {
+                                                                id: ticket
+                                                                    .sub_event
+                                                                    .result.id,
+                                                                title: ticket
+                                                                    .sub_event
+                                                                    .result
+                                                                    .title,
+                                                                description:
+                                                                    ticket
+                                                                        .sub_event
+                                                                        .result
+                                                                        .description,
+                                                            }
+                                                        )}
+                                                    >
+                                                        View result
+                                                    </label>
+                                                )}
                                                 <a
                                                     href={
                                                         `/event/` +
@@ -97,7 +159,34 @@ export default function Dashboard({
                                                         .formatted_event_date
                                                 }
                                             </p>
-                                            <div className="card-actions justify-end">
+                                            <div className="card-actions justify-between items-center">
+                                                {ticket.sub_event.result && (
+                                                    <label
+                                                        className="text-sm"
+                                                        htmlFor={
+                                                            ticket.sub_event
+                                                                .result.id
+                                                        }
+                                                        onClick={() =>
+                                                            handleViewResult({
+                                                                id: ticket
+                                                                    .sub_event
+                                                                    .result.id,
+                                                                title: ticket
+                                                                    .sub_event
+                                                                    .result
+                                                                    .title,
+                                                                description:
+                                                                    ticket
+                                                                        .sub_event
+                                                                        .result
+                                                                        .description,
+                                                            })
+                                                        }
+                                                    >
+                                                        View result
+                                                    </label>
+                                                )}
                                                 <a
                                                     href={
                                                         `/event/` +
@@ -145,7 +234,34 @@ export default function Dashboard({
                                                         .formatted_event_date
                                                 }
                                             </p>
-                                            <div className="card-actions justify-end">
+                                            <div className="card-actions justify-between items-center">
+                                                {ticket.sub_event.result && (
+                                                    <label
+                                                        className="text-sm"
+                                                        htmlFor={
+                                                            ticket.sub_event
+                                                                .result.id
+                                                        }
+                                                        onClick={() =>
+                                                            handleViewResult({
+                                                                id: ticket
+                                                                    .sub_event
+                                                                    .result.id,
+                                                                title: ticket
+                                                                    .sub_event
+                                                                    .result
+                                                                    .title,
+                                                                description:
+                                                                    ticket
+                                                                        .sub_event
+                                                                        .result
+                                                                        .description,
+                                                            })
+                                                        }
+                                                    >
+                                                        View result
+                                                    </label>
+                                                )}
                                                 <a
                                                     href={
                                                         `/event/` +
