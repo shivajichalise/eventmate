@@ -34,20 +34,11 @@ export default function Invoice({
                     <div className="bg-gray-100 rounded-t-md">
                         <div className="flex justify-between p-9">
                             <div className="space-y-6 text-slate-700">
-                                <svg
-                                    className="object-cover h-12"
-                                    viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        d="M3.938 6.497a6.958 6.958 0 0 0-.702 1.694L0 9v2l3.236.809c.16.6.398 1.169.702 1.694l-1.716 2.861 1.414 1.414 2.86-1.716a6.958 6.958 0 0 0 1.695.702L9 20h2l.809-3.236a6.96 6.96 0 0 0 1.694-.702l2.861 1.716 1.414-1.414-1.716-2.86a6.958 6.958 0 0 0 .702-1.695L20 11V9l-3.236-.809a6.958 6.958 0 0 0-.702-1.694l1.716-2.861-1.414-1.414-2.86 1.716a6.958 6.958 0 0 0-1.695-.702L11 0H9l-.809 3.236a6.96 6.96 0 0 0-1.694.702L3.636 2.222 2.222 3.636l1.716 2.86zM10 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
-                                        fillRule="evenodd"
-                                    ></path>
-                                </svg>
-
-                                <p className="text-xl font-extrabold tracking-tight uppercase font-body">
-                                    EventMate
-                                </p>
+                                <img
+                                    src="/images/logo/png/eventmate_blue-nav-wordmark-08.png"
+                                    alt="Event<ate logo"
+                                    className="h-32 mr-2 inline-block"
+                                />
                             </div>
                             <div>
                                 <a

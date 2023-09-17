@@ -56,7 +56,7 @@ class InvoiceController extends Controller
         ->currencyCode('NPR')
         // ->shipping(1.99)
         ->addItem($item)
-        ->logo(public_path('images/logo.png'));
+        ->logo(public_path('images/logo/png/eventmate_blue-nav-wordmark-08.png'));
 
         // And return invoice itself to browser or have a different view
         return $invoice->download();
