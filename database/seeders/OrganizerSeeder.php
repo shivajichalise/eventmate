@@ -13,12 +13,12 @@ class OrganizerSeeder extends Seeder
      */
     public function run(): void
     {
-        Organizer::factory(1)->create();
-
         Organizer::factory()->create([
             'name' => 'Super Organizer',
             'email' => 'organizer@eventmate.com',
             'is_super' => true,
         ]);
+
+        Organizer::factory(1)->create();
     }
 }

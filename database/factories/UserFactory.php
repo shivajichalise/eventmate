@@ -20,15 +20,15 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'gender' => fake()->randomElement(['Male', 'Female', 'Others']),
+            'gender' => fake()->randomElement(['Male', 'Female', 'Other']),
             'is_disabled' => false,
             'password' => bcrypt('password'), // You can set a default password or use fake()->password
             'address_line_1' => fake()->streetAddress(),
             'state' => fake()->state(),
             'city' => fake()->city(),
             'country' => fake()->country(),
-            'mobile_number' => fake()->phoneNumber(),
-            'emergency_number' => fake()->phoneNumber(),
+            'mobile_number' => '9' . fake()->numberBetween(100000000, 999999999),
+            'emergency_number' => '9' . fake()->numberBetween(100000000, 999999999),
             'profile_status' => json_encode([]),
             'is_active' => true,
             'email_verified_at' => now(),

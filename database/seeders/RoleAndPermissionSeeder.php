@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Organizer;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
@@ -78,5 +80,14 @@ class RoleAndPermissionSeeder extends Seeder
             'edit result',
             'delete result',
         ]);
+
+        $role = Role::where('name', 'super-organizer')->first();
+        Organizer::first()->assignRole($role);
+
+        $role = Role::where('name', 'organizer')->first();
+        Organizer::skip(1)->take(1)->first()->assignRole($role);
+
+        $role = Role::where('name', 'attendee')->first();
+        User::first()->assignRole($role);
     }
 }
