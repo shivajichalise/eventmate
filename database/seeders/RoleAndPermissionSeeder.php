@@ -32,22 +32,27 @@ class RoleAndPermissionSeeder extends Seeder
             ['guard_name' => 'web', 'name' => 'buy tickets'],
 
             ['guard_name' => 'organizer', 'name' => 'create event'],
+            ['guard_name' => 'organizer', 'name' => 'view event'],
             ['guard_name' => 'organizer', 'name' => 'edit event'],
             ['guard_name' => 'organizer', 'name' => 'delete event'],
 
             ['guard_name' => 'organizer', 'name' => 'create user'],
+            ['guard_name' => 'organizer', 'name' => 'view user'],
             ['guard_name' => 'organizer', 'name' => 'edit user'],
             ['guard_name' => 'organizer', 'name' => 'delete user'],
 
             ['guard_name' => 'organizer', 'name' => 'create payment'],
+            ['guard_name' => 'organizer', 'name' => 'view payment'],
             ['guard_name' => 'organizer', 'name' => 'edit payment'],
             ['guard_name' => 'organizer', 'name' => 'delete payment'],
 
-            ['guard_name' => 'organizer', 'name' => 'publish result'],
+            ['guard_name' => 'organizer', 'name' => 'create result'],
+            ['guard_name' => 'organizer', 'name' => 'view result'],
             ['guard_name' => 'organizer', 'name' => 'edit result'],
             ['guard_name' => 'organizer', 'name' => 'delete result'],
 
             ['guard_name' => 'organizer', 'name' => 'create role'],
+            ['guard_name' => 'organizer', 'name' => 'view role'],
             ['guard_name' => 'organizer', 'name' => 'edit role'],
             ['guard_name' => 'organizer', 'name' => 'delete role'],
         ];
@@ -62,10 +67,14 @@ class RoleAndPermissionSeeder extends Seeder
 
         Role::findByName('organizer', 'organizer')->syncPermissions([
             'create event',
+            'view event',
             'edit event',
             'delete event',
 
-            'publish result',
+            'view user',
+
+            'create result',
+            'view result',
             'edit result',
             'delete result',
         ]);
