@@ -17,13 +17,27 @@ Route::middleware('auth')->group(function () {
 // Used by organizers
 Route::middleware('auth:organizer')->group(function () {
     Route::middleware('verified')->group(function () {
-        Route::prefix('/users/{user}/edit')->name('users.')->group(function () {
-            Route::get('/{step}', [UserController::class, 'editForm'])->name('editForm');
-            Route::put('/profile', [UserController::class, 'updateUserProfileInfo'])->name('profile.update');
-            Route::put('/address', [UserController::class, 'updateUserAddressInfo'])->name('address.update');
-            Route::put('/contact', [UserController::class, 'updateUserContactInfo'])->name('contact.update');
-        });
+        Route::prefix('/users')->name('users.')->group(function () {
 
-        Route::resource('users', UserController::class);
+            Route::group(['middleware' => ['role:super-organizer']], function () {
+                Route::prefix('/{user}/edit')->group(function () {
+                    Route::get('/{step}', [UserController::class, 'editForm'])->name('editForm');
+                    Route::put('/profile', [UserController::class, 'updateUserProfileInfo'])->name('profile.update');
+                    Route::put('/address', [UserController::class, 'updateUserAddressInfo'])->name('address.update');
+                    Route::put('/contact', [UserController::class, 'updateUserContactInfo'])->name('contact.update');
+                });
+
+                Route::get('/create', [UserController::class, 'create'])->name('create');
+                Route::post('/', [UserController::class, 'store'])->name('store');
+                Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
+                Route::put('/{user}', [UserController::class, 'update'])->name('update');
+                Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
+            });
+
+            Route::get('/', [UserController::class, 'index'])->name('index');
+            Route::get('/{user}', [UserController::class, 'show'])->name('show');
+
+            // Route::resource('users', UserController::class);
+        });
     });
 });

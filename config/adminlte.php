@@ -290,58 +290,25 @@ return [
     */
 
     'menu' => [
-        // Navbar items:
-        // [
-        //     'type'         => 'navbar-search',
-        //     'text'         => 'search',
-        //     'topnav_right' => true,
-        // ],
-        //  [
-        //      'type'         => 'fullscreen-widget',
-        //      'topnav_right' => true,
-        // ],
-
-        // Sidebar items:
-        // [
-        //     'type' => 'sidebar-menu-search',
-        //     'text' => 'search',
-        // ],
-        // [
-        //     'text' => 'blog',
-        //     'url'  => 'admin/blog',
-        //     'can'  => 'manage-blog',
-        // ],
         [
             'text'        => 'Events',
             'url'         => 'events',
             'active'      => ['events/*'],
             'icon'        => 'fa-solid fa-calendar',
-            // 'label'       => 4,
-            // 'label_color' => 'success',
         ],
         [
             'text'        => 'Users',
             'url'         => 'users',
             'active'      => ['users/*'],
             'icon'        => 'fa-solid fa-users',
-            // 'label'       => 4,
-            // 'label_color' => 'success',
+            // 'can'         => ['create user', 'edit user', 'delete user'],
         ],
-        // [
-        //     'text'        => 'Invoices',
-        //     'url'         => 'invoices',
-        //     'active'      => ['invoices/*'],
-        //     'icon'        => 'fa-solid fa-file-invoice-dollar',
-        // 'label'       => 4,
-        // 'label_color' => 'success',
-        // ],
         [
             'text'        => 'Payments',
             'url'         => 'payments',
             'active'      => ['payments/*'],
             'icon'        => 'fa-solid fa-money-bill',
-            // 'label'       => 4,
-            // 'label_color' => 'success',
+            'can'         => ['create payment', 'edit payment', 'delete payment'],
         ],
 
         [
@@ -351,14 +318,30 @@ return [
             'icon'        => 'fa-solid fa-square-poll-vertical',
         ],
 
-        ['header' => 'account_settings'],
-
         [
-            'text' => 'profile',
-            'url'  => 'organizers/profile',
-            'active'      => ['organizers/profile/*'],
-            'icon' => 'fas fa-fw fa-user',
-        ],
+            'text'    => 'Settings',
+            'icon'    => 'fa-solid fa-gear',
+            'submenu' => [
+                [
+                    'text'   => 'Roles',
+                    'url'    => '/roles',
+                    'active' => ['roles/*'],
+                    'shift'  => 'ml-1',
+                    'icon'   => 'fa-solid fa-lock',
+                    'can'    => ['create role', 'edit role', 'delete role'],
+                ],
+
+                ['header' => 'account_settings'],
+
+                [
+                    'text' => 'profile',
+                    'url'  => 'organizers/profile',
+                    'active'      => ['organizers/profile/*'],
+                    'icon' => 'fas fa-fw fa-user',
+                ],
+            ],
+        ]
+
     ],
 
     /*

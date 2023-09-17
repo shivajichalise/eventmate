@@ -8,12 +8,14 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class Organizer extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
+    use HasRoles;
 
     protected $guard = 'organizer';
 

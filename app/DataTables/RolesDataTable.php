@@ -2,7 +2,8 @@
 
 namespace App\DataTables;
 
-use App\Models\User;
+// use App\Models\Role;
+use Spatie\Permission\Models\Role;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\View;
 use Yajra\DataTables\EloquentDataTable;
@@ -13,7 +14,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class UsersDataTable extends DataTable
+class RolesDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -22,10 +23,10 @@ class UsersDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
-        $showRoute = 'users.show';
-        $editRoute = 'users.edit';
-        $destroyRoute = 'users.destroy';
-        $model = 'user';
+        $showRoute = 'roles.show';
+        $editRoute = 'roles.edit';
+        $destroyRoute = 'roles.destroy';
+        $model = 'role';
 
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($row) use ($model, $showRoute, $editRoute, $destroyRoute) {
@@ -44,7 +45,7 @@ class UsersDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(User $model): QueryBuilder
+    public function query(Role $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -55,10 +56,10 @@ class UsersDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('users-table')
+                    ->setTableId('roles-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    // ->dom('Bfrtip')
+                    //->dom('Bfrtip')
                     ->orderBy(1)
                     ->selectStyleSingle()
                     ->buttons([
@@ -75,11 +76,10 @@ class UsersDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('DT_RowIndex')->title('#')->searchable(false)->orderable(false),
+            Column::make('DT_RowIndex')->title('#')->orderable(false)->searchable(),
+            Column::make('guard_name'),
             Column::make('name'),
-            Column::make('email'),
-            // Column::make('created_at'),
-            // Column::make('updated_at'),
+            Column::make('created_at'),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
@@ -93,6 +93,6 @@ class UsersDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Users_' . date('YmdHis');
+        return 'Roles_' . date('YmdHis');
     }
 }

@@ -68,5 +68,8 @@ class Kernel extends HttpKernel
         'organizer' => \App\Http\Middleware\OrganizerAccess::class,
         'paymentCheck' => \App\Http\Middleware\PaymentCheckMiddleware::class,
         'roleCheck' => \App\Http\Middleware\CheckUserRole::class,
+        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
     ];
 }
