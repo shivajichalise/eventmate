@@ -20,8 +20,18 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
+            'gender' => fake()->randomElement(['Male', 'Female', 'Others']),
+            'is_disabled' => false,
+            'password' => bcrypt('password'), // You can set a default password or use fake()->password
+            'address_line_1' => fake()->streetAddress(),
+            'state' => fake()->state(),
+            'city' => fake()->city(),
+            'country' => fake()->country(),
+            'mobile_number' => fake()->phoneNumber(),
+            'emergency_number' => fake()->phoneNumber(),
+            'profile_status' => json_encode([]),
+            'is_active' => true,
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
         ];
     }
