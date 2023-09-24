@@ -2,6 +2,9 @@
 
 namespace App\Console;
 
+use App\Models\Event;
+use App\Notifications\EventStartedNotification;
+use App\Notifications\EventEndedNotification;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,6 +16,25 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+
+        // Schedule the "Event Started" notification
+        $schedule->call(function () {
+            Event::where('event_start', '<=', now())
+                ->where('event_end', '>', now())
+                ->get()
+                ->each(function ($event) {
+                    $event->notify(new EventStartedNotification($event));
+                });
+        })->everyMinute(); // Adjust the frequency as needed
+
+        // Schedule the "Event Ended" notification
+        $schedule->call(function () {
+            Event::where('event_end', '<=', now())
+                ->get()
+                ->each(function ($event) {
+                    $event->notify(new EventEndedNotification($event));
+                });
+        })->everyMinute(); // Adjust the frequency as needed
     }
 
     /**
