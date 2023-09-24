@@ -12,8 +12,8 @@ export default function Home({ auth, events, payments }) {
         <>
             <Head title="Welcome" />
             <NavBar auth={auth} />
-            <div className="my-5 flex justify-center items-center">
-                <div className="w-11/12 flex flex-col items-center justify-center bg-gray-100 rounded-lg">
+            <div className="flex justify-center items-center">
+                <div className="w-full flex flex-col items-center justify-center bg-gray-50 rounded-lg">
                     <div className="w-11/12">
                         <div className="flex justify-center items-center">
                             <h1 className="text-2xl font-medium my-5">
