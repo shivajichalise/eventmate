@@ -65,7 +65,7 @@
     <body>
         <div class="container">
             <div class="header">
-                <img src="images/logo.png" alt="Logo" style="max-width: 100px; height: auto;">
+                <img src="images/logo/eventmate_purple-nav-wordmark-09.png" alt="Event Mate Logo" style="max-width: 100px; height: auto;">
                 <h1 class="title">Receipt</h1>
                 <h2 class="subtitle">Invoice: {{ $invoice->number }}</h2>
             </div>
