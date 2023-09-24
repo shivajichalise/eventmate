@@ -16,6 +16,7 @@ use App\Models\Support;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Models\Venue;
+use App\Notifications\EventDismissedNotification;
 use App\Notifications\NewEventCreated;
 use Exception;
 use Illuminate\Http\Request;
@@ -412,6 +413,9 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
+        $users = $event->attendees()->get();
+        Notification::send($users, new EventDismissedNotification($event));
+
         $event->delete();
         return redirect()->back()->with('success', 'Event is deleted successfully.');
     }

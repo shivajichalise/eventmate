@@ -74,16 +74,16 @@ class Event extends Model
         return User::whereHas('payments', function (Builder $query) {
             $query->whereIn('invoice_id', function ($subQuery) {
                 $subQuery->select('id')
-                    ->from('invoices')
-                    ->whereIn('ticket_id', function ($ticketSubQuery) {
-                        $ticketSubQuery->select('id')
-                            ->from('tickets')
-                            ->whereIn('sub_event_id', function ($subEventSubQuery) {
-                                $subEventSubQuery->select('id')
-                                    ->from('sub_events')
-                                    ->where('event_id', $this->id); // Use $this->id to reference the event's ID
-                            });
+                ->from('invoices')
+                ->whereIn('ticket_id', function ($ticketSubQuery) {
+                    $ticketSubQuery->select('id')
+                    ->from('tickets')
+                    ->whereIn('sub_event_id', function ($subEventSubQuery) {
+                        $subEventSubQuery->select('id')
+                        ->from('sub_events')
+                        ->where('event_id', $this->id); // Use $this->id to reference the event's ID
                     });
+                });
             });
         });
     }
