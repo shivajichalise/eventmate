@@ -7,6 +7,7 @@ use App\Notifications\EventStartedNotification;
 use App\Notifications\EventEndedNotification;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Notification;
 
 class Kernel extends ConsoleKernel
 {
@@ -19,22 +20,24 @@ class Kernel extends ConsoleKernel
 
         // Schedule the "Event Started" notification
         $schedule->call(function () {
-            Event::where('event_start', '<=', now())
-                ->where('event_end', '>', now())
-                ->get()
-                ->each(function ($event) {
-                    $event->notify(new EventStartedNotification($event));
-                });
-        })->everyMinute(); // Adjust the frequency as needed
+            Event::where('event_start', '<=', now()->format('Y-m-d H:i:s'))
+            ->where('event_end', '>', now()->format('Y-m-d H:i:s'))
+            ->get()
+            ->each(function ($event) {
+                $attendees = $event->attendees()->get();
+                Notification::send($attendees, new EventStartedNotification($event));
+            });
+        })->everyMinute();
 
         // Schedule the "Event Ended" notification
         $schedule->call(function () {
-            Event::where('event_end', '<=', now())
+            Event::where('event_end', '<=', now()->format('Y-m-d H:i:s'))
                 ->get()
                 ->each(function ($event) {
-                    $event->notify(new EventEndedNotification($event));
+                    $attendees = $event->attendees()->get();
+                    Notification::send($attendees, new EventEndedNotification($event));
                 });
-        })->everyMinute(); // Adjust the frequency as needed
+        })->everyMinute();
     }
 
     /**

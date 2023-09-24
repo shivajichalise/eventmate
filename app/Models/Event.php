@@ -25,6 +25,13 @@ class Event extends Model
         'status'
     ];
 
+    protected $dates = [
+        'event_start',
+        'event_end',
+        'registration_start',
+        'registration_end',
+    ];
+
     protected static function booted(): void
     {
         // To have serial sn
