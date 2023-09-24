@@ -85,7 +85,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isProfileCompleted(): bool
     {
         // Check if profile_status array is empty
-        return empty($this->profile_status);
+        return empty(json_decode($this->profile_status, true));
     }
 
     /**

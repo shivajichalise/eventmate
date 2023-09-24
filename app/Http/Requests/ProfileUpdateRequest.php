@@ -27,8 +27,8 @@ class ProfileUpdateRequest extends FormRequest
             'name' => ['string', 'max:255'],
             'email' => ['required', 'email', 'max:255', new UniqueEmailExceptSelf($user->id)],
             // 'email' => ['email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
-            'gender' => ['string', 'max:6', 'in:Male,Female,Others'],
-            'is_disabled' => ['boolean'],
+            'gender' => ['string', 'in:Male,Female,Other'],
+            'is_disabled' => ['boolean', 'in:0,1'],
         ];
     }
 }

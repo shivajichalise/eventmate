@@ -24,7 +24,7 @@ class SaveSupportRequest extends FormRequest
         return [
             'email' => 'required|email:rfc,dns',
             'phone' => 'nullable|phone:landline,INTERNATIONAL,NP',
-            'mobile' => 'required|phone:mobile,INTERNATIONAL,NP',
+            'mobile' => 'required|numeric|digits:10',
             'address' => 'required|string'
         ];
     }

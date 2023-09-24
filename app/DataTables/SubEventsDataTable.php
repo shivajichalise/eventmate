@@ -24,11 +24,13 @@ class SubEventsDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         $destroyRoute = 'events.sub_events.destroy';
+        $model = 'event';
 
         return (new EloquentDataTable($query))
-            ->addColumn('action', function ($row) use ($destroyRoute) {
+            ->addColumn('action', function ($row) use ($model, $destroyRoute) {
                 return View::make('utils.datatable_destroy_button', [
                     'id' => $row['id'],
+                    'model' => $model,
                     'destroyRoute' => $destroyRoute,
                 ])->render();
             })

@@ -30,7 +30,8 @@ class ProfileController extends Controller
     {
         $profileStatus = json_decode($request->user()->profile_status, true) ?? [];
         $profileStatus = array_diff($profileStatus, [$step]);
-        $request->user()->update(['profile_status' => $profileStatus]);
+
+        $request->user()->update(['profile_status' => json_encode($profileStatus)]);
     }
 
     private function updateProfile($request): void

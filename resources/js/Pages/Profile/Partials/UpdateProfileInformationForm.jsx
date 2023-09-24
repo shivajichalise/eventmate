@@ -28,12 +28,14 @@ export default function UpdateProfileInformation({
     };
 
     const genderOptions = [
+        { label: "Select Gender", value: null },
         { label: "Male", value: "Male" },
         { label: "Female", value: "Female" },
         { label: "Other", value: "Other" },
     ];
 
     const isDisabledOptions = [
+        { label: "Are you disabled?", value: 3 },
         { label: "No", value: 0 },
         { label: "Yes", value: 1 },
     ];

@@ -14,11 +14,15 @@ use App\Models\Event;
 use App\Models\SubEvent;
 use App\Models\Support;
 use App\Models\Ticket;
+use App\Models\User;
 use App\Models\Venue;
+use App\Notifications\NewEventCreated;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use PragmaRX\Countries\Package\Countries;
 use Vinkla\Hashids\Facades\Hashids;
@@ -232,7 +236,15 @@ class EventController extends Controller
 
         Support::updateOrCreate(['event_id' => $sessionData['general']->id], $fields);
 
+        $event = Event::find($sessionData['general']->id);
         Session::forget('event');
+
+        $previousUrl = url()->previous();
+
+        if (!Str::contains($previousUrl, '/edit')) {
+            $users = User::all();
+            Notification::send($users, new NewEventCreated($event));
+        }
         return redirect()->route('events.index')->with('success', 'Event is created successfully. Please do check if you have properly created sub-events and tickets for those sub-events.');
     }
 
