@@ -403,7 +403,10 @@ class EventController extends Controller
         $sessionData = Session::get('event', []);
 
         $event = Event::find($sessionData['general']->id);
-        $event->delete();
+        if(!$event->status) {
+            $event->delete();
+        }
+
         $this->removeFromSession('event');
         return redirect()->route('events.index')->with('success', 'Event discarded successfully.');
     }

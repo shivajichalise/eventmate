@@ -134,7 +134,6 @@
             <div class="col-6">
                 <div class="card-body" align="right">
                     <a href="{{ route('events.edit.form', ['event' => $general, 'step' => 'sub-events']) }}" type="button" class="btn btn-primary btn-md"> Continue </a>
-                    <!-- <input type="submit" class="btn btn-primary btn-md" id="submit" value="Save & Continue" /> -->
                 </div>
             </div>
         </div>

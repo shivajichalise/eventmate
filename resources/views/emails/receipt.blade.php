@@ -60,12 +60,17 @@
             text-align: center;
             margin-top: 30px;
         }
+
+        .logo {
+            max-width: 100px;
+            height: auto;
+        }
         </style>
     </head>
     <body>
         <div class="container">
             <div class="header">
-                <img src="images/logo/eventmate_purple-nav-wordmark-09.png" alt="Event Mate Logo" style="max-width: 100px; height: auto;">
+                <img src="images/logo/png/eventmate_blue-nav-withBackground.png" alt="Event Mate Logo" class="logo" />
                 <h1 class="title">Receipt</h1>
                 <h2 class="subtitle">Invoice: {{ $invoice->number }}</h2>
             </div>
