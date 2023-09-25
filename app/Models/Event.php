@@ -76,6 +76,13 @@ class Event extends Model
             ->whereDate('event_end', '>=', $currentDate);
     }
 
+    public function scopeUpcoming(): Builder
+    {
+        $currentDate = Carbon::now();
+
+        return $this->whereDate('event_start', '>', $currentDate);
+    }
+
     public function attendees()
     {
         return User::whereHas('payments', function (Builder $query) {

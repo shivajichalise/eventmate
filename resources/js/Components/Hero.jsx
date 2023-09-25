@@ -1,7 +1,7 @@
 export default function Hero({ img }) {
     return (
         <div className="hero min-h-fit flex items-center justify-center">
-            <div className="bg-cover bg-center w-11/12 rounded-lg shadow-xl">
+            <div className="bg-cover bg-center w-11/12 rounded-lg shadow-xl h-40">
                 <img
                     src={img}
                     alt="Banner"
