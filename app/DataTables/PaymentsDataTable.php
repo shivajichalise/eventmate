@@ -23,18 +23,14 @@ class PaymentsDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         $showRoute = 'payments.show';
-        $editRoute = 'payments.edit';
-        $destroyRoute = 'payments.destroy';
         $model = 'payment';
 
         return (new EloquentDataTable($query))
-            ->addColumn('action', function ($row) use ($model, $showRoute, $editRoute, $destroyRoute) {
-                return View::make('utils.datatable_action_buttons', [
+            ->addColumn('action', function ($row) use ($model, $showRoute) {
+                return View::make('utils.datatable_show_button', [
                     'id' => $row['id'],
                     'model' => $model,
                     'showRoute' => $showRoute,
-                    'editRoute' => $editRoute,
-                    'destroyRoute' => $destroyRoute,
                 ])->render();
             })
             ->addColumn('user', function ($payment) {
@@ -105,11 +101,11 @@ class PaymentsDataTable extends DataTable
             Column::make('invoice_status')->title('Invoice Status'),
             Column::make('paid_amount')->title('Amount'),
             Column::make('payment_date')->title('Payment Date'),
-            // Column::computed('action')
-            //     ->exportable(false)
-            //     ->printable(false)
-            //     ->width(60)
-            //     ->addClass('text-center'),
+            Column::computed('action')
+                ->exportable(false)
+                ->printable(false)
+                ->width(60)
+                ->addClass('text-center'),
         ];
     }
 

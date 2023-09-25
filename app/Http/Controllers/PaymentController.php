@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DataTables\PaymentsDataTable;
 use App\Models\Invoice;
+use App\Models\Payment;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -86,5 +87,10 @@ class PaymentController extends Controller
             'success_url' => $success_url,
             'failure_url' => $failure_url
         ]);
+    }
+
+    public function show(Payment $payment)
+    {
+        return $payment->invoice;
     }
 }
