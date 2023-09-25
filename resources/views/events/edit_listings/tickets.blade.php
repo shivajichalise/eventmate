@@ -121,7 +121,7 @@
 
 <div class="card">
     <div class="card-body" align="right">
-        <a href="{{ route('events.edit.form', ['step' => 'support']) }}" type="button" class="btn btn-primary btn-md"> Continue </a>
+        <a href="{{ route('events.edit.form', ['event' => $general, 'step' => 'support']) }}" type="button" class="btn btn-primary btn-md"> Continue </a>
     </div>
 </div>
 
