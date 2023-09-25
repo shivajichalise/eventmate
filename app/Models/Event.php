@@ -48,6 +48,25 @@ class Event extends Model
         });
     }
 
+    /**
+     * Get the number of remaining days until the event starts.
+     *
+     * @return int
+     */
+    public function getRemainingDaysUntilEventStart(): int
+    {
+        // Check if the event_start date is set and in the future
+        if (!$this->event_start || $this->event_start->isPast()) {
+            return -1; // Return null if event_start is not set or in the past
+        }
+
+        // Calculate the remaining days
+        $eventStartDate = $this->event_start;
+        $remainingDays = Carbon::now()->diffInDays($eventStartDate);
+
+        return max(0, $remainingDays); // Ensure a non-negative result
+    }
+
     public function subEvents(): HasMany
     {
         return $this->hasMany(SubEvent::class);

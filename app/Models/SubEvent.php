@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Builder;
 
 class SubEvent extends Model
 {
@@ -63,6 +64,25 @@ class SubEvent extends Model
         return $this->event_end->format('F j, Y');
     }
 
+    /**
+     * Get the number of remaining days until the event starts.
+     *
+     * @return int
+     */
+    public function getRemainingDaysUntilEventStart(): int
+    {
+        // Check if the event_start date is set and in the future
+        if (!$this->event_start || $this->event_start->isPast()) {
+            return -1; // Return null if event_start is not set or in the past
+        }
+
+        // Calculate the remaining days
+        $eventStartDate = $this->event_start;
+        $remainingDays = Carbon::now()->diffInDays($eventStartDate);
+
+        return max(0, $remainingDays); // Ensure a non-negative result
+    }
+
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
@@ -76,5 +96,24 @@ class SubEvent extends Model
     public function result(): HasOne
     {
         return $this->hasOne(Result::class);
+    }
+
+    public function attendees()
+    {
+        return User::whereHas('payments', function (Builder $query) {
+            $query->whereIn('invoice_id', function ($subQuery) {
+                $subQuery->select('id')
+                ->from('invoices')
+                ->whereIn('ticket_id', function ($ticketSubQuery) {
+                    $ticketSubQuery->select('id')
+                    ->from('tickets')
+                    ->whereIn('sub_event_id', function ($subEventSubQuery) {
+                        $subEventSubQuery->select('id')
+                        ->from('sub_events')
+                        ->where('sub_event_id', $this->id); // Use $this->id to reference the event's ID
+                    });
+                });
+            });
+        });
     }
 }

@@ -28,3 +28,4 @@ require __DIR__.'/roleandpermission.php';
 require __DIR__.'/receipt.php';
 require __DIR__.'/invoice.php';
 require __DIR__.'/result.php';
+require __DIR__.'/email.php';

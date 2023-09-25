@@ -339,6 +339,15 @@ return [
                     'active'      => ['organizers/profile/*'],
                     'icon' => 'fas fa-fw fa-user',
                 ],
+
+                ['header' => 'UTILITIES'],
+
+                [
+                    'text' => 'Send Emails',
+                    'url'  => 'send-emails',
+                    'active'      => ['send-emails/*'],
+                    'icon' => 'fa-solid fa-envelope',
+                ],
             ],
         ]
 
