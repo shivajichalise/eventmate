@@ -37,7 +37,7 @@
           <span class="info-box-text">Ask to participate to an event</span>
           <span class="info-box-number">
             <a class="btn btn-info btn-xs m-0" href="{{ route('send_emails.participate') }}">
-              <i class="fa-solid fa-paper-plane"></i> Send
+              Send
             </a>
           </span>
         </div>
@@ -46,12 +46,12 @@
 
     <div class="col-md-6 col-sm-6 col-12">
       <div class="info-box">
-        <span class="info-box-icon bg-success"><i class="far fa-envelope"></i></span>
+        <span class="info-box-icon bg-success"><i class="fa-solid fa-bell"></i></span>
         <div class="info-box-content">
-          <span class="info-box-text">Send Remainder for upcoming events.</span>
+          <span class="info-box-text">Send remainder for upcoming events.</span>
           <span class="info-box-number">
             <a class="btn btn-info btn-xs m-0" href="{{ route('send_emails.remainder') }}">
-              <i class="fa-solid fa-paper-plane"></i> Send
+              Send
             </a>
           </span>
         </div>
