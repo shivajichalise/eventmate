@@ -91,6 +91,31 @@ class PaymentController extends Controller
 
     public function show(Payment $payment)
     {
-        return $payment->invoice;
+        $invoice = $payment->invoice;
+        $user = $invoice->user;
+        $ticket = $invoice->ticket;
+        $sub_event = $ticket->subEvent;
+
+        $data = [
+            'Sub event' => $sub_event->name,
+            'Ticket code' => $ticket->code,
+            'Invoice number' => $invoice->number,
+            'Amount' => $invoice->amount,
+            'Tax' => $invoice->tax,
+            'Discount' => $invoice->discount,
+            'Total amount' => $invoice->total_amount,
+            'Paid amount' => $payment->amount,
+            'Paid status' => $payment->paid,
+            'Payment verified?' => $payment->status,
+        ];
+
+        return view('payments.show')->with([
+            'invoice' => $invoice,
+            'payment' => $payment,
+            'ticket' => $ticket,
+            'sub_event' => $sub_event,
+            'user' => $user,
+            'data' => $data,
+        ]);
     }
 }
