@@ -189,7 +189,7 @@ export default function Invoice({
                                                 Subtotal
                                             </th>
                                             <td className="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
-                                                {ticket.currency}{" "}
+                                                {"NPR "}
                                                 {amounts["subTotal"]}
                                             </td>
                                         </tr>
@@ -208,7 +208,7 @@ export default function Invoice({
                                                 Tax
                                             </th>
                                             <td className="pt-4 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
-                                                {ticket.currency}{" "}
+                                                {"NPR "}
                                                 {amounts["tax"]}
                                             </td>
                                         </tr>
@@ -227,7 +227,7 @@ export default function Invoice({
                                                 Service charge
                                             </th>
                                             <td className="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
-                                                {ticket.currency}{" "}
+                                                {"NPR "}
                                                 {amounts["service_charge"]}
                                             </td>
                                         </tr>
@@ -246,7 +246,7 @@ export default function Invoice({
                                                 Delivery charge
                                             </th>
                                             <td className="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
-                                                {ticket.currency}{" "}
+                                                {"NPR "}
                                                 {amounts["delivery_charge"]}
                                             </td>
                                         </tr>
@@ -265,7 +265,7 @@ export default function Invoice({
                                                 Discount
                                             </th>
                                             <td className="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
-                                                {ticket.currency} 0.00
+                                                NPR 0.00
                                             </td>
                                         </tr>
                                         <tr>
@@ -283,7 +283,7 @@ export default function Invoice({
                                                 Total
                                             </th>
                                             <td className="pt-4 pl-3 pr-4 text-sm font-normal text-right text-slate-700 sm:pr-6 md:pr-0">
-                                                {ticket.currency}{" "}
+                                                {"NPR "}
                                                 {amounts["total"]}
                                             </td>
                                         </tr>

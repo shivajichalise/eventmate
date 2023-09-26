@@ -92,14 +92,16 @@ class Event extends Model
         $currentDate = Carbon::now();
 
         return $this->whereDate('event_start', '<=', $currentDate)
-            ->whereDate('event_end', '>=', $currentDate);
+            ->whereDate('event_end', '>=', $currentDate)
+            ->where('status', true);
     }
 
     public function scopeUpcoming(): Builder
     {
         $currentDate = Carbon::now();
 
-        return $this->whereDate('event_start', '>', $currentDate);
+        return $this->whereDate('event_start', '>', $currentDate)
+            ->where('status', true);
     }
 
     public function attendees()

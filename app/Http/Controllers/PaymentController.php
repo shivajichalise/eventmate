@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Inertia\Response;
+use AmrShawky\LaravelCurrency\Facade\Currency;
 
 class PaymentController extends Controller
 {
@@ -32,7 +33,44 @@ class PaymentController extends Controller
 
         return $uniqueId;
     }
-    public function buy(Ticket $ticket): Response
+
+    private function getAmounts(Ticket $ticket)
+    {
+        $currency = $ticket->currency;
+
+        $amounts = [];
+
+        if($currency !== 'NPR') {
+            $price = Currency::convert()
+            ->from($currency)
+            ->to('NPR')
+            ->amount($ticket->price)
+            ->round(1)
+            ->get();
+
+            $amounts = [
+                'price' => round($price),
+                'subTotal' => round($price),
+                'tax' => round(($ticket->tax / 100) * $price),
+                'service_charge' => 0,
+                'delivery_charge' => 0,
+                'total' => round((($ticket->tax / 100) * $price) + $price),
+            ];
+        } else {
+            $amounts = [
+                'price' => round($ticket->price),
+                'subTotal' => round($ticket->price),
+                'tax' => round(($ticket->tax / 100) * $ticket->price),
+                'service_charge' => 0,
+                'delivery_charge' => 0,
+                'total' => round((($ticket->tax / 100) * $ticket->price) + $ticket->price),
+            ];
+        }
+
+        return $amounts;
+    }
+
+    public function buy(Ticket $ticket)
     {
         $event = $ticket->event;
         $subevent = $ticket->subEvent;
@@ -44,14 +82,7 @@ class PaymentController extends Controller
         $success_url = $site_url . "/esewa/verify?q=su";
         $failure_url = $site_url . "/esewa/verify?q=fu";
 
-        $amounts = [
-            'price' => $ticket->price,
-            'subTotal' => $ticket->price,
-            'tax' => ($ticket->tax / 100) * $ticket->price,
-            'service_charge' => 0,
-            'delivery_charge' => 0,
-            'total' => (($ticket->tax / 100) * $ticket->price) + $ticket->price,
-        ];
+        $amounts = $this->getAmounts($ticket);
 
         $invoice = Invoice::updateOrCreate(
             [
