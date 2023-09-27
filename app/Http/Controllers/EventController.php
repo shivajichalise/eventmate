@@ -164,20 +164,33 @@ class EventController extends Controller
 
         $sessionData = Session::get('event', []);
 
+        $banner = $request->hasFile('banner');
+
+        if ($banner) {
+            $banner = $request->file('banner');
+            $name = $banner->store('banners', 'public');
+            $fields['banner'] = $name;
+        }
+
         if(empty($sessionData)) {
             $event = Event::create($fields);
             $venueFields['event_id'] = $event->id;
             Venue::create($venueFields);
+
+            $this->createEventSession('general', $event, 'create');
+
+            return redirect()->route('events.form', ['step' => 'sub-events'])->with('info', 'Event\'s general information is saved temporarily. Please complete all the steps to make it permanent.');
         } else {
             $event = Event::find($sessionData['general']->id);
             $event->update($fields);
 
             $venue = Venue::updateOrCreate(['event_id' => $sessionData['general']->id], $venueFields);
+
+            $this->createEventSession('general', $event, 'edit');
+
+            return redirect()->route('events.edit.form', ['event' => $event, 'step' => 'sub-events'])->with('info', 'Event\'s general information is updated.');
         }
 
-        $this->createEventSession('general', $event);
-
-        return redirect()->route('events.form', ['step' => 'sub-events'])->with('info', 'Event\'s general information is saved temporarily. Please complete all the steps to make it permanent.');
     }
 
     /**
@@ -302,6 +315,13 @@ class EventController extends Controller
                 ->with('info', 'You have unfinished event creation process. Please either complete it or discard it to continue.');
         }
 
+        if(!empty($isEventInSession) && $isEventInSession['flag'] == 'edit') {
+            return redirect()->route('events.edit.form', ['event' => $isEventInSession['general'], 'step' => 'general'])
+                ->with([
+                    'info' => 'You have unfinished event edit process. Please either complete it or discard it to continue.',
+                ]);
+        }
+
         $this->createEventSession('general', $event, 'edit');
         $this->createEventSession('support', $event->support, 'edit');
 
@@ -402,12 +422,14 @@ class EventController extends Controller
     {
         $sessionData = Session::get('event', []);
 
-        $event = Event::find($sessionData['general']->id);
-        if(!$event->status) {
-            $event->delete();
+        if(!empty($sessionData)) {
+            $event = Event::find($sessionData['general']->id);
+            if(!$event->status) {
+                $event->delete();
+            }
+            $this->removeFromSession('event');
         }
 
-        $this->removeFromSession('event');
         return redirect()->route('events.index')->with('success', 'Event discarded successfully.');
     }
 

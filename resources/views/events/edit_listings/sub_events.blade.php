@@ -33,7 +33,7 @@
             <div class="form-group">
                 <label for="name"> Sub-event Name <span class="text-danger">*</span></label>
                 <div>
-                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" placeholder="Sub-event Name" value="{{ old('name') ?? ($general?->name ?? '') }}" />
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" placeholder="Sub-event Name" value="{{ old('name') }}" />
                     @error('name')
                     <small class="text-danger">{{ $message }}</small>
                     @enderror

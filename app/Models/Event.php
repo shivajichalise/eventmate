@@ -22,6 +22,7 @@ class Event extends Model
         'event_end',
         'registration_start',
         'registration_end',
+        'banner',
         'status'
     ];
 

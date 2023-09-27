@@ -9,7 +9,7 @@
 
 @include('utils.flash_message')
 
-<form action="{{route('events.general.save')}}" method="post" name="">
+<form action="{{route('events.general.save')}}" method="post" enctype="multipart/form-data" name="">
     @csrf
 
     <div class="card">
@@ -121,6 +121,28 @@
 
             </div>
 
+            <div class="form-group">
+                <label for="banner"> Banner Image (JPG/PNG) </label>
+                <div>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="banner"><i class="fa-solid fa-image"></i></span>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input @error('banner') is-invalid @enderror" id="banner" name="banner" aria-describedby="banner">
+                            <label class="custom-file-label" for="banner">Choose image</label>
+                        </div>
+                    </div>
+                    <small>
+                        Only jpg and png images are allowed.
+                    </small>
+
+                    @error('banner')
+                    <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -133,7 +155,8 @@
             </div>
             <div class="col-6">
                 <div class="card-body" align="right">
-                    <a href="{{ route('events.edit.form', ['event' => $general, 'step' => 'sub-events']) }}" type="button" class="btn btn-primary btn-md"> Continue </a>
+                    <button type="submit" class="btn btn-primary btn-md"> Update </button>
+                    <!-- <a href="{{ route('events.edit.form', ['event' => $general, 'step' => 'sub-events']) }}" type="button" class="btn btn-primary btn-md"> Continue </a> -->
                 </div>
             </div>
         </div>
@@ -146,6 +169,7 @@
 @section('js')
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhq4J5no2hsLTmXC7L_JBnoHDp0l_rrbE&libraries=places&callback=initAutocomplete" async defer></script>
 <script>
+bsCustomFileInput.init()
 let autocomplete;
 
 function initAutocomplete() {
@@ -193,3 +217,4 @@ function onPlaceChanged() {
 
 @section('plugins.TempusDominusBs4', true)
 @section('plugins.PlaceToAddress', true)
+@section('plugins.BsCustomFileInput', true)

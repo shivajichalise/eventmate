@@ -37,6 +37,8 @@ class SaveGeneralRequest extends FormRequest
             'event_end' => 'required|date_format:m/d/Y g:i A',
             'registration_start' => 'required|date_format:m/d/Y g:i A',
             'registration_end' => 'required|date_format:m/d/Y g:i A',
+
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
 
