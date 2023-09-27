@@ -41,8 +41,13 @@ export default function Home({ auth, events, payments }) {
                                             >
                                                 <div className="relative mx-4 mt-4 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40">
                                                     <img
-                                                        src="images/banner.jpg"
-                                                        alt="event banner"
+                                                        src={
+                                                            event.banner
+                                                                ? `storage/` +
+                                                                  event.banner
+                                                                : "images/banner.jpg"
+                                                        }
+                                                        alt="Event banner"
                                                     />
                                                     <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60"></div>
                                                 </div>
