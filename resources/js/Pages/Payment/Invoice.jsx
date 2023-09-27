@@ -20,6 +20,8 @@ export default function Invoice({
     amounts,
     invoice,
     pay_url,
+    signed_field_names,
+    signature,
     success_url,
     failure_url,
 }) {
@@ -324,49 +326,59 @@ export default function Invoice({
                         <div className="mr-4">
                             <form action={pay_url} method="POST">
                                 <input
-                                    value={amounts["total"]}
-                                    name="tAmt"
-                                    type="hidden"
-                                />
-                                <input
                                     value={amounts["subTotal"]}
-                                    name="amt"
+                                    name="amount"
                                     type="hidden"
                                 />
                                 <input
                                     value={amounts["tax"]}
-                                    name="txAmt"
+                                    name="tax_amount"
                                     type="hidden"
                                 />
                                 <input
-                                    value={amounts["service_charge"]}
-                                    name="psc"
-                                    type="hidden"
-                                />
-                                <input
-                                    value={amounts["delivery_charge"]}
-                                    name="pdc"
-                                    type="hidden"
-                                />
-                                <input
-                                    value="EPAYTEST"
-                                    name="scd"
+                                    value={amounts["total"]}
+                                    name="total_amount"
                                     type="hidden"
                                 />
                                 <input
                                     value={ticket.uniqueId}
-                                    name="pid"
+                                    name="transaction_uuid"
+                                    type="hidden"
+                                />
+                                <input
+                                    value="8gBm/:&EnhH.1/q"
+                                    name="product_code"
+                                    type="hidden"
+                                />
+                                <input
+                                    value={amounts["service_charge"]}
+                                    name="product_service_charge"
+                                    type="hidden"
+                                />
+                                <input
+                                    value={amounts["delivery_charge"]}
+                                    name="product_delivery_charge"
                                     type="hidden"
                                 />
                                 <input
                                     value={success_url}
                                     type="hidden"
-                                    name="su"
+                                    name="success_url"
                                 />
                                 <input
                                     value={failure_url}
                                     type="hidden"
-                                    name="fu"
+                                    name="failure_url"
+                                />
+                                <input
+                                    value={signed_field_names}
+                                    type="hidden"
+                                    name="signed_field_names"
+                                />
+                                <input
+                                    value={signature}
+                                    type="hidden"
+                                    name="signature"
                                 />
                                 <button type="submit" className="">
                                     <img

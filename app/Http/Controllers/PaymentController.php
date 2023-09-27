@@ -78,7 +78,9 @@ class PaymentController extends Controller
         $user = Auth::user();
 
         $site_url = env('APP_URL');
-        $pay_url = "https://uat.esewa.com.np/epay/main"; // Development
+        $merchant_code = '8gBm/:&EnhH.1/q';
+        // $pay_url = "https://uat.esewa.com.np/epay/main"; // Development
+        $pay_url = "http://rc-epay.esewa.com.np/api/epay/main/v2/form";
         $success_url = $site_url . "/esewa/verify?q=su";
         $failure_url = $site_url . "/esewa/verify?q=fu";
 
@@ -107,6 +109,10 @@ class PaymentController extends Controller
             'invoice' => $invoice
         ]);
 
+        $signed_field_names = $amounts['total'] .','. $ticket['uniqueId'] .','. $merchant_code;
+        // $signed_field_names = 'total_amount='. $amounts['total'] .',transaction_uuid='. $ticket['uniqueId'] .',product_code='. $merchant_code;
+        $signature = base64_encode(hash_hmac('sha256', $signed_field_names, $merchant_code, true));
+
         return Inertia::render('Payment/Invoice', [
             'user' => $user,
             'event' => $event,
@@ -115,6 +121,8 @@ class PaymentController extends Controller
             'amounts' => $amounts,
             'invoice' => $invoice,
             'pay_url' => $pay_url,
+            'signed_field_names' => $signed_field_names,
+            'signature' => $signature,
             'success_url' => $success_url,
             'failure_url' => $failure_url
         ]);
