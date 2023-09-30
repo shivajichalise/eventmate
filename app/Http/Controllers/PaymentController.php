@@ -78,6 +78,56 @@ class PaymentController extends Controller
         $user = Auth::user();
 
         $site_url = env('APP_URL');
+        $pay_url = "https://uat.esewa.com.np/epay/main"; // Development
+        $success_url = $site_url . "/esewa/verify?q=su";
+        $failure_url = $site_url . "/esewa/verify?q=fu";
+
+        $amounts = $this->getAmounts($ticket);
+
+        $invoice = Invoice::updateOrCreate(
+            [
+                'user_id' => $user->id,
+                'ticket_id' => $ticket->id
+            ],
+            [
+                'amount' => $amounts['subTotal'],
+                'tax' => $amounts['tax'],
+                'service_charge' => $amounts['service_charge'],
+                'discount_charge' => $amounts['delivery_charge'],
+                'total_amount' => $amounts['total'],
+            ]
+        );
+
+        $ticket['uniqueId'] = $this->generateUniqueId($ticket->id);
+
+        Session::put('ticket', [
+            'id' => $ticket['uniqueId'],
+            'ticket' => $ticket,
+            'amounts' => $amounts,
+            'invoice' => $invoice
+        ]);
+
+        return Inertia::render('Payment/Invoice', [
+            'user' => $user,
+            'event' => $event,
+            'sub_event' => $subevent,
+            'ticket' => $ticket,
+            'amounts' => $amounts,
+            'invoice' => $invoice,
+            'pay_url' => $pay_url,
+            'success_url' => $success_url,
+            'failure_url' => $failure_url
+        ]);
+    }
+
+    public function buy_v2(Ticket $ticket)
+    {
+        $event = $ticket->event;
+        $subevent = $ticket->subEvent;
+        $event = $subevent->event;
+        $user = Auth::user();
+
+        $site_url = env('APP_URL');
         $merchant_code = '8gBm/:&EnhH.1/q';
         // $pay_url = "https://uat.esewa.com.np/epay/main"; // Development
         $pay_url = "http://rc-epay.esewa.com.np/api/epay/main/v2/form";

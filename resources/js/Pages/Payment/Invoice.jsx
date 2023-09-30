@@ -326,6 +326,61 @@ export default function Invoice({
                         <div className="mr-4">
                             <form action={pay_url} method="POST">
                                 <input
+                                    value={amounts["total"]}
+                                    name="tAmt"
+                                    type="hidden"
+                                />
+                                <input
+                                    value={amounts["subTotal"]}
+                                    name="amt"
+                                    type="hidden"
+                                />
+                                <input
+                                    value={amounts["tax"]}
+                                    name="txAmt"
+                                    type="hidden"
+                                />
+                                <input
+                                    value={amounts["service_charge"]}
+                                    name="psc"
+                                    type="hidden"
+                                />
+                                <input
+                                    value={amounts["delivery_charge"]}
+                                    name="pdc"
+                                    type="hidden"
+                                />
+                                <input
+                                    value="EPAYTEST"
+                                    name="scd"
+                                    type="hidden"
+                                />
+                                <input
+                                    value={ticket.uniqueId}
+                                    name="pid"
+                                    type="hidden"
+                                />
+                                <input
+                                    value={success_url}
+                                    type="hidden"
+                                    name="su"
+                                />
+                                <input
+                                    value={failure_url}
+                                    type="hidden"
+                                    name="fu"
+                                />
+                                <button type="submit" className="">
+                                    <img
+                                        src="/images/esewa_logo.png"
+                                        alt="Esewa"
+                                        className="w-12 h-12 mr-2 inline-block"
+                                    />
+                                </button>
+                            </form>
+                            {/*
+                            <form action={pay_url} method="POST">
+                                <input
                                     value={amounts["subTotal"]}
                                     name="amount"
                                     type="hidden"
@@ -388,6 +443,7 @@ export default function Invoice({
                                     />
                                 </button>
                             </form>
+                                */}
                         </div>
                     </div>
                 </div>
