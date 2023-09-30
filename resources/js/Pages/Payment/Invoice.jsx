@@ -445,6 +445,13 @@ export default function Invoice({
                             </form>
                                 */}
                         </div>
+                        <a href={`/khalti/pay/${invoice.id}`} className="">
+                            <img
+                                src="/images/khalti_logo.png"
+                                alt="Khalti"
+                                className="w-12 h-12 mr-2 inline-block"
+                            />
+                        </a>
                     </div>
                 </div>
             </div>
