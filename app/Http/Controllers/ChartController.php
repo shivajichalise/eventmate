@@ -82,23 +82,34 @@ class ChartController extends Controller
         $backgroundColor = [];
 
         // Generate random colors for each bar
-        $colors = [
-            'rgba(255, 87, 51, 0.7)',   // Red with opacity
-            'rgba(255, 195, 0, 0.7)',   // Yellow with opacity
-            'rgba(51, 255, 87, 0.7)',   // Green with opacity
-            'rgba(51, 153, 255, 0.7)',  // Blue with opacity
-            'rgba(255, 51, 255, 0.7)',  // Purple with opacity
-            'rgba(255, 87, 51, 0.7)',   // Red with opacity
-            'rgba(255, 195, 0, 0.7)',   // Yellow with opacity
-            'rgba(51, 255, 87, 0.7)',   // Green with opacity
-            'rgba(51, 153, 255, 0.7)',  // Blue with opacity
-            'rgba(255, 51, 255, 0.7)',  // Purple with opacity
-            'rgba(102, 102, 102, 0.7)', // Gray with opacity
-            'rgba(255, 153, 0, 0.7)',   // Orange with opacity
-            'rgba(255, 153, 204, 0.7)', // Pink with opacity
-            'rgba(102, 204, 102, 0.7)', // Light Green with opacity
-            'rgba(51, 102, 153, 0.7)',  // Dark Blue with opacity
-        ];
+        // $colors = [
+        //     'rgba(255, 87, 51, 0.7)',   // Red with opacity
+        //     'rgba(255, 195, 0, 0.7)',   // Yellow with opacity
+        //     'rgba(51, 255, 87, 0.7)',   // Green with opacity
+        //     'rgba(51, 153, 255, 0.7)',  // Blue with opacity
+        //     'rgba(255, 51, 255, 0.7)',  // Purple with opacity
+        //     'rgba(255, 87, 51, 0.7)',   // Red with opacity
+        //     'rgba(255, 195, 0, 0.7)',   // Yellow with opacity
+        //     'rgba(51, 255, 87, 0.7)',   // Green with opacity
+        //     'rgba(51, 153, 255, 0.7)',  // Blue with opacity
+        //     'rgba(255, 51, 255, 0.7)',  // Purple with opacity
+        //     'rgba(102, 102, 102, 0.7)', // Gray with opacity
+        //     'rgba(255, 153, 0, 0.7)',   // Orange with opacity
+        //     'rgba(255, 153, 204, 0.7)', // Pink with opacity
+        //     'rgba(102, 204, 102, 0.7)', // Light Green with opacity
+        //     'rgba(51, 102, 153, 0.7)',  // Dark Blue with opacity
+        // ];
+
+        $colors = [];
+
+        for ($i = 0; $i < count($userData); $i++) {
+            $red = rand(0, 255);
+            $green = rand(0, 255);
+            $blue = rand(0, 255);
+            $alpha = 0.7; // Random alpha value between 0.5 and 1
+
+            $colors[] = "rgba($red, $green, $blue, $alpha)";
+        }
 
         foreach ($userData as $user) {
             $labels[] = $user->country;

@@ -26,7 +26,7 @@ class UserFactory extends Factory
             'address_line_1' => fake()->streetAddress(),
             'state' => fake()->state(),
             'city' => fake()->city(),
-            'country' => fake()->country(),
+            'country' => CustomCountryProvider::randomCountry(),
             'mobile_number' => '9' . fake()->numberBetween(100000000, 999999999),
             'emergency_number' => '9' . fake()->numberBetween(100000000, 999999999),
             'profile_status' => json_encode([]),

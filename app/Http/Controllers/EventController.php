@@ -380,7 +380,7 @@ class EventController extends Controller
     {
         $general = Session::get('event.general', null);
         $dataTable = new TicketsDataTable();
-        $sub_events = SubEvent::doesntHave('ticket')->get();
+        $sub_events = SubEvent::doesntHave('ticket')->where('event_id', $general->id)->get();
 
         $currencies = (new Countries())->currencies()->sortBy('name');
 
