@@ -17,6 +17,7 @@ class UserController extends Controller
      */
     public function index(UsersDataTable $dataTable)
     {
+        // return User::all();
         return $dataTable->render('users.index');
     }
 
