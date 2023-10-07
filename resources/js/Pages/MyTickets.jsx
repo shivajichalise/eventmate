@@ -37,12 +37,10 @@ export default function Dashboard({
                     My Tickets
                 </h2>
             }
-            headerr={
-                <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    My Tickets
-                </h2>
-            }
+            headerr={"yes"}
         >
+            <Head title="My Tickets" />
+
             <PopupModal
                 id={result.id}
                 title={result.title}
