@@ -8,6 +8,7 @@ use App\Http\Requests\ProfileUpdateContactRequest;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Inertia\Inertia;
 
 class UserController extends Controller

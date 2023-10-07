@@ -87,7 +87,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fa-sharp fa-solid fa-percent"></i></div>
                             </div>
-                            <input type="text" name="tax" id="" class="form-control @error('tax') is-invalid @enderror" placeholder="Sub-event End Date & Time" value="{{ old('tax') }}" autocomplete="off" />
+                            <input type="text" name="tax" id="" class="form-control @error('tax') is-invalid @enderror" placeholder="Tax" value="{{ old('tax') }}" autocomplete="off" />
                         </div>
                         @error('tax')
                         <small class="text-danger">{{ $message }}</small>

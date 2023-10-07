@@ -65,6 +65,7 @@
                             </div>
                             <input type="text" name="event_start" id="" class="form-control @error('event_start') is-invalid @enderror inputDateTime" placeholder="Event Start Date & Time" value="{{ old('event_start') ?? ( $general ? \Carbon\Carbon::parse($general['event_start'])->format('m/d/Y H:i A') : '') }}" autocomplete="off" />
                         </div>
+                        <small class="text-muted">eg. 11/10/2023 7:00 PM</small>
                         @error('event_start')
                         <small class="text-danger">{{ $message }}</small>
                         @enderror
