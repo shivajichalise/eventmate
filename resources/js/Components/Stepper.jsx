@@ -21,21 +21,17 @@ function Stepper({ steps, totalSteps, step, form, onNext, onPrev }) {
                     <button
                         onClick={onPrev}
                         className="btn btn-accent text-white py-2 px-4 rounded-lg mr-4"
+                        disabled={step === 1 ?? "true"}
                     >
                         Previous
                     </button>
-                    {step < totalSteps ? (
-                        <button
-                            onClick={onNext}
-                            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg"
-                        >
-                            Next
-                        </button>
-                    ) : (
-                        <button className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg">
-                            Submit
-                        </button>
-                    )}
+                    <button
+                        onClick={onNext}
+                        className="btn btn-primary hover:bg-blue-600 text-white py-2 px-4 rounded-lg"
+                        disabled={step === totalSteps ?? "true"}
+                    >
+                        Next
+                    </button>
                 </div>
             </div>
         </div>
