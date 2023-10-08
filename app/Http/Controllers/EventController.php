@@ -255,10 +255,11 @@ class EventController extends Controller
 
         $previousUrl = url()->previous();
 
-        if (!Str::contains($previousUrl, '/edit')) {
-            $users = User::all();
-            Notification::send($users, new NewEventCreated($event));
-        }
+        // Uncomment this to let users know about the new event and made the email sending queueable
+        // if (!Str::contains($previousUrl, '/edit')) {
+        //     $users = User::all();
+        //     Notification::send($users, new NewEventCreated($event));
+        // }
         return redirect()->route('events.index')->with('success', 'Event is created successfully. Please do check if you have properly created sub-events and tickets for those sub-events.');
     }
 
