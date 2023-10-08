@@ -12,6 +12,9 @@ export default function Home({ auth, events, payments }) {
         <>
             <Head title="Welcome" />
             <NavBar auth={auth} />
+
+            <Hero img="/images/banner.jpg" />
+
             <div className="flex justify-center items-center">
                 <div className="w-full flex flex-col items-center justify-center bg-gray-50 rounded-lg">
                     <div
@@ -126,7 +129,7 @@ export default function Home({ auth, events, payments }) {
                                                                 "event.view",
                                                                 {
                                                                     id: sub_event.id,
-                                                                }
+                                                                },
                                                             )}
                                                             className="btn btn-outline"
                                                         >
@@ -139,11 +142,11 @@ export default function Home({ auth, events, payments }) {
                                                                     id: sub_event
                                                                         .ticket
                                                                         .id,
-                                                                }
+                                                                },
                                                             )}
                                                             className="btn btn-primary"
                                                             disabled={hasMadePayment(
-                                                                sub_event.ticket
+                                                                sub_event.ticket,
                                                             )}
                                                         >
                                                             Buy Ticket
