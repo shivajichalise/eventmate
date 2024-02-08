@@ -169,7 +169,7 @@
 @stop
 
 @section('js')
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhq4J5no2hsLTmXC7L_JBnoHDp0l_rrbE&libraries=places&callback=initAutocomplete" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=<add_you_google_api_key_here>&libraries=places&callback=initAutocomplete" async defer></script>
 <script>
 bsCustomFileInput.init()
 let autocomplete;
