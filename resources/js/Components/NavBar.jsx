@@ -26,17 +26,14 @@ export default function NavBar({ auth }) {
                         className="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
                     >
                         <li>
-                            <a>Events</a>
+                            <a href="/home">Events</a>
                         </li>
                         <li>
-                            <a>About</a>
-                        </li>
-                        <li>
-                            <a>Contact</a>
+                            <a href="/">About</a>
                         </li>
                     </ul>
                 </div>
-                <a href={route("home")} className="ml-4 normal-case text-xl">
+                <a href={route("about")} className="ml-4 normal-case text-xl">
                     <ApplicationLogo
                         className="block h-8 w-auto fill-current text-gray-800 dark:text-gray-200"
                         primary={true}
@@ -46,13 +43,10 @@ export default function NavBar({ auth }) {
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
                     <li>
-                        <a>Events</a>
+                        <a href="/home">Events</a>
                     </li>
                     <li>
-                        <a>About</a>
-                    </li>
-                    <li>
-                        <a>Contact</a>
+                        <a href="/">About</a>
                     </li>
                 </ul>
             </div>

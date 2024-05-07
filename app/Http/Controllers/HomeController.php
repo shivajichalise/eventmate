@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -14,8 +13,8 @@ class HomeController extends Controller
     public function index(): Response
     {
         $payments = null;
-        if(Auth::check()) {
-            $payments =  Auth::user()->ticketsWithPayments();
+        if (Auth::check()) {
+            $payments = Auth::user()->ticketsWithPayments();
         }
 
         $events = Event::ongoing()->with(['subEvents.ticket', 'venue'])->get();
@@ -24,7 +23,7 @@ class HomeController extends Controller
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
             'events' => $events,
-            'payments' => $payments
+            'payments' => $payments,
         ]);
     }
 
@@ -33,12 +32,18 @@ class HomeController extends Controller
         return Inertia::render('Dashboard');
     }
 
+    public function about(): Response
+    {
+        return Inertia::render('About');
+    }
+
     public function listPurchasedTickets()
     {
-        $purchasedTickets =  Auth::user()->purchasedTickets();
+        $purchasedTickets = Auth::user()->purchasedTickets();
+
         // return $purchasedTickets;
         return Inertia::render('MyTickets', [
-            'purchasedTickets' => $purchasedTickets
+            'purchasedTickets' => $purchasedTickets,
         ]);
     }
 }
