@@ -61,10 +61,40 @@ export default function About({ auth }) {
                             </ol>
                         </div>
                     </div>
-
-                    <CallToAction />
                 </div>
             </div>
+
+            <CallToAction />
+
+            <footer className="flex flex-col justify-center items-center mt-10">
+                <div className="flex flex-col lg:flex-row justify-around items-center border-y border-y-gray-400 w-full p-10">
+                    <div className="flex flex-col w-full lg:w-1/4 my-5 lg:my-0">
+                        <h1 className="text-sm lg:text-lg font-semibold py-2">
+                            About Event Mate
+                        </h1>
+                        <p className="text-sm lg:text-md font-light">
+                            EventMate is a web app that simplifies event
+                            organization and ticket sales for organizers, while
+                            providing attendees with a seamless registration
+                            experience.
+                        </p>
+                    </div>
+                    <div className="flex flex-col justify-start w-full lg:w-1/4">
+                        <h1 className="text-sm lg:text-lg font-semibold py-1">
+                            We would love to hear from you
+                        </h1>
+                        <a
+                            href="mailto:respond2shivaji@gmail.com"
+                            className="text-xs lg:text-xs font-light"
+                        >
+                            respond2shivaji@gmail.com
+                        </a>
+                    </div>
+                </div>
+                <div className="p-4">
+                    <h1>&copy; {new Date().getFullYear()} Shivaji Chalise</h1>
+                </div>
+            </footer>
         </>
     );
 }
