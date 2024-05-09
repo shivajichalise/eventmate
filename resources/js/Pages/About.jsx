@@ -1,6 +1,15 @@
 import { Head } from "@inertiajs/react";
 import NavBar from "../Components/NavBar.jsx";
 import CallToAction from "@/Components/CallToAction.jsx";
+import Feature from "@/Components/Feature.jsx";
+import {
+    CalendarDots,
+    CreditCard,
+    Exam,
+    Layout,
+    Notification,
+    User,
+} from "@phosphor-icons/react";
 
 export default function About({ auth }) {
     return (
@@ -64,6 +73,64 @@ export default function About({ auth }) {
                 </div>
             </div>
 
+            <div className="flex flex-col items-center justify-center my-10 gap-10">
+                <h1 className="text-xl lg:text-3xl font-semibold py-2">
+                    Remarkable Event Mate{" "}
+                    <span className="text-primary font-bold text-xl lg:text-3xl">
+                        Features
+                    </span>
+                </h1>
+                <div className="flex flex-col lg:flex-row justify-between w-11/12">
+                    <div className="">
+                        <img src="/images/features.png" width={700} />
+                    </div>
+                    <div className="flex flex-col gap-5 items-center w-full lg:w-2/5">
+                        <Feature
+                            icon={
+                                <CalendarDots
+                                    size={25}
+                                    className="text-white"
+                                />
+                            }
+                            title="Quick event creation and ticket allocation"
+                            description="Effortlessly create events and allocate tickets with ease."
+                        />
+                        <Feature
+                            icon={
+                                <CreditCard size={25} className="text-white" />
+                            }
+                            title="Online payment with dynamic invoice creation"
+                            description="Facilitate online payments and generate dynamic invoices seamlessly for a hassle-free transaction experience."
+                        />
+                        <Feature
+                            icon={<User size={25} className="text-white" />}
+                            title="Attendee account"
+                            description="Empower attendees with personalized accounts, providing them with easy access to event details and updates."
+                        />
+                        <Feature
+                            icon={
+                                <Notification
+                                    size={25}
+                                    className="text-white"
+                                />
+                            }
+                            title="Email notification"
+                            description="Keep attendees updated through timely email notifications, ensuring they never miss important event information."
+                        />
+                        <Feature
+                            icon={<Layout size={25} className="text-white" />}
+                            title="Dashboard feed"
+                            description="Stay informed and organized with a comprehensive dashboard feed, offering real-time updates and insights."
+                        />
+                        <Feature
+                            icon={<Exam size={25} className="text-white" />}
+                            title="Quick results publication"
+                            description="Speed up the process of result publication with quick and efficient tools, enhancing attendee satisfaction."
+                        />
+                    </div>
+                </div>
+            </div>
+
             <CallToAction />
 
             <footer className="flex flex-col justify-center items-center mt-10">
@@ -85,7 +152,7 @@ export default function About({ auth }) {
                         </h1>
                         <a
                             href="mailto:respond2shivaji@gmail.com"
-                            className="text-xs lg:text-xs font-light"
+                            className="text-sm lg:text-md font-light"
                         >
                             respond2shivaji@gmail.com
                         </a>
